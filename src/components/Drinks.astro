@@ -1,0 +1,137 @@
+---
+const drinks = [
+  {
+    img: "https://images.unsplash.com/photo-1542372147193-a7aca54189cd?w=1800&q=80&auto=format&fit=crop",
+    alt: "Coffee drink being prepared",
+    name: "Dirty Horchata",
+    coord: "ESPRESSO / MATCHA / HORCHATA",
+    tag: "Signature / Movement",
+    icon: "crosshair",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1752027992582-2ce5f9414fb4?w=1800&q=80&auto=format&fit=crop",
+    alt: "Coffee drinks to go",
+    name: "Vanilla Cold Brew Latte",
+    coord: "COLD BREW / VANILLA / MILK",
+    tag: "Coffee / Cold",
+    icon: "star",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1766250343186-847200b11032?w=1800&q=80&auto=format&fit=crop",
+    alt: "Barista preparing specialty coffee",
+    name: "Flat White",
+    coord: "ESPRESSO / STEAMED MILK",
+    tag: "Coffee / Classic",
+    icon: "crosshair",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1516011762365-b3ae4a895b51?w=1800&q=80&auto=format&fit=crop",
+    alt: "Coffee takeaway packaging",
+    name: "Mango Lychee Refresher",
+    coord: "MANGO / LYCHEE / SODA",
+    tag: "No coffee / Bright",
+    icon: "star",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1800&q=80&auto=format&fit=crop",
+    alt: "People in a contemporary café",
+    name: "Grilled Cheese",
+    coord: "BREAD / CHEESE / BUTTER",
+    tag: "Food / Comfort",
+    icon: "crosshair",
+  },
+];
+---
+
+<section class="drinks" id="drinks">
+  <div class="drinks-top">
+    <div>
+      <div class="meta muted" style="margin-bottom:18px">Featured at LATTITUDE°</div>
+      <h2>What people order the most.</h2>
+    </div>
+    <p>Coffee leads the menu. Matcha brings a different rhythm. Food keeps the day moving.</p>
+  </div>
+
+  <article class="drink-feature" id="drinkFeature">
+    <div class="drink-image">
+      <img id="drinkImg" src={drinks[0].img} alt={drinks[0].alt} />
+      <div class="coord">
+        <div class="ruler"></div>
+        <div class="meta" style="display:flex;justify-content:space-between;margin-top:9px"><span id="drinkName">{drinks[0].name.toUpperCase()}</span><span id="drinkCoord">{drinks[0].coord}</span></div>
+      </div>
+    </div>
+    <div class="drink-menu">
+      {drinks.map((d, i) => (
+        <button
+          type="button"
+          class="drink-menu-item"
+          aria-pressed={i === 0 ? "true" : "false"}
+          data-img={d.img}
+          data-alt={d.alt}
+          data-name={d.name}
+          data-coord={d.coord}
+        >
+          <strong>{d.name}</strong>
+          <div class="mini">
+            <span class="meta muted">{d.tag}</span>
+            {d.icon === "star" ? <span class="star"><i></i></span> : <span class="crosshair"><i></i></span>}
+          </div>
+        </button>
+      ))}
+    </div>
+  </article>
+</section>
+
+<script>
+  const AUTO_ADVANCE_MS = 5000;
+
+  const feature = document.getElementById("drinkFeature");
+  const menuItems = Array.from(document.querySelectorAll<HTMLButtonElement>(".drink-menu-item"));
+  const img = document.getElementById("drinkImg") as HTMLImageElement | null;
+  const nameEl = document.getElementById("drinkName");
+  const coordEl = document.getElementById("drinkCoord");
+
+  let activeIndex = 0;
+  let timer: ReturnType<typeof setInterval> | null = null;
+
+  function select(index: number) {
+    if (!img || !nameEl || !coordEl) return;
+    const btn = menuItems[index];
+    if (!btn) return;
+    activeIndex = index;
+    menuItems.forEach((b) => b.setAttribute("aria-pressed", "false"));
+    btn.setAttribute("aria-pressed", "true");
+    img.src = btn.dataset.img ?? "";
+    img.alt = btn.dataset.alt ?? "";
+    nameEl.textContent = (btn.dataset.name ?? "").toUpperCase();
+    coordEl.textContent = btn.dataset.coord ?? "";
+  }
+
+  function start() {
+    stop();
+    timer = setInterval(() => {
+      select((activeIndex + 1) % menuItems.length);
+    }, AUTO_ADVANCE_MS);
+  }
+
+  function stop() {
+    if (timer !== null) {
+      clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  menuItems.forEach((btn, i) => {
+    btn.addEventListener("click", () => {
+      select(i);
+      start();
+    });
+  });
+
+  if (feature) {
+    feature.addEventListener("mouseenter", stop);
+    feature.addEventListener("mouseleave", start);
+  }
+
+  start();
+</script>

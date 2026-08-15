@@ -1,0 +1,31 @@
+---
+const rows = [
+  { title: "Citrus Flat White", tag: "Coffee / Bright", icon: "crosshair" },
+  { title: "Mango Lychee Flat White", tag: "Coffee / Experiment", icon: "star" },
+  { title: "Protein Mocha", tag: "Coffee / In motion", icon: "crosshair" },
+  { title: "Seasonal coordinate →", tag: "Changes with the rotation", icon: "arrow" },
+];
+---
+
+<section class="lab" style="display:none">
+  <div class="lab-grid">
+    <div>
+      <div class="meta muted" style="margin-bottom:18px">LATTITUDE LAB / Rotation</div>
+      <h2>Keep the coordinates moving.</h2>
+      <p class="lab-note">A place for seasonal drinks, tests and combinations that earn a place on the menu. This section can change without changing the whole site.</p>
+    </div>
+    <div class="lab-list">
+      {rows.map((row) => (
+        <div class="lab-row">
+          <strong>{row.title}</strong>
+          <div class="mini">
+            <span class="meta muted">{row.tag}</span>
+            {row.icon === "star" && <span class="star"><i></i></span>}
+            {row.icon === "crosshair" && <span class="crosshair"><i></i></span>}
+            {row.icon === "arrow" && <span>↗</span>}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
