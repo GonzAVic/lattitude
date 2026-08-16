@@ -1,11 +1,13 @@
 ---
-import { footer, type Locale } from "../i18n/content";
+import { footer, localePath, type Locale } from "../i18n/content";
 
 interface Props {
   lang: Locale;
 }
 const { lang } = Astro.props;
 const t = footer[lang];
+const homeHref = localePath(lang);
+const aboutHref = localePath(lang, "/about/");
 ---
 
 <footer>
@@ -14,7 +16,7 @@ const t = footer[lang];
     <div class="footer-copy">{t.copy}</div>
     <div>
       <div class="footer-label meta">{t.exploreLabel}</div>
-      <div class="footer-links"><a class="hoverable" href="#concept">{t.concept}</a><a class="hoverable" href="#drinks">{t.drinks}</a><a class="hoverable" href="#people">{t.people}</a><a class="hoverable" href="#location">{t.visit}</a></div>
+      <div class="footer-links"><a class="hoverable" href={`${homeHref}#concept`}>{t.concept}</a><a class="hoverable" href={`${homeHref}#drinks`}>{t.drinks}</a><a class="hoverable" href={`${homeHref}#people`}>{t.people}</a><a class="hoverable" href={`${homeHref}#location`}>{t.visit}</a><a class="hoverable" href={aboutHref}>{t.about}</a></div>
     </div>
     <div>
       <div class="footer-label meta">{t.connectLabel}</div>

@@ -9,16 +9,18 @@ interface Props {
   lang: Locale;
   title?: string;
   description?: string;
+  /** Locale-agnostic page path, e.g. "/" for home or "/about" — used to build canonical + hreflang URLs. */
+  path?: string;
 }
 
-const { lang, title, description } = Astro.props;
+const { lang, title, description, path = "/" } = Astro.props;
 const t = site[lang];
 const pageTitle = title ?? t.title;
 const pageDescription = description ?? t.description;
 
-const canonicalURL = new URL(localePath(lang), Astro.site);
-const enURL = new URL(localePath("en"), Astro.site);
-const esURL = new URL(localePath("es"), Astro.site);
+const canonicalURL = new URL(localePath(lang, path), Astro.site);
+const enURL = new URL(localePath("en", path), Astro.site);
+const esURL = new URL(localePath("es", path), Astro.site);
 const ogImage = new URL(lang === "en" ? "/og-en.jpg" : "/og-es.jpg", Astro.site);
 const ogLocale = lang === "en" ? "en_US" : "es_MX";
 const ogLocaleAlt = lang === "en" ? "es_MX" : "en_US";
@@ -109,7 +111,7 @@ const jsonLd = {
     />
     <title>{pageTitle}</title>
 
-    <script define:vars={{ lang }}>
+    <script define:vars={{ lang, esPath: localePath("es", path) }}>
       (function () {
         try {
           var stored = localStorage.getItem("lattitude-lang");
@@ -121,7 +123,7 @@ const jsonLd = {
             var browserLang = (navigator.language || "en").slice(0, 2).toLowerCase();
             if (browserLang === "es") {
               localStorage.setItem("lattitude-lang", "es");
-              window.location.replace("/es/" + window.location.hash);
+              window.location.replace(esPath + window.location.hash);
               return;
             }
           }
@@ -132,7 +134,7 @@ const jsonLd = {
   </head>
   <body>
     <CursorRail />
-    <NavOverlay lang={lang} />
+    <NavOverlay lang={lang} path={path} />
 
     <main id="top">
       <slot />

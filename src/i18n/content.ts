@@ -35,6 +35,7 @@ export const nav = {
     drinks: "Drinks",
     people: "People",
     visit: "Visit",
+    about: "Founders",
     currentPosition: "Current position",
     hours: "Mon–Fri / 09:00–21:00 · Sat / 10:00–18:00",
     instagram: "@lattitudecoffee ↗",
@@ -48,6 +49,7 @@ export const nav = {
     drinks: "Bebidas",
     people: "Gente",
     visit: "Visítanos",
+    about: "Fundadores",
     currentPosition: "Posición actual",
     hours: "Lun–Vie / 09:00–21:00 · Sáb / 10:00–18:00",
     instagram: "@lattitudecoffee ↗",
@@ -238,6 +240,7 @@ export const footer = {
     drinks: "Drinks",
     people: "People",
     visit: "Visit",
+    about: "Founders",
     connectLabel: "Connect",
     instagram: "Instagram ↗",
     googleMaps: "Google Maps ↗",
@@ -251,10 +254,177 @@ export const footer = {
     drinks: "Bebidas",
     people: "Gente",
     visit: "Visítanos",
+    about: "Fundadores",
     connectLabel: "Conecta",
     instagram: "Instagram ↗",
     googleMaps: "Google Maps ↗",
     pill: "NADA POR ACCIDENTE",
     madeWith: "Hecho con intención.",
+  },
+} as const;
+
+export const foundersSeo = {
+  en: {
+    title: "LATTITUDE° — Founders",
+    description: "Built in motion. Two founders, a shared curiosity for travel and dance, and a coffee shop made with intention in Mérida, Yucatán.",
+  },
+  es: {
+    title: "LATTITUDE° — Fundadores",
+    description: "Construido en movimiento. Dos fundadores, una curiosidad compartida por los viajes y el baile, y una cafetería hecha con intención en Mérida, Yucatán.",
+  },
+} as const;
+
+export const foundersHero = {
+  en: {
+    eyebrow: "FOUNDERS / IN MOTION",
+    heading: "Built in motion.",
+    subhead: "LATTITUDE° was created by two people who care about well-made things, good coffee, movement and the details that make a place worth returning to.",
+    micro: ["ORIGIN / CURIOSITY", "STATUS / BUILDING", "DIRECTION / FORWARD", "CURRENT POSITION / MÉRIDA"],
+  },
+  es: {
+    eyebrow: "FUNDADORES / EN MOVIMIENTO",
+    heading: "Construido en movimiento.",
+    subhead: "LATTITUDE° fue creado por dos personas a las que les importan las cosas bien hechas, el buen café, el movimiento y los detalles que hacen que un lugar valga la pena volver a visitar.",
+    micro: ["ORIGEN / CURIOSIDAD", "ESTADO / CONSTRUYENDO", "DIRECCIÓN / ADELANTE", "POSICIÓN ACTUAL / MÉRIDA"],
+  },
+} as const;
+
+export const foundersIntro = {
+  en: {
+    eyebrow: "TWO PEOPLE / ONE PROJECT",
+    heading: ["We didn't start as baristas.", "We started as people who care about good things."],
+    body: [
+      "We came to coffee as customers first — people who loved the ritual, the spaces around it, and the feeling of finding a place that gets the details right.",
+      "LATTITUDE° was not built from the idea that we already had all the answers. It was built from caring enough to keep looking for better ones.",
+    ],
+  },
+  es: {
+    eyebrow: "DOS PERSONAS / UN PROYECTO",
+    heading: ["No empezamos como baristas.", "Empezamos como personas a las que les importan las cosas buenas."],
+    body: [
+      "Llegamos al café primero como clientes — personas que amaban el ritual, los espacios alrededor de él, y la sensación de encontrar un lugar que entiende los detalles.",
+      "LATTITUDE° no se construyó desde la idea de que ya teníamos todas las respuestas. Se construyó desde el cuidado de seguir buscando mejores.",
+    ],
+  },
+} as const;
+
+export const foundersName = {
+  en: {
+    eyebrow: "ORIGIN / LATTE",
+    heading: ["It started with latte.", "Then it went somewhere else."],
+    body: "The name started as a word experiment around latte. LATTITUDE opened a much bigger idea: coordinates, places, movement, and the cultures we encounter along the way. Degrees, minutes and seconds became part of the visual language of the brand — not just as location data, but as a way to hide timing, recipes, movement and small pieces of information in plain sight.",
+    micro: ["ORIGIN / LATTE", "POSITION / LATTITUDE", "DIRECTION / FORWARD", "CURRENT POSITION / MÉRIDA"],
+  },
+  es: {
+    eyebrow: "ORIGEN / LATTE",
+    heading: ["Empezó con latte.", "Después fue a otro lado."],
+    body: "El nombre empezó como un experimento de palabras alrededor de latte. LATTITUDE abrió una idea mucho más grande: coordenadas, lugares, movimiento y las culturas que encontramos en el camino. Grados, minutos y segundos se volvieron parte del lenguaje visual de la marca — no solo como datos de ubicación, sino como una forma de esconder tiempos, recetas, movimiento y pequeñas piezas de información a plena vista.",
+    micro: ["ORIGEN / LATTE", "POSICIÓN / LATTITUDE", "DIRECCIÓN / ADELANTE", "POSICIÓN ACTUAL / MÉRIDA"],
+  },
+} as const;
+
+export const foundersTravel = {
+  en: {
+    eyebrow: "ROUTE / TRAVEL",
+    heading: "Places change the way you notice things.",
+    body: "Traveling made us pay closer attention. Not just to coffee, but to the way spaces feel, how people move through them, how hospitality works, and how small choices can change an entire experience. LATTITUDE° is not about recreating one place we visited. It is about carrying that curiosity forward.",
+    img: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1600&q=80&auto=format&fit=crop",
+    alt: "Travel notebook, camera and map",
+    micro: ["ORIGIN / MOVEMENT", "ROUTE / CONTINUOUS", "POSITION / MÉRIDA", "DESTINATION / FORWARD"],
+  },
+  es: {
+    eyebrow: "RUTA / VIAJES",
+    heading: "Los lugares cambian la forma en que notas las cosas.",
+    body: "Viajar nos hizo poner más atención. No solo al café, sino a cómo se sienten los espacios, cómo se mueve la gente por ellos, cómo funciona la hospitalidad y cómo pequeñas decisiones pueden cambiar toda una experiencia. LATTITUDE° no se trata de recrear un lugar que visitamos. Se trata de llevar esa curiosidad hacia adelante.",
+    img: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1600&q=80&auto=format&fit=crop",
+    alt: "Cuaderno de viaje, cámara y mapa",
+    micro: ["ORIGEN / MOVIMIENTO", "RUTA / CONTINUA", "POSICIÓN / MÉRIDA", "DESTINO / ADELANTE"],
+  },
+} as const;
+
+export const foundersDance = {
+  en: {
+    eyebrow: "RHYTHM / SALSA + BACHATA",
+    heading: "Movement was already part of the story.",
+    body: "Long before LATTITUDE° became a café, movement was already part of our lives. Salsa and bachata taught us something we now recognize everywhere: rhythm looks effortless only after a lot of intention. Timing, repetition, precision and movement became familiar ideas long before they became part of the way we think about coffee and hospitality.",
+    img: "https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?w=1600&q=80&auto=format&fit=crop",
+    alt: "Dancers practicing in a studio",
+    micro: ["RHYTHM / ACTIVE", "TIMING / MATTERS", "REPEAT / IMPROVE", "MOVEMENT / CONTINUOUS"],
+  },
+  es: {
+    eyebrow: "RITMO / SALSA + BACHATA",
+    heading: "El movimiento ya era parte de la historia.",
+    body: "Mucho antes de que LATTITUDE° fuera una cafetería, el movimiento ya era parte de nuestra vida. La salsa y la bachata nos enseñaron algo que ahora reconocemos en todos lados: el ritmo se ve fácil solo después de mucha intención. Timing, repetición, precisión y movimiento fueron ideas familiares mucho antes de volverse parte de cómo pensamos el café y la hospitalidad.",
+    img: "https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?w=1600&q=80&auto=format&fit=crop",
+    alt: "Bailarines practicando en un estudio",
+    micro: ["RITMO / ACTIVO", "TIMING / IMPORTA", "REPETIR / MEJORAR", "MOVIMIENTO / CONTINUO"],
+  },
+} as const;
+
+export const foundersCoffee = {
+  en: {
+    eyebrow: "LEARNING / ACTIVE",
+    heading: "Coffee came next. Curiosity came first.",
+    body: "We were coffee lovers before we were café founders. We learned with help from a barista friend, asked questions, practiced, tasted, and paid attention to what makes a drink feel balanced, thoughtful and worth coming back for. We did not open LATTITUDE° because we knew everything about coffee. We opened it because we cared enough to keep learning.",
+    img: "https://images.unsplash.com/photo-1766250343186-847200b11032?w=1600&q=80&auto=format&fit=crop",
+    alt: "Barista preparing specialty coffee",
+    micro: ["ORIGIN / CURIOSITY", "LEARNING / ACTIVE", "STANDARD / RISING", "STATUS / BUILDING"],
+  },
+  es: {
+    eyebrow: "APRENDIZAJE / ACTIVO",
+    heading: "El café llegó después. La curiosidad llegó primero.",
+    body: "Fuimos amantes del café antes de ser fundadores de una cafetería. Aprendimos con la ayuda de un amigo barista, hicimos preguntas, practicamos, probamos, y pusimos atención a lo que hace que una bebida se sienta balanceada, pensada y que valga la pena repetir. No abrimos LATTITUDE° porque supiéramos todo sobre café. Lo abrimos porque nos importó lo suficiente como para seguir aprendiendo.",
+    img: "https://images.unsplash.com/photo-1766250343186-847200b11032?w=1600&q=80&auto=format&fit=crop",
+    alt: "Barista preparando café de especialidad",
+    micro: ["ORIGEN / CURIOSIDAD", "APRENDIZAJE / ACTIVO", "ESTÁNDAR / SUBIENDO", "ESTADO / CONSTRUYENDO"],
+  },
+} as const;
+
+export const foundersIntention = {
+  en: {
+    eyebrow: "MADE WITH INTENTION",
+    heading: "The details should have a reason to exist.",
+    body: [
+      "A table should be comfortable because someone might work from it for hours. An outlet should be where you need it. The internet should work. The ingredients should make sense. The space should help you feel better than when you arrived.",
+      "“Made with intention” is not a campaign line for us. It is the filter we want to use for every decision.",
+    ],
+  },
+  es: {
+    eyebrow: "HECHO CON INTENCIÓN",
+    heading: "Los detalles deben tener una razón para existir.",
+    body: [
+      "Una mesa debe ser cómoda porque alguien podría trabajar desde ahí por horas. Un contacto debe estar donde lo necesitas. El internet debe funcionar. Los ingredientes deben tener sentido. El espacio debe ayudarte a sentirte mejor que cuando llegaste.",
+      "“Hecho con intención” no es una frase de campaña para nosotros. Es el filtro que queremos usar en cada decisión.",
+    ],
+  },
+} as const;
+
+export const foundersTogether = {
+  en: {
+    eyebrow: "APRIL 25 / MARRIED",
+    heading: "Two people. One thing worth building well.",
+    body: "We travel together. We dance together. We learned coffee together. And eventually, we decided to build something together. LATTITUDE° became the place where many of the things we care about could exist at the same time: good coffee, useful design, movement, curiosity and people with somewhere to go.",
+  },
+  es: {
+    eyebrow: "25 DE ABRIL / CASADOS",
+    heading: "Dos personas. Una sola cosa que vale la pena construir bien.",
+    body: "Viajamos juntos. Bailamos juntos. Aprendimos café juntos. Y eventualmente, decidimos construir algo juntos. LATTITUDE° se convirtió en el lugar donde muchas de las cosas que nos importan podían existir al mismo tiempo: buen café, diseño útil, movimiento, curiosidad y gente con un lugar a dónde ir.",
+  },
+} as const;
+
+export const foundersClosing = {
+  en: {
+    eyebrow: "CURRENT POSITION / MÉRIDA",
+    heading: ["Now you know where it came from.", "Come see where it's going."],
+    supporting: "Coffee for people in motion. Made with intention in Mérida, Yucatán.",
+    ctaVisit: "Visit LATTITUDE",
+    ctaMenu: "View the menu",
+  },
+  es: {
+    eyebrow: "POSICIÓN ACTUAL / MÉRIDA",
+    heading: ["Ahora ya sabes de dónde viene.", "Ven a ver hacia dónde va."],
+    supporting: "Café para gente en movimiento. Hecho con intención en Mérida, Yucatán.",
+    ctaVisit: "Visitar LATTITUDE",
+    ctaMenu: "Ver el menú",
   },
 } as const;

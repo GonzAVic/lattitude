@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Founders from "./Founders.astro";
+import { foundersSeo, type Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const seo = foundersSeo[lang];
+---
+
+<BaseLayout lang={lang} path="/about/" title={seo.title} description={seo.description}>
+  <Founders lang={lang} />
+</BaseLayout>

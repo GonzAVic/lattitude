@@ -1,0 +1,130 @@
+---
+import {
+  foundersHero,
+  foundersIntro,
+  foundersName,
+  foundersTravel,
+  foundersDance,
+  foundersCoffee,
+  foundersIntention,
+  foundersTogether,
+  foundersClosing,
+  localePath,
+  type Locale,
+} from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+
+const hero = foundersHero[lang];
+const intro = foundersIntro[lang];
+const name = foundersName[lang];
+const travel = foundersTravel[lang];
+const dance = foundersDance[lang];
+const coffee = foundersCoffee[lang];
+const intention = foundersIntention[lang];
+const together = foundersTogether[lang];
+const closing = foundersClosing[lang];
+
+const menuHref = `${localePath(lang)}#drinks`;
+const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
+---
+
+<section class="founders-hero">
+  <div class="meta muted eyebrow">{hero.eyebrow}</div>
+  <h1>{hero.heading}</h1>
+  <p>{hero.subhead}</p>
+  <div class="coord-strip" aria-hidden="true">
+    {hero.micro.map((m) => <span>{m}</span>)}
+  </div>
+</section>
+
+<section class="founder-section center">
+  <div class="meta muted eyebrow">{intro.eyebrow}</div>
+  <h2>{intro.heading[0]}<br />{intro.heading[1]}</h2>
+  {intro.body.map((p) => <p>{p}</p>)}
+</section>
+
+<section class="founder-section center">
+  <div class="meta muted eyebrow">{name.eyebrow}</div>
+  <h2>{name.heading[0]}<br />{name.heading[1]}</h2>
+  <p>{name.body}</p>
+  <div class="coord-strip" aria-hidden="true">
+    {name.micro.map((m) => <span>{m}</span>)}
+  </div>
+</section>
+
+<section class="founder-section">
+  <div class="founder-media">
+    <div class="founder-media-img">
+      <img src={travel.img} alt={travel.alt} />
+    </div>
+    <div class="founder-media-copy">
+      <div class="meta muted eyebrow">{travel.eyebrow}</div>
+      <h2>{travel.heading}</h2>
+      <p>{travel.body}</p>
+      <div class="coord-strip" aria-hidden="true">
+        {travel.micro.map((m) => <span>{m}</span>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="founder-section">
+  <div class="founder-media reverse">
+    <div class="founder-media-img">
+      <img src={dance.img} alt={dance.alt} />
+    </div>
+    <div class="founder-media-copy">
+      <div class="meta muted eyebrow">{dance.eyebrow}</div>
+      <h2>{dance.heading}</h2>
+      <p>{dance.body}</p>
+      <div class="coord-strip" aria-hidden="true">
+        {dance.micro.map((m) => <span>{m}</span>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="founder-section">
+  <div class="founder-media">
+    <div class="founder-media-img">
+      <img src={coffee.img} alt={coffee.alt} />
+    </div>
+    <div class="founder-media-copy">
+      <div class="meta muted eyebrow">{coffee.eyebrow}</div>
+      <h2>{coffee.heading}</h2>
+      <p>{coffee.body}</p>
+      <div class="coord-strip" aria-hidden="true">
+        {coffee.micro.map((m) => <span>{m}</span>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="founder-section center">
+  <div class="meta muted eyebrow">{intention.eyebrow}</div>
+  <h2>{intention.heading}</h2>
+  {intention.body.map((p) => <p>{p}</p>)}
+</section>
+
+<section class="founder-section center">
+  <div class="meta muted eyebrow">{together.eyebrow}</div>
+  <h2>{together.heading}</h2>
+  <p>{together.body}</p>
+</section>
+
+<section class="founders-closing">
+  <h2>{closing.heading[0]}<br />{closing.heading[1]}</h2>
+  <p>{closing.supporting}</p>
+  <div class="hero-actions">
+    <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaVisit} <span>↗</span></a>
+    <a class="btn hoverable" href={menuHref}>{closing.ctaMenu} <span>→</span></a>
+  </div>
+  <div class="coord-strip" aria-hidden="true">
+    <span>{closing.eyebrow}</span>
+    <span>21°01'11.6"N / 89°34'16.2"W</span>
+  </div>
+</section>

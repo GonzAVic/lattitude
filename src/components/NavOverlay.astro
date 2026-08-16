@@ -3,10 +3,13 @@ import { nav, otherLocale, localePath, type Locale } from "../i18n/content";
 
 interface Props {
   lang: Locale;
+  path?: string;
 }
-const { lang } = Astro.props;
+const { lang, path = "/" } = Astro.props;
 const t = nav[lang];
-const switchHref = localePath(otherLocale(lang));
+const switchHref = localePath(otherLocale(lang), path);
+const homeHref = localePath(lang);
+const aboutHref = localePath(lang, "/about/");
 ---
 
 <nav>
@@ -43,10 +46,11 @@ const switchHref = localePath(otherLocale(lang));
 
 <div class="overlay" aria-hidden="true">
   <div>
-    <a class="big overlay-link hoverable" href="#concept">{t.concept}</a>
-    <a class="big overlay-link hoverable" href="#drinks">{t.drinks}</a>
-    <a class="big overlay-link hoverable" href="#people">{t.people}</a>
-    <a class="big overlay-link hoverable" href="#location">{t.visit}</a>
+    <a class="big overlay-link hoverable" href={`${homeHref}#concept`}>{t.concept}</a>
+    <a class="big overlay-link hoverable" href={`${homeHref}#drinks`}>{t.drinks}</a>
+    <a class="big overlay-link hoverable" href={`${homeHref}#people`}>{t.people}</a>
+    <a class="big overlay-link hoverable" href={`${homeHref}#location`}>{t.visit}</a>
+    <a class="big overlay-link hoverable" href={aboutHref}>{t.about}</a>
   </div>
   <div class="overlay-meta">
     <div class="meta">{t.currentPosition}</div>
