@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "./Hero.astro";
+import Marquee from "./Marquee.astro";
+import Statement from "./Statement.astro";
+import Intent from "./Intent.astro";
+import Drinks from "./Drinks.astro";
+import Lab from "./Lab.astro";
+import People from "./People.astro";
+import Location from "./Location.astro";
+import type { Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+---
+
+<BaseLayout lang={lang}>
+  <Hero lang={lang} />
+  <Marquee lang={lang} />
+  <Statement lang={lang} />
+  <Intent lang={lang} />
+  <Drinks lang={lang} />
+  <Lab lang={lang} />
+  <People lang={lang} />
+  <Location lang={lang} />
+</BaseLayout>

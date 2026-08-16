@@ -118,6 +118,12 @@ nav{
 }
 .logo{display:block}
 .logo svg{height:34px;width:auto;display:block;fill:currentColor}
+.nav-right{display:flex;align-items:center;gap:18px}
+.lang-switch{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12px;letter-spacing:.08em;font-weight:600;
+  border:1px solid currentColor;border-radius:999px;padding:6px 12px;
+}
 .menu-btn{
   width:44px;height:44px;border:0;background:none;padding:0;cursor:none;
   display:grid;place-items:center;

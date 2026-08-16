@@ -1,3 +1,14 @@
+---
+import { nav, otherLocale, localePath, type Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = nav[lang];
+const switchHref = localePath(otherLocale(lang));
+---
+
 <nav>
   <div class="nav-inner">
     <a class="logo hoverable" href="#top">
@@ -21,24 +32,37 @@
           C532.18,197.24,535.28,198.04,538.71,198.04z"/>
       </svg>
     </a>
-    <button class="menu-btn hoverable" aria-label="Open menu" aria-expanded="false">
-      <span><i></i><i></i><i></i></span>
-    </button>
+    <div class="nav-right">
+      <a class="lang-switch hoverable" id="langSwitch" href={switchHref} aria-label={t.switchAria}>{t.switchTo}</a>
+      <button class="menu-btn hoverable" aria-label={t.openMenu} data-open-label={t.openMenu} data-close-label={t.closeMenu} aria-expanded="false">
+        <span><i></i><i></i><i></i></span>
+      </button>
+    </div>
   </div>
 </nav>
 
 <div class="overlay" aria-hidden="true">
   <div>
-    <a class="big overlay-link hoverable" href="#concept">Concept</a>
-    <a class="big overlay-link hoverable" href="#drinks">Drinks</a>
-    <a class="big overlay-link hoverable" href="#people">People</a>
-    <a class="big overlay-link hoverable" href="#location">Visit</a>
+    <a class="big overlay-link hoverable" href="#concept">{t.concept}</a>
+    <a class="big overlay-link hoverable" href="#drinks">{t.drinks}</a>
+    <a class="big overlay-link hoverable" href="#people">{t.people}</a>
+    <a class="big overlay-link hoverable" href="#location">{t.visit}</a>
   </div>
   <div class="overlay-meta">
-    <div class="meta">Current position</div>
+    <div class="meta">{t.currentPosition}</div>
     <div class="line"></div>
     <div>21°01'11.6"N<br>89°34'16.2"W</div>
-    <div style="margin-top:34px" class="meta">Mon–Fri / 09:00–21:00 · Sat / 10:00–18:00</div>
-    <div style="margin-top:34px"><a class="hoverable" href="https://www.instagram.com/lattitudecoffee" target="_blank" rel="noopener">@lattitudecoffee ↗</a></div>
+    <div style="margin-top:34px" class="meta">{t.hours}</div>
+    <div style="margin-top:34px"><a class="hoverable" href="https://www.instagram.com/lattitudecoffee" target="_blank" rel="noopener">{t.instagram}</a></div>
   </div>
 </div>
+
+<script>
+  const langSwitch = document.getElementById("langSwitch") as HTMLAnchorElement | null;
+  if (langSwitch) {
+    langSwitch.href = langSwitch.getAttribute("href") + window.location.hash;
+    langSwitch.addEventListener("click", () => {
+      localStorage.setItem("lattitude-lang", langSwitch.textContent === "ES" ? "es" : "en");
+    });
+  }
+</script>

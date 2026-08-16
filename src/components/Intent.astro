@@ -1,40 +1,17 @@
 ---
-const stories = [
-  {
-    img: "https://images.unsplash.com/photo-1704770064557-416292d1f4bd?w=1800&q=80&auto=format&fit=crop",
-    alt: "Person working from a café",
-    label: "Table / Useful",
-    title: "A place to get something done.",
-    body: "Come with a laptop, a conversation or a half-finished idea. Stay comfortable. Keep moving.",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1766250343186-847200b11032?w=1800&q=80&auto=format&fit=crop",
-    alt: "Barista working with an espresso machine",
-    label: "Detail / Matters",
-    title: "Good coffee without the theater.",
-    body: "We care about quality, balance and the details that make a drink worth coming back for.",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1516011762365-b3ae4a895b51?w=1800&q=80&auto=format&fit=crop",
-    alt: "Minimal takeaway packaging",
-    label: "Simple / Useful",
-    title: "Ingredients with a reason.",
-    body: "Natural ingredients first. Sugar-free options where they make sense—not just because a trend told us to.",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1800&q=80&auto=format&fit=crop",
-    alt: "People meeting in a coffee shop",
-    label: "Meet / Share",
-    title: "More than a table and a cup.",
-    body: "Workdays, meetups, workshops and moments that put the right people in the same room.",
-  },
-];
+import { intent, intentStories, type Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = intent[lang];
+const stories = intentStories[lang];
 ---
 
 <section class="intent">
   <div class="section-head">
-    <h3>Made for real life.</h3>
-    <span class="meta muted">Temporary image direction / Replace with LATTITUDE photography</span>
+    <h3>{t.heading}</h3>
   </div>
 
   <div class="intent-grid">

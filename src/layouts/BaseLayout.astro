@@ -3,46 +3,142 @@ import "../styles/global.css";
 import CursorRail from "../components/CursorRail.astro";
 import NavOverlay from "../components/NavOverlay.astro";
 import Footer from "../components/Footer.astro";
+import { site, localePath, type Locale } from "../i18n/content";
 
 interface Props {
+  lang: Locale;
   title?: string;
   description?: string;
 }
 
-const {
-  title = "LATTITUDE° — Coffee for people in motion",
-  description = "LATTITUDE° — Coffee for people in motion. Specialty coffee, ceremonial matcha and food in Mérida, Yucatán. Made with intention.",
-} = Astro.props;
+const { lang, title, description } = Astro.props;
+const t = site[lang];
+const pageTitle = title ?? t.title;
+const pageDescription = description ?? t.description;
+
+const canonicalURL = new URL(localePath(lang), Astro.site);
+const enURL = new URL(localePath("en"), Astro.site);
+const esURL = new URL(localePath("es"), Astro.site);
+const ogImage = new URL(lang === "en" ? "/og-en.jpg" : "/og-es.jpg", Astro.site);
+const ogLocale = lang === "en" ? "en_US" : "es_MX";
+const ogLocaleAlt = lang === "en" ? "es_MX" : "en_US";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CafeOrCoffeeShop",
+  "name": "LATTITUDE°",
+  "image": ogImage.toString(),
+  "url": canonicalURL.toString(),
+  "servesCuisine": "Coffee",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Calle 16 A, Paraíso Maya",
+    "addressLocality": "Mérida",
+    "addressRegion": "Yucatán",
+    "addressCountry": "MX",
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 21.019888,
+    "longitude": -89.571167,
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "09:00",
+      "closes": "21:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Saturday",
+      "opens": "10:00",
+      "closes": "18:00",
+    },
+  ],
+  "sameAs": ["https://www.instagram.com/lattitudecoffee"],
+};
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
-    <meta name="description" content={description} />
+    <meta name="description" content={pageDescription} />
     <meta name="generator" content={Astro.generator} />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" hreflang="en" href={enURL} />
+    <link rel="alternate" hreflang="es" href={esURL} />
+    <link rel="alternate" hreflang="x-default" href={enURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LATTITUDE°" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t.ogAlt} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocaleAlt} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={t.ogAlt} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <title>{title}</title>
+    <title>{pageTitle}</title>
+
+    <script define:vars={{ lang }}>
+      (function () {
+        try {
+          var stored = localStorage.getItem("lattitude-lang");
+          if (stored) return;
+          // Only the default-locale (English) page auto-redirects on first visit.
+          // Any locale-specific URL (e.g. /es/, reached via a direct link, the
+          // switcher, or a search engine) is respected as-is and never bounced.
+          if (lang === "en") {
+            var browserLang = (navigator.language || "en").slice(0, 2).toLowerCase();
+            if (browserLang === "es") {
+              localStorage.setItem("lattitude-lang", "es");
+              window.location.replace("/es/" + window.location.hash);
+              return;
+            }
+          }
+          localStorage.setItem("lattitude-lang", lang);
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <CursorRail />
-    <NavOverlay />
+    <NavOverlay lang={lang} />
 
     <main id="top">
       <slot />
     </main>
 
-    <Footer />
+    <Footer lang={lang} />
 
     <script src="../scripts/main.js"></script>
   </body>

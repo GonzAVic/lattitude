@@ -20,7 +20,7 @@ function toggleMenu(force){
   overlay.classList.toggle("open",open);
   overlay.setAttribute("aria-hidden",String(!open));
   plus.setAttribute("aria-expanded",String(open));
-  plus.setAttribute("aria-label",open?"Close menu":"Open menu");
+  plus.setAttribute("aria-label",open?plus.dataset.closeLabel:plus.dataset.openLabel);
 }
 plus.addEventListener("click",()=>toggleMenu());
 document.querySelectorAll(".overlay-link").forEach(a=>a.addEventListener("click",()=>toggleMenu(false)));

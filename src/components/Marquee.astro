@@ -1,20 +1,20 @@
 ---
-const cards = [
-  { variant: "a", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1400&q=80&auto=format&fit=crop", alt: "People in a contemporary café", label: "People / In motion" },
-  { variant: "b", img: "https://images.unsplash.com/photo-1766250343186-847200b11032?w=1400&q=80&auto=format&fit=crop", alt: "Barista preparing specialty coffee", label: "Coffee / Craft" },
-  { variant: "c", img: "https://images.unsplash.com/photo-1516011762365-b3ae4a895b51?w=1400&q=80&auto=format&fit=crop", alt: "Coffee takeaway packaging", label: "Objects / Purpose" },
-  { variant: "d", img: "https://images.unsplash.com/photo-1542372147193-a7aca54189cd?w=1400&q=80&auto=format&fit=crop", alt: "Coffee being prepared at a bar", label: "Handoff / Ready" },
-  { variant: "b", img: "https://images.unsplash.com/photo-1704770064557-416292d1f4bd?w=1400&q=80&auto=format&fit=crop", alt: "Creative person working", label: "Work / Build" },
-  { variant: "a", img: "https://images.unsplash.com/photo-1752027992582-2ce5f9414fb4?w=1400&q=80&auto=format&fit=crop", alt: "Coffee drinks to go", label: "Movement / To go" },
-];
+import { marquee, marqueeCards, type Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = marquee[lang];
+const cards = marqueeCards[lang];
 // Marquee loops seamlessly by duplicating the track once (CSS animates -50%)
 const track = [...cards, ...cards];
 ---
 
 <section class="marquee">
   <div class="marquee-head">
-    <span class="meta muted">Coffee · Ceremonial matcha · Refreshers · Food</span>
-    <span class="meta">Pause on hover / Zoom in on focus</span>
+    <span class="meta muted">{t.eyebrow}</span>
+    <span class="meta">{t.hint}</span>
   </div>
 
   <div class="track">
