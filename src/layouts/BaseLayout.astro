@@ -11,9 +11,11 @@ interface Props {
   description?: string;
   /** Locale-agnostic page path, e.g. "/" for home or "/about" — used to build canonical + hreflang URLs. */
   path?: string;
+  /** Unlisted pages: kept out of search engines. Still reachable by direct link. */
+  noindex?: boolean;
 }
 
-const { lang, title, description, path = "/" } = Astro.props;
+const { lang, title, description, path = "/", noindex = false } = Astro.props;
 const t = site[lang];
 const pageTitle = title ?? t.title;
 const pageDescription = description ?? t.description;
@@ -71,6 +73,7 @@ const jsonLd = {
     <meta name="theme-color" content="#ffffff" />
     <meta name="description" content={pageDescription} />
     <meta name="generator" content={Astro.generator} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />

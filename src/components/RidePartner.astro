@@ -1,0 +1,68 @@
+---
+import ArrowIcon from "./ArrowIcon.astro";
+import {
+  rideHero,
+  rideDrinksSection,
+  rideDrinks,
+  rideClosing,
+  localePath,
+  type Locale,
+} from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+
+const hero = rideHero[lang];
+const drinksSection = rideDrinksSection[lang];
+const drinks = rideDrinks[lang];
+const closing = rideClosing[lang];
+
+const menuHref = `${localePath(lang)}#drinks`;
+const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
+---
+
+<section class="founders-hero">
+  <div class="meta muted eyebrow">{hero.eyebrow}</div>
+  <h1>{hero.heading}</h1>
+  <p>{hero.subhead}</p>
+  <div class="coord-strip" aria-hidden="true">
+    {hero.micro.map((m) => <span>{m}</span>)}
+  </div>
+</section>
+
+<section class="ride-section">
+  <div class="ride-section-head">
+    <div class="meta muted">{drinksSection.eyebrow}</div>
+    <h2>{drinksSection.heading}</h2>
+    <p>{drinksSection.body}</p>
+  </div>
+
+  <div class="ride-grid">
+    {drinks.map((d) => (
+      <article class="story">
+        <div class="story-media">
+          <img src={d.img} alt={d.alt} />
+          <div class="mmicro">
+            <span class="mlabel meta">{d.tag}</span>
+            <div class="ruler"></div>
+          </div>
+        </div>
+        <div class="story-copy">
+          <h4>{d.name}</h4>
+          <p>{d.body}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<section class="founders-closing">
+  <h2>{closing.heading}</h2>
+  <p>{closing.supporting}</p>
+  <div class="hero-actions">
+    <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
+    <a class="btn hoverable" href={menuHref}>{closing.ctaMenu} <ArrowIcon dir="right" /></a>
+  </div>
+</section>

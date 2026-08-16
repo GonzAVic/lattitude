@@ -379,3 +379,107 @@ export const foundersClosing = {
     ctaMenu: "Ver el menú",
   },
 } as const;
+
+/* Unlisted partner page — LET'S RIDE. Not linked from nav/footer/sitemap; direct-link only. */
+export const rideSeo = {
+  en: {
+    title: "LATTITUDE° × LET'S RIDE",
+    description: "Your ride day stop. Coffee, ceremonial matcha and food for the LET'S RIDE community, two doors down on Calle 16-A.",
+  },
+  es: {
+    title: "LATTITUDE° × LET'S RIDE",
+    description: "Tu parada del día de ride. Café, matcha ceremonial y comida para la comunidad de LET'S RIDE, a dos puertas sobre la Calle 16-A.",
+  },
+} as const;
+
+export const rideHero = {
+  en: {
+    eyebrow: "LATTITUDE° × LET'S RIDE",
+    heading: "Same street. Different rhythm.",
+    subhead: "LET'S RIDE gets your legs moving. LATTITUDE° is two doors down on Calle 16-A — coffee, ceremonial matcha and food for people who don't stop after class.",
+    micro: ["LET'S RIDE / CALLE 16-A", "LATTITUDE° / SAME STREET", "STATUS / OPEN", "DIRECTION / TWO DOORS DOWN"],
+  },
+  es: {
+    eyebrow: "LATTITUDE° × LET'S RIDE",
+    heading: "Misma calle. Otro ritmo.",
+    subhead: "LET'S RIDE pone tus piernas en movimiento. LATTITUDE° está a dos puertas sobre la Calle 16-A — café, matcha ceremonial y comida para quienes no se detienen después de clase.",
+    micro: ["LET'S RIDE / CALLE 16-A", "LATTITUDE° / MISMA CALLE", "ESTADO / ABIERTO", "DIRECCIÓN / DOS PUERTAS ABAJO"],
+  },
+} as const;
+
+export const rideDrinksSection = {
+  en: {
+    eyebrow: "LOVED BY THIS COMMUNITY",
+    heading: "What the LET'S RIDE crowd orders most.",
+    body: "No ranking, no guesswork — just what keeps showing up on the counter after class.",
+  },
+  es: {
+    eyebrow: "AMADAS POR ESTA COMUNIDAD",
+    heading: "Lo que más pide la comunidad de LET'S RIDE.",
+    body: "Sin ranking ni adivinanzas — solo lo que sigue apareciendo en la barra después de clase.",
+  },
+} as const;
+
+export const rideDrinks = {
+  en: [
+    {
+      img: "https://images.unsplash.com/photo-1752027992582-2ce5f9414fb4?w=1200&q=80&auto=format&fit=crop",
+      alt: "Coffee drinks to go",
+      tag: "COFFEE / COLD",
+      name: "Vanilla Cold Brew Latte",
+      body: "Cold brew, milk and sugar-free vanilla. Built for a long day, not just a long ride.",
+    },
+    {
+      img: "https://images.unsplash.com/photo-1516011762365-b3ae4a895b51?w=1200&q=80&auto=format&fit=crop",
+      alt: "Coffee takeaway packaging",
+      tag: "NO COFFEE / BRIGHT",
+      name: "Mango Lychee Refresher",
+      body: "Bright, cold and made for Mérida heat. No caffeine required.",
+    },
+    {
+      img: "https://images.unsplash.com/photo-1542372147193-a7aca54189cd?w=1200&q=80&auto=format&fit=crop",
+      alt: "Coffee drink being prepared",
+      tag: "SIGNATURE / MOVEMENT",
+      name: "Dirty Horchata",
+      body: "Espresso, matcha and horchata in one drink. Familiar enough to want immediately.",
+    },
+  ],
+  es: [
+    {
+      img: "https://images.unsplash.com/photo-1752027992582-2ce5f9414fb4?w=1200&q=80&auto=format&fit=crop",
+      alt: "Bebidas de café para llevar",
+      tag: "CAFÉ / FRÍO",
+      name: "Vanilla Cold Brew Latte",
+      body: "Cold brew, leche y vainilla sin azúcar. Hecho para un día largo, no solo un ride largo.",
+    },
+    {
+      img: "https://images.unsplash.com/photo-1516011762365-b3ae4a895b51?w=1200&q=80&auto=format&fit=crop",
+      alt: "Empaque de café para llevar",
+      tag: "SIN CAFÉ / FRESCO",
+      name: "Mango Lychee Refresher",
+      body: "Brillante, frío y hecho para el calor de Mérida. No necesita cafeína.",
+    },
+    {
+      img: "https://images.unsplash.com/photo-1542372147193-a7aca54189cd?w=1200&q=80&auto=format&fit=crop",
+      alt: "Bebida de café siendo preparada",
+      tag: "FIRMA / MOVIMIENTO",
+      name: "Dirty Horchata",
+      body: "Espresso, matcha y horchata en una sola bebida. Familiar pero distinta.",
+    },
+  ],
+} as const;
+
+export const rideClosing = {
+  en: {
+    heading: "Ride day. Coffee day.",
+    supporting: "Two doors down on Calle 16-A. Bring the group.",
+    ctaDirections: "Get directions",
+    ctaMenu: "View full menu",
+  },
+  es: {
+    heading: "Día de ride. Día de café.",
+    supporting: "A dos puertas, sobre la Calle 16-A. Trae al grupo.",
+    ctaDirections: "Cómo llegar",
+    ctaMenu: "Ver el menú completo",
+  },
+} as const;
