@@ -1,4 +1,5 @@
 ---
+import ArrowIcon from "./ArrowIcon.astro";
 import { location, type Locale } from "../i18n/content";
 
 interface Props {
@@ -19,8 +20,8 @@ const t = location[lang];
       <div class="location-row"><span class="meta muted">{t.hoursLabel}</span><strong>{t.hoursWeekday}<br>{t.hoursSaturday}</strong></div>
       <div class="location-row"><span class="meta muted">{t.instagramLabel}</span><strong>@lattitudecoffee</strong></div>
       <div class="location-actions">
-        <a class="btn hoverable" href="https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7" target="_blank" rel="noopener">{t.googleMaps} <span>↗</span></a>
-        <a class="btn hoverable" href="https://www.instagram.com/lattitudecoffee" target="_blank" rel="noopener">{t.instagram} <span>↗</span></a>
+        <a class="btn hoverable" href="https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7" target="_blank" rel="noopener">{t.googleMaps} <ArrowIcon dir="up-right" /></a>
+        <a class="btn hoverable" href="https://www.instagram.com/lattitudecoffee" target="_blank" rel="noopener">{t.instagram} <ArrowIcon dir="up-right" /></a>
       </div>
     </div>
   </div>

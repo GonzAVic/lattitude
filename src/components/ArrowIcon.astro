@@ -1,0 +1,14 @@
+---
+interface Props {
+  dir?: "right" | "up-right" | "down";
+}
+const { dir = "right" } = Astro.props;
+const cls = dir === "right" ? "arrow" : `arrow ${dir}`;
+---
+
+<span class={cls} aria-hidden="true">
+  <svg viewBox="0 0 16 16">
+    <line x1="2" y1="8" x2="13" y2="8"></line>
+    <polyline points="8,3 13,8 8,13"></polyline>
+  </svg>
+</span>

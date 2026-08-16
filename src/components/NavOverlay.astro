@@ -1,4 +1,5 @@
 ---
+import ArrowIcon from "./ArrowIcon.astro";
 import { nav, otherLocale, localePath, type Locale } from "../i18n/content";
 
 interface Props {
@@ -57,7 +58,7 @@ const aboutHref = localePath(lang, "/about/");
     <div class="line"></div>
     <div>21°01'11.6"N<br>89°34'16.2"W</div>
     <div style="margin-top:34px" class="meta">{t.hours}</div>
-    <div style="margin-top:34px"><a class="hoverable" href="https://www.instagram.com/lattitudecoffee" target="_blank" rel="noopener">{t.instagram}</a></div>
+    <div style="margin-top:34px"><a class="hoverable" href="https://www.instagram.com/lattitudecoffee" target="_blank" rel="noopener">{t.instagram} <ArrowIcon dir="up-right" /></a></div>
   </div>
 </div>
 

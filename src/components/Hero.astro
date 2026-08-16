@@ -1,4 +1,5 @@
 ---
+import ArrowIcon from "./ArrowIcon.astro";
 import { hero, type Locale } from "../i18n/content";
 
 interface Props {
@@ -34,8 +35,8 @@ const t = hero[lang];
     </h1>
     <h2>{t.subhead}</h2>
     <div class="hero-actions">
-      <a class="btn hoverable" href="https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7" target="_blank" rel="noopener">{t.directions} <span>↗</span></a>
-      <a class="btn hoverable" href="#drinks">{t.explore} <span>↓</span></a>
+      <a class="btn hoverable" href="https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7" target="_blank" rel="noopener">{t.directions} <ArrowIcon dir="up-right" /></a>
+      <a class="btn hoverable" href="#drinks">{t.explore} <ArrowIcon dir="down" /></a>
     </div>
   </div>
 </section>

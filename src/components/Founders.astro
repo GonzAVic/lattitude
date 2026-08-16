@@ -1,13 +1,11 @@
 ---
+import ArrowIcon from "./ArrowIcon.astro";
 import {
   foundersHero,
-  foundersIntro,
+  foundersCommunity,
   foundersName,
-  foundersTravel,
-  foundersDance,
-  foundersCoffee,
+  foundersOrigin,
   foundersIntention,
-  foundersTogether,
   foundersClosing,
   localePath,
   type Locale,
@@ -19,13 +17,10 @@ interface Props {
 const { lang } = Astro.props;
 
 const hero = foundersHero[lang];
-const intro = foundersIntro[lang];
+const community = foundersCommunity[lang];
 const name = foundersName[lang];
-const travel = foundersTravel[lang];
-const dance = foundersDance[lang];
-const coffee = foundersCoffee[lang];
+const origin = foundersOrigin[lang];
 const intention = foundersIntention[lang];
-const together = foundersTogether[lang];
 const closing = foundersClosing[lang];
 
 const menuHref = `${localePath(lang)}#drinks`;
@@ -42,9 +37,12 @@ const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
 </section>
 
 <section class="founder-section center">
-  <div class="meta muted eyebrow">{intro.eyebrow}</div>
-  <h2>{intro.heading[0]}<br />{intro.heading[1]}</h2>
-  {intro.body.map((p) => <p>{p}</p>)}
+  <div class="meta muted eyebrow">{community.eyebrow}</div>
+  <h2>{community.heading}</h2>
+  {community.body.map((p) => <p>{p}</p>)}
+  <div class="coord-strip" aria-hidden="true">
+    {community.micro.map((m) => <span>{m}</span>)}
+  </div>
 </section>
 
 <section class="founder-section center">
@@ -56,72 +54,34 @@ const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
   </div>
 </section>
 
-<section class="founder-section">
-  <div class="founder-media">
-    <div class="founder-media-img">
-      <img src={travel.img} alt={travel.alt} />
-    </div>
-    <div class="founder-media-copy">
-      <div class="meta muted eyebrow">{travel.eyebrow}</div>
-      <h2>{travel.heading}</h2>
-      <p>{travel.body}</p>
-      <div class="coord-strip" aria-hidden="true">
-        {travel.micro.map((m) => <span>{m}</span>)}
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="founder-section">
-  <div class="founder-media reverse">
-    <div class="founder-media-img">
-      <img src={dance.img} alt={dance.alt} />
-    </div>
-    <div class="founder-media-copy">
-      <div class="meta muted eyebrow">{dance.eyebrow}</div>
-      <h2>{dance.heading}</h2>
-      <p>{dance.body}</p>
-      <div class="coord-strip" aria-hidden="true">
-        {dance.micro.map((m) => <span>{m}</span>)}
-      </div>
-    </div>
-  </div>
+<section class="founder-section center">
+  <div class="meta muted eyebrow">{origin.eyebrow}</div>
+  <h2>{origin.heading}</h2>
+  <p>{origin.body}</p>
 </section>
 
 <section class="founder-section">
   <div class="founder-media">
     <div class="founder-media-img">
-      <img src={coffee.img} alt={coffee.alt} />
+      <img src={intention.img} alt={intention.alt} />
     </div>
     <div class="founder-media-copy">
-      <div class="meta muted eyebrow">{coffee.eyebrow}</div>
-      <h2>{coffee.heading}</h2>
-      <p>{coffee.body}</p>
+      <div class="meta muted eyebrow">{intention.eyebrow}</div>
+      <h2>{intention.heading}</h2>
+      {intention.body.map((p) => <p>{p}</p>)}
       <div class="coord-strip" aria-hidden="true">
-        {coffee.micro.map((m) => <span>{m}</span>)}
+        {intention.micro.map((m) => <span>{m}</span>)}
       </div>
     </div>
   </div>
-</section>
-
-<section class="founder-section center">
-  <div class="meta muted eyebrow">{intention.eyebrow}</div>
-  <h2>{intention.heading}</h2>
-  {intention.body.map((p) => <p>{p}</p>)}
-</section>
-
-<section class="founder-section center">
-  <div class="meta muted eyebrow">{together.eyebrow}</div>
-  <h2>{together.heading}</h2>
-  <p>{together.body}</p>
 </section>
 
 <section class="founders-closing">
   <h2>{closing.heading[0]}<br />{closing.heading[1]}</h2>
   <p>{closing.supporting}</p>
   <div class="hero-actions">
-    <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaVisit} <span>↗</span></a>
-    <a class="btn hoverable" href={menuHref}>{closing.ctaMenu} <span>→</span></a>
+    <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaVisit} <ArrowIcon dir="up-right" /></a>
+    <a class="btn hoverable" href={menuHref}>{closing.ctaMenu} <ArrowIcon dir="right" /></a>
   </div>
   <div class="coord-strip" aria-hidden="true">
     <span>{closing.eyebrow}</span>
