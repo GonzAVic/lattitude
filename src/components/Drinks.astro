@@ -1,4 +1,5 @@
 ---
+import DrinkFeature from "./DrinkFeature.astro";
 import { drinksSection, drinksList, type Locale } from "../i18n/content";
 
 interface Props {
@@ -18,86 +19,5 @@ const drinks = drinksList[lang];
     <p>{t.body}</p>
   </div>
 
-  <article class="drink-feature" id="drinkFeature">
-    <div class="drink-image">
-      <img id="drinkImg" src={drinks[0].img} alt={drinks[0].alt} />
-      <div class="coord">
-        <div class="ruler"></div>
-        <div class="meta" style="display:flex;justify-content:space-between;margin-top:9px"><span id="drinkName">{drinks[0].name.toUpperCase()}</span><span id="drinkCoord">{drinks[0].coord}</span></div>
-      </div>
-    </div>
-    <div class="drink-menu">
-      {drinks.map((d, i) => (
-        <button
-          type="button"
-          class="drink-menu-item"
-          aria-pressed={i === 0 ? "true" : "false"}
-          data-img={d.img}
-          data-alt={d.alt}
-          data-name={d.name}
-          data-coord={d.coord}
-        >
-          <strong>{d.name}</strong>
-          <div class="mini">
-            <span class="meta muted">{d.tag}</span>
-            {d.icon === "star" ? <span class="star"><i></i></span> : <span class="crosshair"><i></i></span>}
-          </div>
-        </button>
-      ))}
-    </div>
-  </article>
+  <DrinkFeature drinks={drinks} />
 </section>
-
-<script>
-  const AUTO_ADVANCE_MS = 5000;
-
-  const feature = document.getElementById("drinkFeature");
-  const menuItems = Array.from(document.querySelectorAll<HTMLButtonElement>(".drink-menu-item"));
-  const img = document.getElementById("drinkImg") as HTMLImageElement | null;
-  const nameEl = document.getElementById("drinkName");
-  const coordEl = document.getElementById("drinkCoord");
-
-  let activeIndex = 0;
-  let timer: ReturnType<typeof setInterval> | null = null;
-
-  function select(index: number) {
-    if (!img || !nameEl || !coordEl) return;
-    const btn = menuItems[index];
-    if (!btn) return;
-    activeIndex = index;
-    menuItems.forEach((b) => b.setAttribute("aria-pressed", "false"));
-    btn.setAttribute("aria-pressed", "true");
-    img.src = btn.dataset.img ?? "";
-    img.alt = btn.dataset.alt ?? "";
-    nameEl.textContent = (btn.dataset.name ?? "").toUpperCase();
-    coordEl.textContent = btn.dataset.coord ?? "";
-  }
-
-  function start() {
-    stop();
-    timer = setInterval(() => {
-      select((activeIndex + 1) % menuItems.length);
-    }, AUTO_ADVANCE_MS);
-  }
-
-  function stop() {
-    if (timer !== null) {
-      clearInterval(timer);
-      timer = null;
-    }
-  }
-
-  menuItems.forEach((btn, i) => {
-    btn.addEventListener("click", () => {
-      select(i);
-      start();
-    });
-  });
-
-  if (feature) {
-    feature.addEventListener("mouseenter", stop);
-    feature.addEventListener("mouseleave", start);
-  }
-
-  start();
-</script>

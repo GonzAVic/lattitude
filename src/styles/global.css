@@ -458,19 +458,7 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
 .founders-closing .hero-actions{margin-top:36px}
 .founders-closing .coord-strip{justify-content:center;margin-top:56px}
 
-/* RIDE PARTNER PAGE */
-.ride-section{padding:clamp(70px,8vw,110px) var(--pad);border-top:1px solid var(--line)}
-.ride-section-head{text-align:center;max-width:640px;margin:0 auto clamp(46px,6vw,80px)}
-.ride-section-head h2{
-  margin:14px 0 0;font-size:clamp(32px,4.4vw,58px);font-weight:700;
-  line-height:1;letter-spacing:-.05em;
-}
-.ride-section-head p{margin:18px 0 0;color:var(--secondary);font-size:17px;line-height:1.5}
-.ride-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(30px,4vw,54px) clamp(22px,2.5vw,32px)}
-.ride-grid .story-copy{grid-template-columns:1fr}
-
 @media(max-width:950px){
-  .ride-grid{grid-template-columns:1fr}
   .founder-media{grid-template-columns:1fr}
   .founder-media.reverse .founder-media-copy{order:0}
 

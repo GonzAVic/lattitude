@@ -422,50 +422,14 @@ export const rideDrinksSection = {
 
 export const rideDrinks = {
   en: [
-    {
-      img: "https://images.unsplash.com/photo-1752027992582-2ce5f9414fb4?w=1200&q=80&auto=format&fit=crop",
-      alt: "Coffee drinks to go",
-      tag: "COFFEE / COLD",
-      name: "Vanilla Cold Brew Latte",
-      body: "Cold brew, milk and sugar-free vanilla. Built for a long day, not just a long ride.",
-    },
-    {
-      img: "https://images.unsplash.com/photo-1516011762365-b3ae4a895b51?w=1200&q=80&auto=format&fit=crop",
-      alt: "Coffee takeaway packaging",
-      tag: "NO COFFEE / BRIGHT",
-      name: "Mango Lychee Refresher",
-      body: "Bright, cold and made for Mérida heat. No caffeine required.",
-    },
-    {
-      img: "https://images.unsplash.com/photo-1542372147193-a7aca54189cd?w=1200&q=80&auto=format&fit=crop",
-      alt: "Coffee drink being prepared",
-      tag: "SIGNATURE / MOVEMENT",
-      name: "Dirty Horchata",
-      body: "Espresso, matcha and horchata in one drink. Familiar enough to want immediately.",
-    },
+    { img: "https://images.unsplash.com/photo-1542372147193-a7aca54189cd?w=1800&q=80&auto=format&fit=crop", alt: "Coffee drink being prepared", name: "Dirty Horchata", coord: "ESPRESSO / MATCHA / HORCHATA", tag: "Signature / Movement", icon: "crosshair" },
+    { img: "https://images.unsplash.com/photo-1752027992582-2ce5f9414fb4?w=1800&q=80&auto=format&fit=crop", alt: "Coffee drinks to go", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VANILLA / MILK", tag: "Coffee / Cold", icon: "star" },
+    { img: "https://images.unsplash.com/photo-1516011762365-b3ae4a895b51?w=1800&q=80&auto=format&fit=crop", alt: "Coffee takeaway packaging", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "No coffee / Bright", icon: "star" },
   ],
   es: [
-    {
-      img: "https://images.unsplash.com/photo-1752027992582-2ce5f9414fb4?w=1200&q=80&auto=format&fit=crop",
-      alt: "Bebidas de café para llevar",
-      tag: "CAFÉ / FRÍO",
-      name: "Vanilla Cold Brew Latte",
-      body: "Cold brew, leche y vainilla sin azúcar. Hecho para un día largo, no solo un ride largo.",
-    },
-    {
-      img: "https://images.unsplash.com/photo-1516011762365-b3ae4a895b51?w=1200&q=80&auto=format&fit=crop",
-      alt: "Empaque de café para llevar",
-      tag: "SIN CAFÉ / FRESCO",
-      name: "Mango Lychee Refresher",
-      body: "Brillante, frío y hecho para el calor de Mérida. No necesita cafeína.",
-    },
-    {
-      img: "https://images.unsplash.com/photo-1542372147193-a7aca54189cd?w=1200&q=80&auto=format&fit=crop",
-      alt: "Bebida de café siendo preparada",
-      tag: "FIRMA / MOVIMIENTO",
-      name: "Dirty Horchata",
-      body: "Espresso, matcha y horchata en una sola bebida. Familiar pero distinta.",
-    },
+    { img: "https://images.unsplash.com/photo-1542372147193-a7aca54189cd?w=1800&q=80&auto=format&fit=crop", alt: "Bebida de café siendo preparada", name: "Dirty Horchata", coord: "ESPRESSO / MATCHA / HORCHATA", tag: "Firma / Movimiento", icon: "crosshair" },
+    { img: "https://images.unsplash.com/photo-1752027992582-2ce5f9414fb4?w=1800&q=80&auto=format&fit=crop", alt: "Bebidas de café para llevar", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VAINILLA / LECHE", tag: "Café / Frío", icon: "star" },
+    { img: "https://images.unsplash.com/photo-1516011762365-b3ae4a895b51?w=1800&q=80&auto=format&fit=crop", alt: "Empaque de café para llevar", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "Sin café / Fresco", icon: "star" },
   ],
 } as const;
 

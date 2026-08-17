@@ -1,5 +1,6 @@
 ---
 import ArrowIcon from "./ArrowIcon.astro";
+import DrinkFeature from "./DrinkFeature.astro";
 import {
   rideHero,
   rideDrinksSection,
@@ -35,30 +36,16 @@ const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
   </div>
 </section>
 
-<section class="ride-section">
-  <div class="ride-section-head">
-    <div class="meta muted">{drinksSection.eyebrow}</div>
-    <h2>{drinksSection.heading}</h2>
+<section class="drinks">
+  <div class="drinks-top">
+    <div>
+      <div class="meta muted" style="margin-bottom:18px">{drinksSection.eyebrow}</div>
+      <h2>{drinksSection.heading}</h2>
+    </div>
     <p>{drinksSection.body}</p>
   </div>
 
-  <div class="ride-grid">
-    {drinks.map((d) => (
-      <article class="story">
-        <div class="story-media">
-          <img src={d.img} alt={d.alt} />
-          <div class="mmicro">
-            <span class="mlabel meta">{d.tag}</span>
-            <div class="ruler"></div>
-          </div>
-        </div>
-        <div class="story-copy">
-          <h4>{d.name}</h4>
-          <p>{d.body}</p>
-        </div>
-      </article>
-    ))}
-  </div>
+  <DrinkFeature drinks={drinks} />
 </section>
 
 <section class="founders-closing">
