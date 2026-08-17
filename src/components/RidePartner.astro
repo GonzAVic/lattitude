@@ -26,25 +26,7 @@ const menuHref = `${localePath(lang)}#drinks`;
 const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
 ---
 
-<section class="founders-hero ride-hero-a">
-  <div class="ride-preview-tag">PREVIEW / VERSION A</div>
-  <div class="meta muted eyebrow">{hero.eyebrow}</div>
-  <div class="ride-logo-card">
-    <img src="/letsride-logo.png" alt="LET'S RIDE" width="230" height="192" />
-  </div>
-  <h1>{hero.heading}</h1>
-  <p>{hero.subhead}</p>
-  <div class="hero-actions">
-    <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
-    <a class="btn hoverable" href={menuHref}>{closing.ctaMenu} <ArrowIcon dir="right" /></a>
-  </div>
-  <div class="coord-strip" aria-hidden="true">
-    {hero.micro.map((m) => <span>{m}</span>)}
-  </div>
-</section>
-
-<section class="founders-hero ride-hero-b">
-  <div class="ride-preview-tag">PREVIEW / VERSION B</div>
+<section class="founders-hero">
   <div class="meta muted eyebrow">{hero.eyebrow}</div>
   <div class="brand-lockup" aria-hidden="true">
     <svg viewBox="672 442 540 220" role="img" aria-label="LATTITUDE">
@@ -60,9 +42,7 @@ const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
       <path d="M1148.52,644.08V457.64h47.5v7.55h-38.62v81.68h31.96v7.55h-31.96v82.12h38.62v7.55H1148.52z"/>
     </svg>
     <span class="x">&times;</span>
-    <div class="ride-logo-badge">
-      <img src="/letsride-logo.png" alt="LET'S RIDE" width="230" height="192" />
-    </div>
+    <span class="letsride-word">LET&rsquo;S RIDE</span>
   </div>
   <h1>{hero.heading}</h1>
   <p>{hero.subhead}</p>
