@@ -384,26 +384,26 @@ export const foundersClosing = {
 export const rideSeo = {
   en: {
     title: "LATTITUDE° × LET'S RIDE",
-    description: "Your ride day stop. Coffee, ceremonial matcha and food for the LET'S RIDE community, two doors down on Calle 16-A.",
+    description: "Coffee, ceremonial matcha and food for the LET'S RIDE community — made for people who don't sit still.",
   },
   es: {
     title: "LATTITUDE° × LET'S RIDE",
-    description: "Tu parada del día de ride. Café, matcha ceremonial y comida para la comunidad de LET'S RIDE, a dos puertas sobre la Calle 16-A.",
+    description: "Café, matcha ceremonial y comida para la comunidad de LET'S RIDE — hecho para quienes no se quedan quietos.",
   },
 } as const;
 
 export const rideHero = {
   en: {
     eyebrow: "LATTITUDE° × LET'S RIDE",
-    heading: "Same street. Different rhythm.",
-    subhead: "LET'S RIDE gets your legs moving. LATTITUDE° is two doors down on Calle 16-A — coffee, ceremonial matcha and food for people who don't stop after class.",
-    micro: ["LET'S RIDE / CALLE 16-A", "LATTITUDE° / SAME STREET", "STATUS / OPEN", "DIRECTION / TWO DOORS DOWN"],
+    heading: "Class ends. The rhythm doesn't.",
+    subhead: "LET'S RIDE gets your legs moving to the beat. LATTITUDE° keeps it going after — coffee, ceremonial matcha and food made for people who don't sit still.",
+    micro: ["RHYTHM / CONTINUOUS", "STATUS / OPEN", "DIRECTION / FORWARD", "MOVEMENT / SHARED"],
   },
   es: {
     eyebrow: "LATTITUDE° × LET'S RIDE",
-    heading: "Misma calle. Otro ritmo.",
-    subhead: "LET'S RIDE pone tus piernas en movimiento. LATTITUDE° está a dos puertas sobre la Calle 16-A — café, matcha ceremonial y comida para quienes no se detienen después de clase.",
-    micro: ["LET'S RIDE / CALLE 16-A", "LATTITUDE° / MISMA CALLE", "ESTADO / ABIERTO", "DIRECCIÓN / DOS PUERTAS ABAJO"],
+    heading: "La clase termina. El ritmo no.",
+    subhead: "LET'S RIDE pone tus piernas en movimiento al ritmo de la clase. LATTITUDE° lo sigue después — café, matcha ceremonial y comida para quienes no se quedan quietos.",
+    micro: ["RITMO / CONTINUO", "ESTADO / ABIERTO", "DIRECCIÓN / ADELANTE", "MOVIMIENTO / COMPARTIDO"],
   },
 } as const;
 
@@ -436,13 +436,13 @@ export const rideDrinks = {
 export const rideClosing = {
   en: {
     heading: "Ride day. Coffee day.",
-    supporting: "Two doors down on Calle 16-A. Bring the group.",
+    supporting: "Bring the whole class. Rhythm's better shared.",
     ctaDirections: "Get directions",
     ctaMenu: "View full menu",
   },
   es: {
     heading: "Día de ride. Día de café.",
-    supporting: "A dos puertas, sobre la Calle 16-A. Trae al grupo.",
+    supporting: "Trae a toda la clase. El ritmo se disfruta más en grupo.",
     ctaDirections: "Cómo llegar",
     ctaMenu: "Ver el menú completo",
   },
