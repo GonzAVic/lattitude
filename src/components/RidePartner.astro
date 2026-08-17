@@ -73,7 +73,41 @@ const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
   <div class="meta muted eyebrow">{protein.eyebrow}</div>
   <h2>{protein.heading}</h2>
   <p>{protein.body}</p>
+  <div class="protein-symbol" aria-hidden="true">
+    <img id="proteinSymbolImg" src="/micrographic-symbols/sym-01.svg" alt="" />
+  </div>
 </section>
+
+<script>
+  const SYMBOL_COUNT = 18;
+  const CYCLE_MS = 650;
+  const FADE_MS = 150;
+
+  const el = document.getElementById("proteinSymbolImg") as HTMLImageElement | null;
+  if (el && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const symbols = Array.from(
+      { length: SYMBOL_COUNT },
+      (_, i) => `/micrographic-symbols/sym-${String(i + 1).padStart(2, "0")}.svg`
+    );
+    let last = -1;
+    function pick() {
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * symbols.length);
+      } while (idx === last && symbols.length > 1);
+      last = idx;
+      return symbols[idx];
+    }
+    el.src = pick();
+    setInterval(() => {
+      el.style.opacity = "0";
+      setTimeout(() => {
+        el.src = pick();
+        el.style.opacity = "1";
+      }, FADE_MS);
+    }, CYCLE_MS);
+  }
+</script>
 
 <section class="founders-closing">
   <h2>{closing.heading}</h2>

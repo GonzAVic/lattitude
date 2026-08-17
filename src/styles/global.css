@@ -462,6 +462,13 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
 .founder-section p + p{margin-top:14px}
 .founder-section.center p{margin-inline:auto}
 .founder-section.center .coord-strip{justify-content:center}
+.protein-symbol{
+  margin-top:40px;display:flex;justify-content:center;align-items:center;height:52px;
+}
+.protein-symbol img{
+  width:44px;height:44px;object-fit:contain;color:#000;
+  transition:opacity .15s linear;
+}
 
 .founder-media{
   display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,90px);align-items:center;
