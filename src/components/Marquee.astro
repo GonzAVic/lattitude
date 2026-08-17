@@ -17,15 +17,66 @@ const track = [...cards, ...cards];
     <span class="meta">{t.hint}</span>
   </div>
 
-  <div class="track">
-    {track.map((c, i) => (
-      <article class={`mcard ${c.variant}`}>
-        <img src={c.img} alt={i < cards.length ? c.alt : ""} loading="lazy" />
-        <div class="mmicro">
-          <span class="mlabel meta">{c.label}</span>
-          <div class="ruler"></div>
-        </div>
-      </article>
-    ))}
+  <div class="marquee-scroll" id="marqueeScroll" tabindex="0" role="region" aria-label={t.eyebrow}>
+    <div class="track" id="marqueeTrack">
+      {track.map((c, i) => (
+        <article class={`mcard ${c.variant}`}>
+          <img src={c.img} alt={i < cards.length ? c.alt : ""} loading="lazy" />
+          <div class="mmicro">
+            <span class="mlabel meta">{c.label}</span>
+            <div class="ruler"></div>
+          </div>
+        </article>
+      ))}
+    </div>
   </div>
 </section>
+
+<script>
+  const scrollEl = document.getElementById("marqueeScroll");
+  const track = document.getElementById("marqueeTrack");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (scrollEl && track) {
+    const PX_PER_SEC = 56;
+    let paused = false;
+    let resumeTimer: ReturnType<typeof setTimeout> | null = null;
+    let last: number | null = null;
+
+    function pause() {
+      paused = true;
+      if (resumeTimer !== null) clearTimeout(resumeTimer);
+    }
+    function resumeSoon() {
+      if (resumeTimer !== null) clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => (paused = false), 1200);
+    }
+
+    scrollEl.addEventListener("mouseenter", pause);
+    scrollEl.addEventListener("mouseleave", () => (paused = false));
+    scrollEl.addEventListener("pointerdown", pause);
+    window.addEventListener("pointerup", resumeSoon);
+    scrollEl.addEventListener("touchstart", pause, { passive: true });
+    scrollEl.addEventListener("touchend", resumeSoon);
+    scrollEl.addEventListener("wheel", () => { pause(); resumeSoon(); }, { passive: true });
+
+    function loop(ts: number) {
+      if (last === null) last = ts;
+      const dt = (ts - last) / 1000;
+      last = ts;
+
+      if (!paused && !reducedMotion) {
+        scrollEl!.scrollLeft += PX_PER_SEC * dt;
+      }
+
+      const half = track!.scrollWidth / 2;
+      if (half > 0) {
+        if (scrollEl!.scrollLeft >= half) scrollEl!.scrollLeft -= half;
+        else if (scrollEl!.scrollLeft < 0) scrollEl!.scrollLeft += half;
+      }
+
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  }
+</script>

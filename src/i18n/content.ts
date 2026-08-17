@@ -93,8 +93,8 @@ export const marqueeCards = {
 } as const;
 
 export const marquee = {
-  en: { eyebrow: "Coffee · Ceremonial matcha · Refreshers · Food", hint: "Pause on hover / Zoom in on focus" },
-  es: { eyebrow: "Café · Matcha ceremonial · Refrescos · Comida", hint: "Pausa al pasar el cursor / Zoom al enfocar" },
+  en: { eyebrow: "Coffee · Ceremonial matcha · Refreshers · Food", hint: "Drag to explore / Pause on hover" },
+  es: { eyebrow: "Café · Matcha ceremonial · Refrescos · Comida", hint: "Arrastra para explorar / Pausa al pasar el cursor" },
 } as const;
 
 export const intent = {

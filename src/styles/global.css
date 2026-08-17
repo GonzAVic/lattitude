@@ -204,17 +204,20 @@ nav{
 }
 /* MARQUEE */
 .marquee{
-  border-top:1px solid var(--line);padding:34px 0 90px;overflow:hidden;
+  border-top:1px solid var(--line);padding:34px 0 90px;
 }
 .marquee-head{
   padding:0 var(--pad) 28px;display:flex;justify-content:space-between;gap:20px;
 }
+.marquee-scroll{
+  overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;cursor:grab;
+}
+.marquee-scroll::-webkit-scrollbar{display:none}
+.marquee-scroll:active{cursor:grabbing}
 .track{
   width:max-content;display:flex;gap:18px;padding-left:var(--pad);
-  animation:marquee 34s linear infinite;
 }
-.marquee:hover .track{animation-play-state:paused}
-@keyframes marquee{to{transform:translateX(-50%)}}
 .mcard{
   position:relative;flex:0 0 auto;width:clamp(235px,19vw,340px);aspect-ratio:5/7;
   overflow:hidden;background:#eee;
@@ -421,6 +424,15 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
 .founders-hero h1{
   margin:22px 0 0;font-size:clamp(52px,9vw,140px);font-weight:700;
   line-height:.88;letter-spacing:-.06em;
+}
+.brand-lockup{
+  display:flex;align-items:center;justify-content:center;gap:clamp(12px,2vw,20px);
+  margin:26px 0 4px;flex-wrap:wrap;
+}
+.brand-lockup svg{height:clamp(24px,3.2vw,36px);width:auto;fill:currentColor}
+.brand-lockup .x{font-size:clamp(16px,1.8vw,22px);color:var(--secondary);font-weight:600}
+.brand-lockup .letsride-word{
+  font-size:clamp(22px,3vw,34px);font-weight:800;letter-spacing:-.02em;font-style:italic;
 }
 .founders-hero p{
   max-width:640px;margin:26px auto 0;color:var(--secondary);
