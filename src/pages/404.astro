@@ -1,0 +1,87 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ArrowIcon from "../components/ArrowIcon.astro";
+import { notFound } from "../i18n/content";
+
+const t = notFound.en;
+---
+
+<BaseLayout lang="en" title={t.seoTitle} noindex>
+  <section class="founders-hero">
+    <div class="status-code" aria-hidden="true">{t.code}</div>
+    <div class="meta muted eyebrow" id="nfEyebrow">{t.eyebrow}</div>
+    <h1 id="nfHeading">{t.heading}</h1>
+    <p id="nfBody">{t.body}</p>
+    <div class="hero-actions">
+      <a class="btn hoverable" href="/" id="nfCta">{t.cta} <ArrowIcon dir="right" /></a>
+    </div>
+    <div class="coord-strip" aria-hidden="true" id="nfMicro">
+      {t.micro.map((m) => <span>{m}</span>)}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // GitHub Pages serves a single 404.html for every unmatched path on the
+  // domain (both English and Spanish routes), so this page can't be built
+  // per-locale like the rest of the site. It renders in English by default
+  // and swaps to Spanish client-side using the same signal BaseLayout's
+  // auto-detect script uses: a stored preference first, then browser language.
+  const dict = {
+    en: {
+      eyebrow: "STATUS / NOT FOUND",
+      heading: "Wrong coordinates.",
+      body: "This page moved, or it was never here. Either way, you're not lost — just off the route.",
+      cta: "Back to LATTITUDE",
+      micro: ["STATUS / 404", "DIRECTION / HOME", "CURRENT POSITION / UNKNOWN"],
+      home: "/",
+    },
+    es: {
+      eyebrow: "ESTADO / NO ENCONTRADO",
+      heading: "Coordenadas equivocadas.",
+      body: "Esta página se movió, o nunca existió. De cualquier forma, no estás perdido — solo fuera de ruta.",
+      cta: "Volver a LATTITUDE",
+      micro: ["ESTADO / 404", "DIRECCIÓN / INICIO", "POSICIÓN ACTUAL / DESCONOCIDA"],
+      home: "/es/",
+    },
+  } as const;
+
+  try {
+    const stored = localStorage.getItem("lattitude-lang");
+    const browserLang = (navigator.language || "en").slice(0, 2).toLowerCase();
+    const lang = stored === "es" || (!stored && browserLang === "es") ? "es" : "en";
+
+    if (lang === "es") {
+      const t = dict.es;
+      document.documentElement.lang = "es";
+      const eyebrow = document.getElementById("nfEyebrow");
+      const heading = document.getElementById("nfHeading");
+      const body = document.getElementById("nfBody");
+      const cta = document.getElementById("nfCta");
+      const micro = document.getElementById("nfMicro");
+      if (eyebrow) eyebrow.textContent = t.eyebrow;
+      if (heading) heading.textContent = t.heading;
+      if (body) body.textContent = t.body;
+      if (cta) {
+        cta.textContent = t.cta + " ";
+        cta.setAttribute("href", t.home);
+        const arrow = document.createElement("span");
+        arrow.className = "arrow";
+        arrow.setAttribute("aria-hidden", "true");
+        arrow.innerHTML = '<svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="13" y2="8"></line><polyline points="8,3 13,8 8,13"></polyline></svg>';
+        cta.appendChild(arrow);
+      }
+      if (micro) {
+        micro.querySelectorAll("span").forEach((el, i) => {
+          if (t.micro[i]) el.textContent = t.micro[i];
+        });
+      }
+      const langSwitch = document.getElementById("langSwitch");
+      if (langSwitch) {
+        langSwitch.textContent = "EN";
+        langSwitch.setAttribute("href", "/");
+        langSwitch.setAttribute("aria-label", "Switch to English");
+      }
+    }
+  } catch (e) {}
+</script>

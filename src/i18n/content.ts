@@ -464,3 +464,24 @@ export const rideClosing = {
     ctaMenu: "Ver el menú completo",
   },
 } as const;
+
+export const notFound = {
+  en: {
+    seoTitle: "404 — LATTITUDE°",
+    code: "404",
+    eyebrow: "STATUS / NOT FOUND",
+    heading: "Wrong coordinates.",
+    body: "This page moved, or it was never here. Either way, you're not lost — just off the route.",
+    cta: "Back to LATTITUDE",
+    micro: ["STATUS / 404", "DIRECTION / HOME", "CURRENT POSITION / UNKNOWN"],
+  },
+  es: {
+    seoTitle: "404 — LATTITUDE°",
+    code: "404",
+    eyebrow: "ESTADO / NO ENCONTRADO",
+    heading: "Coordenadas equivocadas.",
+    body: "Esta página se movió, o nunca existió. De cualquier forma, no estás perdido — solo fuera de ruta.",
+    cta: "Volver a LATTITUDE",
+    micro: ["ESTADO / 404", "DIRECCIÓN / INICIO", "POSICIÓN ACTUAL / DESCONOCIDA"],
+  },
+} as const;

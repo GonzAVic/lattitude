@@ -413,6 +413,11 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
 .founders-hero{
   padding:clamp(150px,16vw,220px) var(--pad) clamp(70px,9vw,120px);text-align:center;
 }
+.status-code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:clamp(60px,10vw,130px);font-weight:700;letter-spacing:-.02em;
+  line-height:1;opacity:.12;
+}
 .founders-hero h1{
   margin:22px 0 0;font-size:clamp(52px,9vw,140px);font-weight:700;
   line-height:.88;letter-spacing:-.06em;
