@@ -5,7 +5,7 @@ interface Drink {
   name: string;
   coord: string;
   tag: string;
-  icon: "star" | "crosshair";
+  icon: "star" | "crosshair" | "plus";
 }
 
 interface Props {
@@ -36,7 +36,9 @@ const { drinks } = Astro.props;
         <strong>{d.name}</strong>
         <div class="mini">
           <span class="meta muted">{d.tag}</span>
-          {d.icon === "star" ? <span class="star"><i></i></span> : <span class="crosshair"><i></i></span>}
+          {d.icon === "star" && <span class="star"><i></i></span>}
+          {d.icon === "crosshair" && <span class="crosshair"><i></i></span>}
+          {d.icon === "plus" && <span class="plus"></span>}
         </div>
       </button>
     ))}

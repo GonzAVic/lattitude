@@ -425,12 +425,29 @@ export const rideDrinks = {
     { img: "https://images.unsplash.com/photo-1542372147193-a7aca54189cd?w=1800&q=80&auto=format&fit=crop", alt: "Coffee drink being prepared", name: "Dirty Horchata", coord: "ESPRESSO / MATCHA / HORCHATA", tag: "Signature / Movement", icon: "crosshair" },
     { img: "https://images.unsplash.com/photo-1752027992582-2ce5f9414fb4?w=1800&q=80&auto=format&fit=crop", alt: "Coffee drinks to go", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VANILLA / MILK", tag: "Coffee / Cold", icon: "star" },
     { img: "https://images.unsplash.com/photo-1516011762365-b3ae4a895b51?w=1800&q=80&auto=format&fit=crop", alt: "Coffee takeaway packaging", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "No coffee / Bright", icon: "star" },
+    { img: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=1800&q=80&auto=format&fit=crop", alt: "Espresso being pulled next to a latte", name: "Protein Mocha", coord: "ESPRESSO / COCOA / PROTEIN", tag: "Coffee / Fuel", icon: "plus" },
+    { img: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=1800&q=80&auto=format&fit=crop", alt: "Glass of cold brew coffee", name: "Cold Brew", coord: "COLD BREW / NO FLAVOR ADDED", tag: "Coffee / Natural", icon: "plus" },
   ],
   es: [
     { img: "https://images.unsplash.com/photo-1542372147193-a7aca54189cd?w=1800&q=80&auto=format&fit=crop", alt: "Bebida de café siendo preparada", name: "Dirty Horchata", coord: "ESPRESSO / MATCHA / HORCHATA", tag: "Firma / Movimiento", icon: "crosshair" },
     { img: "https://images.unsplash.com/photo-1752027992582-2ce5f9414fb4?w=1800&q=80&auto=format&fit=crop", alt: "Bebidas de café para llevar", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VAINILLA / LECHE", tag: "Café / Frío", icon: "star" },
     { img: "https://images.unsplash.com/photo-1516011762365-b3ae4a895b51?w=1800&q=80&auto=format&fit=crop", alt: "Empaque de café para llevar", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "Sin café / Fresco", icon: "star" },
+    { img: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=1800&q=80&auto=format&fit=crop", alt: "Espresso siendo extraído junto a un latte", name: "Protein Mocha", coord: "ESPRESSO / CACAO / PROTEÍNA", tag: "Café / Energía", icon: "plus" },
+    { img: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=1800&q=80&auto=format&fit=crop", alt: "Vaso de cold brew", name: "Cold Brew", coord: "COLD BREW / SIN SABOR AGREGADO", tag: "Café / Natural", icon: "plus" },
   ],
+} as const;
+
+export const rideProtein = {
+  en: {
+    eyebrow: "ADD-ON / AVAILABLE",
+    heading: "Protein, if you want it.",
+    body: "Natural, unflavored protein you can add to any drink on this menu — no fitness-shake taste, no upsell talk. Just ask at the counter.",
+  },
+  es: {
+    eyebrow: "EXTRA / DISPONIBLE",
+    heading: "Proteína, si la quieres.",
+    body: "Proteína natural, sin sabor, que puedes agregar a cualquier bebida del menú — sin sabor a shake, sin discurso de venta. Solo pídela en la barra.",
+  },
 } as const;
 
 export const rideClosing = {

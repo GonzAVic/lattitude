@@ -75,6 +75,15 @@ body.cursor-active .cursor{width:80px;height:80px}
 .star:after{transform:translate(-50%,-50%) rotate(90deg)}
 .star i:before{width:22px;transform:translate(-50%,-50%) rotate(45deg)}
 .star i:after{width:22px;transform:translate(-50%,-50%) rotate(-45deg)}
+.plus{
+  width:24px;height:24px;display:inline-block;position:relative;flex:0 0 auto;
+}
+.plus:before,.plus:after{
+  content:"";position:absolute;left:50%;top:50%;background:currentColor;
+  transform:translate(-50%,-50%);
+}
+.plus:before{width:20px;height:1px}
+.plus:after{width:1px;height:20px}
 .arrow{
   width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;
   flex:0 0 auto;vertical-align:-2px;
