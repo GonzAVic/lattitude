@@ -89,6 +89,8 @@ const { drinks } = Astro.props;
       select(i);
       start();
     });
+    btn.addEventListener("mouseenter", () => select(i));
+    btn.addEventListener("focus", () => select(i));
   });
 
   if (feature) {
