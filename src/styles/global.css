@@ -447,6 +447,25 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
 }
 .founders-hero .coord-strip{justify-content:center}
 
+/* LET'S RIDE — temporary side-by-side hero preview */
+.ride-preview-tag{
+  display:inline-block;margin:0 0 22px;padding:8px 14px;background:#000;color:#fff;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+}
+.ride-hero-b{border-top:1px solid var(--line)}
+.ride-hero-a h1{font-size:clamp(38px,5.5vw,64px);margin-top:36px}
+.ride-logo-card{
+  display:inline-block;margin:0 auto;padding:20px 26px;border-radius:18px;overflow:hidden;
+  box-shadow:0 24px 60px rgba(0,0,0,.16);
+}
+.ride-logo-card img{display:block;height:clamp(120px,16vw,200px);width:auto}
+.ride-logo-badge{
+  height:clamp(38px,5vw,56px);padding:6px 14px 6px 6px;border-radius:10px;overflow:hidden;
+  display:flex;align-items:center;box-shadow:0 8px 20px rgba(0,0,0,.14);
+}
+.ride-logo-badge img{height:100%;width:auto;display:block;border-radius:6px}
+
 .founder-section{padding:clamp(80px,9vw,130px) var(--pad);border-top:1px solid var(--line)}
 .founder-section.center{text-align:center}
 .founder-section .eyebrow{margin-bottom:18px}
