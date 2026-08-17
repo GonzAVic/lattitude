@@ -18,7 +18,7 @@ const stories = intentStories[lang];
     {stories.map((s) => (
       <article class="story">
         <div class="story-media">
-          <img src={s.img} alt={s.alt} />
+          <img src={s.img} alt={s.alt} loading="lazy" />
           <div class="mmicro">
             <span class="mlabel meta">{s.label}</span>
             <div class="ruler"></div>

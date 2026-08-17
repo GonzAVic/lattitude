@@ -20,7 +20,7 @@ const track = [...cards, ...cards];
   <div class="track">
     {track.map((c, i) => (
       <article class={`mcard ${c.variant}`}>
-        <img src={c.img} alt={i < cards.length ? c.alt : ""} />
+        <img src={c.img} alt={i < cards.length ? c.alt : ""} loading="lazy" />
         <div class="mmicro">
           <span class="mlabel meta">{c.label}</span>
           <div class="ruler"></div>
