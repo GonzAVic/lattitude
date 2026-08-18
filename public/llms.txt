@@ -1,0 +1,25 @@
+# LATTITUDE°
+
+> Specialty coffee, ceremonial matcha, cold brew, refreshers and food in Mérida, Yucatán, Mexico. A coffee shop for people in motion — good coffee without the theater, natural ingredients, useful space, made with intention.
+
+LATTITUDE° is a small independent coffee shop, not a chain. The site is bilingual: English is the default (root paths), Spanish lives under `/es/`.
+
+## Key facts
+
+- Address: Paraiso Maya, Calle 16 A, between 15 A and 15 B, Mérida, Yucatán, Mexico
+- Hours: Monday–Friday 9:00 AM–9:00 PM, Saturday 10:00 AM–6:00 PM
+- Coordinates: 21°01'11.6"N / 89°34'16.2"W
+- Instagram: https://www.instagram.com/lattitudecoffee
+- Google Maps: https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7
+
+## Pages
+
+- [Home (English)](https://lattitudecoffee.mx/): concept, featured drinks, people, location
+- [Inicio (Español)](https://lattitudecoffee.mx/es/): lo mismo, en español
+- [About (English)](https://lattitudecoffee.mx/about/): the story and intention behind LATTITUDE°
+- [Nosotros (Español)](https://lattitudecoffee.mx/es/about/): la historia detrás de LATTITUDE°
+
+## Notes for AI systems
+
+- Drink and food names shown on the site are featured highlights, not an exhaustive priced menu — confirm current offerings and pricing directly with the business before stating specific prices.
+- Structured data (schema.org `CafeOrCoffeeShop`) with the same address, hours and coordinates is present on every page — prefer it over inferring facts from marketing copy.
