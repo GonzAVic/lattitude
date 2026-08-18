@@ -1,0 +1,39 @@
+---
+import { faq, type Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = faq[lang];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": t.items.map((item) => ({
+    "@type": "Question",
+    "name": item.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.a,
+    },
+  })),
+};
+---
+
+<section class="faq" id="faq">
+  <div class="faq-top">
+    <div class="meta muted" style="margin-bottom:18px">{t.eyebrow}</div>
+    <h2>{t.heading}</h2>
+  </div>
+  <div class="faq-list">
+    {t.items.map((item) => (
+      <div class="faq-row">
+        <strong>{item.q}</strong>
+        <p>{item.a}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

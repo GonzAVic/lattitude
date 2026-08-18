@@ -1,6 +1,6 @@
 # Plan de posicionamiento en motores de IA (GEO/AEO)
 
-Última actualización: 2026-08-17.
+Última actualización: 2026-08-17. **Fases 1 y 2 completas.** Ver detalle de qué se implementó en cada ítem abajo.
 
 Objetivo: que LATTITUDE° aparezca citado o mencionado cuando alguien le pregunta a ChatGPT, Perplexity, Copilot, Gemini o similares algo como *"¿dónde tomar buen café en Mérida?"* o *"café con matcha ceremonial en Yucatán"* — además del SEO clásico que ya tiene el sitio.
 
@@ -20,56 +20,29 @@ Cada ítem tiene: **esfuerzo** (qué tan caro es), **impacto** (qué tanto mueve
 
 ---
 
-## Fase 1 — Quick wins (esta semana)
+## Fase 1 — Quick wins ✅ completa
 
-Barato, alto impacto, no requiere contenido nuevo de tu parte.
+### 1.1 — `llms.txt` ✅
+`public/llms.txt` — resumen del sitio, datos factuales (dirección, horario, coordenadas, Instagram, Maps) y links a las páginas clave (home/about, EN/ES). Nota explícita para IA: los platillos/bebidas del sitio son highlights, no un menú con precios exhaustivo — que confirmen precios directamente.
 
-### 1.1 — `llms.txt`
-**Esfuerzo:** bajo · **Impacto:** medio-alto · **Quién actúa:** yo
+### 1.2 — Bots de IA explícitos en `robots.txt` ✅
+Se agregaron bloques `Allow: /` para `GPTBot`, `ChatGPT-User`, `OAI-SearchBot`, `ClaudeBot`, `Claude-User`, `Claude-SearchBot`, `PerplexityBot`, `Perplexity-User`, `Google-Extended`, `Applebot-Extended`, `Amazonbot`, `CCBot`, `Meta-ExternalAgent` — además del wildcard `*` que ya los cubría.
 
-Archivo en la raíz del sitio (`/llms.txt`), estilo `robots.txt` pero pensado para LLMs: un resumen en markdown de qué es LATTITUDE°, sus páginas clave y datos factuales (dirección, horario, qué sirve). Es una convención nueva (2024, propuesta por Answer.AI) — todavía no la respetan todos los motores, pero es gratis de mantener y varias herramientas de IA ya la buscan por defecto.
-
-### 1.2 — Declarar explícitamente los bots de IA en `robots.txt`
-**Esfuerzo:** muy bajo · **Impacto:** bajo (ya funciona) pero blindaje a futuro · **Quién actúa:** yo
-
-Hoy el wildcard `User-agent: *` ya los cubre, pero nombrar explícitamente `GPTBot`, `ClaudeBot`, `PerplexityBot`, `Google-Extended`, `Applebot-Extended`, etc. con `Allow: /` dos cosas: dejar la intención inequívoca (evita que alguien agregue un `Disallow` general en el futuro y bloquee sin querer a estos bots), y varias auditorías de "AI readiness" buscan literalmente estas líneas.
-
-### 1.3 — Enriquecer el JSON-LD existente
-**Esfuerzo:** bajo · **Impacto:** medio · **Quién actúa:** yo (con 2-3 datos tuyos: teléfono si quieren publicarlo, medios de pago que aceptan, si aceptan reservaciones)
-
-El schema `CafeOrCoffeeShop` ya existe pero está incompleto. Agregar `telephone`, `paymentAccepted`, `menu` (o `hasMenuSection` con los productos destacados que ya están en `content.ts`), y si aplica `AggregateRating` si tienen reseñas en Google. Más campos estructurados = más para que un LLM cite con precisión sin inventar.
+### 1.3 — Enriquecer el JSON-LD existente ✅
+Se agregó `paymentAccepted: "Cash, Credit Card"` y `acceptsReservations: false` al schema `CafeOrCoffeeShop` en `BaseLayout.astro`. No se agregó teléfono (decisión: no publicarlo).
 
 ---
 
-## Fase 2 — Contenido nuevo (próximas 2-3 semanas)
+## Fase 2 — Contenido nuevo ✅ completa
 
-Esto sí requiere decisiones/copy de tu parte — yo armo la estructura y el schema, pero las respuestas las das tú (o las revisamos juntos con la voz de marca).
+### 2.1 — Sección de FAQ + schema `FAQPage` ✅
+Componente nuevo `FAQ.astro`, insertado en el home (EN/ES) después de Location, antes del footer. 8 preguntas basadas en hechos ya verificados del sitio + las respuestas que confirmaste (pagos, reservaciones): ubicación, horario, qué sirve, add-on de proteína, si es buen lugar para trabajar, reservaciones, métodos de pago, y la colaboración con LET'S RIDE. Cada página del home emite su propio `<script type="application/ld+json">` con `FAQPage` + `Question`/`acceptedAnswer` por cada item — verificado que el schema coincide 1:1 con el texto visible.
 
-### 2.1 — Sección de FAQ + schema `FAQPage`
-**Esfuerzo:** medio · **Impacto:** alto · **Quién actúa:** tú das las preguntas/respuestas, yo lo construyo
-
-Es el ítem de mayor impacto de todo el plan. El formato pregunta→respuesta corta y directa es literalmente lo que los "answer engines" (AEO) y los generativos (GEO) prefieren extraer y citar textualmente. Candidatas a preguntas (ajusta/agrega las que tengan sentido):
-
-- ¿Dónde está LATTITUDE° / cómo llego?
-- ¿Cuál es el horario?
-- ¿Qué tipo de café sirven / de dónde es el grano?
-- ¿Qué es el matcha ceremonial que ofrecen?
-- ¿Tienen opciones sin lácteos / proteína / veganas?
-- ¿Hay wifi / es buen lugar para trabajar?
-- ¿Qué es la colaboración con LET'S RIDE?
-- ¿Aceptan tarjeta / solo efectivo?
-
-Se puede meter como sección nueva en Home o About, con `FAQPage` schema — sirve para SEO, AEO y GEO al mismo tiempo.
-
-### 2.2 — Bloque de "datos rápidos" visible (no solo en JSON-LD)
-**Esfuerzo:** bajo-medio · **Impacto:** medio · **Quién actúa:** yo
-
-Los crawlers de IA le dan más peso a un dato cuando aparece tanto en texto visible como en structured data (se refuerzan mutuamente, reduce la chance de que el LLM "alucine" un dato distinto). Hoy toda la dirección/horario vive solo en el JSON-LD, invisible en el HTML renderizado. Agregar una franja compacta (dirección, horario, qué sirven) en la sección de ubicación del home, en el mismo lenguaje de coordenadas/monospace que ya usa el sitio — no rompe la voz de marca, la complementa.
+### 2.2 — Bloque de "datos rápidos" visible
+**Ya estaba resuelto** — no hizo falta tocar nada. `Location.astro` ya renderiza dirección, horario, Instagram y coordenadas como texto real en el HTML (no solo en JSON-LD), y el Marquee ya lista "Coffee · Ceremonial matcha · Refreshers · Food" como texto visible.
 
 ### 2.3 — Auditoría de alt text
-**Esfuerzo:** bajo · **Impacto:** bajo-medio · **Quién actúa:** yo
-
-Revisar que las imágenes tengan `alt` descriptivo y factual (no solo decorativo) donde aporte contexto real — ej. "Barra de café con matcha ceremonial preparado" en vez de vacío. Ayuda accesibilidad y le da al crawler más contexto textual sobre qué se ve en la imagen.
+**Ya estaba resuelto** — revisé todas las imágenes del sitio: los `alt` ya son descriptivos y factuales ("Barista preparing specialty coffee", "Espresso being pulled next to a latte"), bilingües, y solo están vacíos (`alt=""`) en los micrográficos puramente decorativos, que es lo correcto.
 
 ---
 
@@ -99,16 +72,16 @@ Si cambia el horario, el menú, o algo del JSON-LD deja de ser cierto, hay que a
 
 ---
 
-## Resumen de prioridad
+## Resumen de estado
 
-| # | Ítem | Esfuerzo | Impacto | Bloqueado por |
-|---|---|---|---|---|
-| 1.1 | `llms.txt` | Bajo | Medio-alto | Nada — listo para implementar |
-| 1.2 | Bots de IA explícitos en `robots.txt` | Muy bajo | Bajo (blindaje) | Nada |
-| 1.3 | Enriquecer JSON-LD | Bajo | Medio | 2-3 datos tuyos (teléfono, pagos, reservaciones) |
-| 2.1 | FAQ + schema | Medio | **Alto** | Preguntas/respuestas tuyas |
-| 2.2 | Datos rápidos visibles | Bajo-medio | Medio | Nada |
-| 2.3 | Auditoría alt text | Bajo | Bajo-medio | Nada |
-| 3.x | Reputación externa | — | Alto (a largo plazo) | Es trabajo tuyo, fuera del repo |
+| # | Ítem | Estado |
+|---|---|---|
+| 1.1 | `llms.txt` | ✅ Hecho |
+| 1.2 | Bots de IA explícitos en `robots.txt` | ✅ Hecho |
+| 1.3 | Enriquecer JSON-LD | ✅ Hecho (pagos, reservaciones — sin teléfono por decisión) |
+| 2.1 | FAQ + schema | ✅ Hecho |
+| 2.2 | Datos rápidos visibles | ✅ Ya estaba resuelto |
+| 2.3 | Auditoría alt text | ✅ Ya estaba resuelto |
+| 3.x | Reputación externa | ⏳ Pendiente — es trabajo manual tuyo, fuera del repo (ver Fase 3) |
 
-**Recomendación de orden:** arrancar por 1.1 + 1.2 (se hacen en minutos, sin pedirte nada), después 1.3 si me pasas los 2-3 datos que faltan, y en paralelo ir armando las preguntas del FAQ (2.1) porque es lo de mayor impacto real — todo lo demás es refuerzo.
+Todo lo que se podía resolver en código está deployado en producción. Lo único que queda del plan es la Fase 3, que no se implementa con código: perfil de Google Business, reseñas, menciones externas, y revisar cada tanto qué dicen ChatGPT/Perplexity/Claude sobre LATTITUDE°.

@@ -8,6 +8,7 @@ import Drinks from "./Drinks.astro";
 import Lab from "./Lab.astro";
 import People from "./People.astro";
 import Location from "./Location.astro";
+import FAQ from "./FAQ.astro";
 import type { Locale } from "../i18n/content";
 
 interface Props {
@@ -25,4 +26,5 @@ const { lang } = Astro.props;
   <Lab lang={lang} />
   <People lang={lang} />
   <Location lang={lang} />
+  <FAQ lang={lang} />
 </BaseLayout>

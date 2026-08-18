@@ -232,6 +232,85 @@ export const location = {
   },
 } as const;
 
+export const faq = {
+  en: {
+    eyebrow: "Questions / Answered",
+    heading: "Before you come by.",
+    items: [
+      {
+        q: "Where is LATTITUDE°?",
+        a: "Paraiso Maya · Calle 16 A, between 15 A and 15 B · Mérida, Yucatán.",
+      },
+      {
+        q: "What are your hours?",
+        a: "Monday–Friday, 9:00 AM–9:00 PM. Saturday, 10:00 AM–6:00 PM.",
+      },
+      {
+        q: "What does LATTITUDE° serve?",
+        a: "Specialty coffee, ceremonial matcha, cold brew, refreshers and food — natural ingredients first.",
+      },
+      {
+        q: "Can I add protein to my drink?",
+        a: "Yes. Natural, unflavored protein you can add to any drink on the menu — no fitness-shake taste, no upsell talk. Just ask at the counter.",
+      },
+      {
+        q: "Is LATTITUDE° good for working?",
+        a: "Yes. Come with a laptop, a conversation or a half-finished idea. The space is built to stay comfortable while you get things done.",
+      },
+      {
+        q: "Do you take reservations?",
+        a: "No — LATTITUDE° is walk-in only.",
+      },
+      {
+        q: "What payment methods do you accept?",
+        a: "Cash and card.",
+      },
+      {
+        q: "What is LATTITUDE° × LET'S RIDE?",
+        a: "An ongoing collaboration with the LET'S RIDE cycling community — coffee, ceremonial matcha and food for people who don't sit still.",
+      },
+    ],
+  },
+  es: {
+    eyebrow: "Preguntas / Respondidas",
+    heading: "Antes de venir.",
+    items: [
+      {
+        q: "¿Dónde está LATTITUDE°?",
+        a: "Paraíso Maya · Calle 16 A, entre 15 A y 15 B · Mérida, Yucatán.",
+      },
+      {
+        q: "¿Cuál es el horario?",
+        a: "Lunes–Viernes, 9:00 AM–9:00 PM. Sábado, 10:00 AM–6:00 PM.",
+      },
+      {
+        q: "¿Qué sirve LATTITUDE°?",
+        a: "Café de especialidad, matcha ceremonial, cold brew, refrescos y comida — ingredientes naturales primero.",
+      },
+      {
+        q: "¿Puedo agregar proteína a mi bebida?",
+        a: "Sí. Proteína natural, sin sabor, que puedes agregar a cualquier bebida del menú — sin sabor a shake fitness, sin venta forzada. Solo pregunta en la barra.",
+      },
+      {
+        q: "¿Es buen lugar para trabajar?",
+        a: "Sí. Ven con una laptop, una conversación o una idea a medias. El espacio está pensado para que te quedes cómodo mientras avanzas.",
+      },
+      {
+        q: "¿Aceptan reservaciones?",
+        a: "No — LATTITUDE° es solo walk-in.",
+      },
+      {
+        q: "¿Qué métodos de pago aceptan?",
+        a: "Efectivo y tarjeta.",
+      },
+      {
+        q: "¿Qué es LATTITUDE° × LET'S RIDE?",
+        a: "Una colaboración activa con la comunidad ciclista LET'S RIDE — café, matcha ceremonial y comida para gente que no se queda quieta.",
+      },
+    ],
+  },
+} as const;
+
 export const footer = {
   en: {
     copy: "A coffee shop for people in motion. Good coffee, ceremonial matcha, useful space and a point of view. Made with intention in Mérida, Yucatán.",

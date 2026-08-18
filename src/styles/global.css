@@ -398,6 +398,15 @@ nav{
   font-size:clamp(18px,2.2vw,33px);font-weight:600;letter-spacing:-.04em;
 }
 
+/* FAQ */
+.faq{padding:clamp(110px,14vw,210px) var(--pad);border-top:1px solid var(--line)}
+.faq-top{margin-bottom:44px}
+.faq-top h2{margin:0;font-size:clamp(56px,8vw,124px);font-weight:700;line-height:.91;letter-spacing:-.065em}
+.faq-list{border-top:1px solid #000}
+.faq-row{padding:28px 0;border-bottom:1px solid var(--line)}
+.faq-row strong{display:block;font-size:clamp(19px,1.7vw,24px);letter-spacing:-.03em;margin-bottom:10px}
+.faq-row p{margin:0;color:var(--secondary);line-height:1.55;max-width:640px;font-size:17px}
+
 /* FOOTER */
 footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad) 28px}
 .footer-grid{display:grid;grid-template-columns:1.3fr 1fr .6fr .7fr;gap:45px}
