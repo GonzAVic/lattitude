@@ -477,12 +477,14 @@ export const rideHero = {
     heading: "Class ends. The rhythm doesn't.",
     subhead: "LET'S RIDE gets your legs moving to the beat. LATTITUDE° keeps it going after — coffee, ceremonial matcha and food made for people who don't sit still.",
     micro: ["RHYTHM / CONTINUOUS", "STATUS / OPEN", "DIRECTION / FORWARD", "MOVEMENT / SHARED"],
+    ctaFavorites: "See favorite drinks",
   },
   es: {
     eyebrow: "LATTITUDE° × LET'S RIDE",
     heading: "La clase termina. El ritmo no.",
     subhead: "LET'S RIDE pone tus piernas en movimiento al ritmo de la clase. LATTITUDE° lo sigue después — café, matcha ceremonial y comida para quienes no se quedan quietos.",
     micro: ["RITMO / CONTINUO", "ESTADO / ABIERTO", "DIRECCIÓN / ADELANTE", "MOVIMIENTO / COMPARTIDO"],
+    ctaFavorites: "Ver bebidas favoritas",
   },
 } as const;
 

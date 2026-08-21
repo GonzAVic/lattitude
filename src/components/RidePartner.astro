@@ -47,7 +47,7 @@ const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
   <p>{hero.subhead}</p>
   <div class="hero-actions">
     <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
-    <a class="btn hoverable" href={menuHref}>{closing.ctaMenu} <ArrowIcon dir="right" /></a>
+    <a class="btn hoverable" href="#drinks">{hero.ctaFavorites} <ArrowIcon dir="down" /></a>
   </div>
   <div class="coord-strip" aria-hidden="true">
     {hero.micro.map((m) => <span>{m}</span>)}
@@ -57,7 +57,7 @@ const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
   </div>
 </section>
 
-<section class="drinks">
+<section class="drinks" id="drinks">
   <div class="drinks-top">
     <div>
       <div class="meta muted" style="margin-bottom:18px">{drinksSection.eyebrow}</div>
