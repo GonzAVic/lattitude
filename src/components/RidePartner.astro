@@ -22,7 +22,7 @@ const drinks = rideDrinks[lang];
 const protein = rideProtein[lang];
 const closing = rideClosing[lang];
 
-const menuHref = `${localePath(lang)}#drinks`;
+const popularHref = `${localePath(lang)}#drinks`;
 const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
 ---
 
@@ -114,6 +114,6 @@ const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
   <p>{closing.supporting}</p>
   <div class="hero-actions">
     <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
-    <a class="btn hoverable" href={menuHref}>{closing.ctaMenu} <ArrowIcon dir="right" /></a>
+    <a class="btn hoverable" href={popularHref}>{closing.ctaPopular} <ArrowIcon dir="right" /></a>
   </div>
 </section>

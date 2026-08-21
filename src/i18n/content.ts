@@ -448,14 +448,14 @@ export const foundersClosing = {
     heading: ["This isn't about where we've been.", "It's about where you're headed next."],
     supporting: "Coffee for people in motion. Made with intention in Mérida, Yucatán.",
     ctaVisit: "Visit LATTITUDE",
-    ctaMenu: "View the menu",
+    ctaPopular: "See what people order most",
   },
   es: {
     eyebrow: "POSICIÓN ACTUAL / MÉRIDA",
     heading: ["Esto no se trata de dónde hemos estado.", "Se trata de hacia dónde vas tú ahora."],
     supporting: "Café para gente en movimiento. Hecho con intención en Mérida, Yucatán.",
     ctaVisit: "Visitar LATTITUDE",
-    ctaMenu: "Ver el menú",
+    ctaPopular: "Ver lo que más se pide",
   },
 } as const;
 
@@ -536,13 +536,13 @@ export const rideClosing = {
     heading: "Ride day. Coffee day.",
     supporting: "Bring the whole class. Rhythm's better shared.",
     ctaDirections: "Get directions",
-    ctaMenu: "View full menu",
+    ctaPopular: "See what people order most",
   },
   es: {
     heading: "Día de ride. Día de café.",
     supporting: "Trae a toda la clase. El ritmo se disfruta más en grupo.",
     ctaDirections: "Cómo llegar",
-    ctaMenu: "Ver el menú completo",
+    ctaPopular: "Ver lo que más se pide",
   },
 } as const;
 
