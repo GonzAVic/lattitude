@@ -75,20 +75,16 @@ export const hero = {
 
 export const marqueeCards = {
   en: [
-    { variant: "a", img: "/images/1495474472287.webp", alt: "People in a contemporary café", label: "People / In motion" },
-    { variant: "b", img: "/images/1766250343186.webp", alt: "Barista preparing specialty coffee", label: "Coffee / Craft" },
-    { variant: "c", img: "/images/1516011762365.webp", alt: "Coffee takeaway packaging", label: "Objects / Purpose" },
-    { variant: "d", img: "/images/1542372147193.webp", alt: "Coffee being prepared at a bar", label: "Handoff / Ready" },
-    { variant: "b", img: "/images/1704770064557.webp", alt: "Creative person working", label: "Work / Build" },
-    { variant: "a", img: "/images/1752027992582.webp", alt: "Coffee drinks to go", label: "Movement / To go" },
+    { variant: "a", img: "/images/marquee-overhead-duo.webp", alt: "Overhead shot of a latte with leaf art and an iced coffee to go, a hand's shadow crossing the pavement", label: "Coffee / Craft" },
+    { variant: "b", img: "/images/marquee-plant-cup.webp", alt: "LATTITUDE to-go cup tucked into green plant leaves", label: "Natural / Ingredients" },
+    { variant: "c", img: "/images/marquee-two-cups.webp", alt: "Two LATTITUDE cups on a table, a latte with heart art next to a to-go cup", label: "Movement / To go" },
+    { variant: "d", img: "/images/marquee-cookie-hand.webp", alt: "Hand holding a chocolate chip cookie against a green ribbed wall", label: "Food / Sweet" },
   ],
   es: [
-    { variant: "a", img: "/images/1495474472287.webp", alt: "Personas en un café contemporáneo", label: "Gente / En movimiento" },
-    { variant: "b", img: "/images/1766250343186.webp", alt: "Barista preparando café de especialidad", label: "Café / Oficio" },
-    { variant: "c", img: "/images/1516011762365.webp", alt: "Empaque de café para llevar", label: "Objetos / Propósito" },
-    { variant: "d", img: "/images/1542372147193.webp", alt: "Café siendo preparado en la barra", label: "Entrega / Listo" },
-    { variant: "b", img: "/images/1704770064557.webp", alt: "Persona creativa trabajando", label: "Trabajo / Construir" },
-    { variant: "a", img: "/images/1752027992582.webp", alt: "Bebidas de café para llevar", label: "Movimiento / Para llevar" },
+    { variant: "a", img: "/images/marquee-overhead-duo.webp", alt: "Toma cenital de un latte con arte y un café helado para llevar, con la sombra de una mano sobre el pavimento", label: "Café / Oficio" },
+    { variant: "b", img: "/images/marquee-plant-cup.webp", alt: "Vaso de LATTITUDE para llevar entre hojas de una planta verde", label: "Natural / Ingredientes" },
+    { variant: "c", img: "/images/marquee-two-cups.webp", alt: "Dos vasos de LATTITUDE sobre una mesa, un latte con arte de corazón junto a un vaso para llevar", label: "Movimiento / Para llevar" },
+    { variant: "d", img: "/images/marquee-cookie-hand.webp", alt: "Mano sosteniendo una galleta con chispas de chocolate contra una pared verde acanalada", label: "Comida / Dulce" },
   ],
 } as const;
 
@@ -124,17 +120,17 @@ export const drinksSection = {
 
 export const drinksList = {
   en: [
-    { img: "/images/1542372147193.webp", alt: "Coffee drink being prepared", name: "Dirty Horchata", coord: "ESPRESSO / MATCHA / HORCHATA", tag: "Signature / Movement", icon: "crosshair" },
-    { img: "/images/1752027992582.webp", alt: "Coffee drinks to go", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VANILLA / MILK", tag: "Coffee / Cold", icon: "star" },
-    { img: "/images/1766250343186.webp", alt: "Barista preparing specialty coffee", name: "Flat White", coord: "ESPRESSO / STEAMED MILK", tag: "Coffee / Classic", icon: "crosshair" },
-    { img: "/images/1516011762365.webp", alt: "Coffee takeaway packaging", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "No coffee / Bright", icon: "star" },
+    { img: "/images/dirty-horchata.webp", alt: "Dirty Horchata drink", name: "Dirty Horchata", coord: "ESPRESSO / MATCHA / HORCHATA", tag: "Signature / Movement", icon: "crosshair" },
+    { img: "/images/vanilla-coldbrew-latte.webp", alt: "Vanilla Cold Brew Latte drink", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VANILLA / MILK", tag: "Coffee / Cold", icon: "star" },
+    { img: "/images/flat-white.webp", alt: "Flat White drink", name: "Flat White", coord: "ESPRESSO / STEAMED MILK", tag: "Coffee / Classic", icon: "crosshair" },
+    { img: "/images/mango-lychee-refresher.webp", alt: "Mango Lychee Refresher drink", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "No coffee / Bright", icon: "star" },
     { img: "/images/1495474472287.webp", alt: "People in a contemporary café", name: "Grilled Cheese", coord: "BREAD / CHEESE / BUTTER", tag: "Food / Comfort", icon: "crosshair" },
   ],
   es: [
-    { img: "/images/1542372147193.webp", alt: "Bebida de café siendo preparada", name: "Dirty Horchata", coord: "ESPRESSO / MATCHA / HORCHATA", tag: "Firma / Movimiento", icon: "crosshair" },
-    { img: "/images/1752027992582.webp", alt: "Bebidas de café para llevar", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VAINILLA / LECHE", tag: "Café / Frío", icon: "star" },
-    { img: "/images/1766250343186.webp", alt: "Barista preparando café de especialidad", name: "Flat White", coord: "ESPRESSO / LECHE VAPORIZADA", tag: "Café / Clásico", icon: "crosshair" },
-    { img: "/images/1516011762365.webp", alt: "Empaque de café para llevar", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "Sin café / Fresco", icon: "star" },
+    { img: "/images/dirty-horchata.webp", alt: "Bebida Dirty Horchata", name: "Dirty Horchata", coord: "ESPRESSO / MATCHA / HORCHATA", tag: "Firma / Movimiento", icon: "crosshair" },
+    { img: "/images/vanilla-coldbrew-latte.webp", alt: "Bebida Vanilla Cold Brew Latte", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VAINILLA / LECHE", tag: "Café / Frío", icon: "star" },
+    { img: "/images/flat-white.webp", alt: "Bebida Flat White", name: "Flat White", coord: "ESPRESSO / LECHE VAPORIZADA", tag: "Café / Clásico", icon: "crosshair" },
+    { img: "/images/mango-lychee-refresher.webp", alt: "Bebida Mango Lychee Refresher", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "Sin café / Fresco", icon: "star" },
     { img: "/images/1495474472287.webp", alt: "Personas en un café contemporáneo", name: "Grilled Cheese", coord: "PAN / QUESO / MANTEQUILLA", tag: "Comida / Confort", icon: "crosshair" },
   ],
 } as const;
@@ -503,18 +499,18 @@ export const rideDrinksSection = {
 
 export const rideDrinks = {
   en: [
-    { img: "/images/1542372147193.webp", alt: "Coffee drink being prepared", name: "Dirty Horchata", coord: "ESPRESSO / MATCHA / HORCHATA", tag: "Signature / Movement", icon: "crosshair" },
-    { img: "/images/1752027992582.webp", alt: "Coffee drinks to go", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VANILLA / MILK", tag: "Coffee / Cold", icon: "star" },
-    { img: "/images/1516011762365.webp", alt: "Coffee takeaway packaging", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "No coffee / Bright", icon: "star" },
-    { img: "/images/1497935586351.webp", alt: "Espresso being pulled next to a latte", name: "Protein Mocha", coord: "ESPRESSO / COCOA / PROTEIN", tag: "Coffee / Fuel", icon: "plus" },
-    { img: "/images/1461023058943.webp", alt: "Glass of cold brew coffee", name: "Cold Brew", coord: "COLD BREW / NO FLAVOR ADDED", tag: "Coffee / Natural", icon: "plus" },
+    { img: "/images/orange-tonic.webp", alt: "Orange Tonic drink", name: "Orange Tonic", coord: "ORANGE / TONIC / SODA", tag: "No coffee / Bright", icon: "star" },
+    { img: "/images/vanilla-coldbrew-latte.webp", alt: "Vanilla Cold Brew Latte drink", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VANILLA / MILK", tag: "Coffee / Cold", icon: "star" },
+    { img: "/images/mango-lychee-refresher.webp", alt: "Mango Lychee Refresher drink", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "No coffee / Bright", icon: "star" },
+    { img: "/images/protein-mocha.webp", alt: "Protein Mocha drink", name: "Protein Mocha", coord: "ESPRESSO / COCOA / PROTEIN", tag: "Coffee / Fuel", icon: "plus" },
+    { img: "/images/matcha-horchata.webp", alt: "Matcha Horchata drink", name: "Matcha Horchata", coord: "MATCHA / HORCHATA / MILK", tag: "No coffee / Signature", icon: "crosshair" },
   ],
   es: [
-    { img: "/images/1542372147193.webp", alt: "Bebida de café siendo preparada", name: "Dirty Horchata", coord: "ESPRESSO / MATCHA / HORCHATA", tag: "Firma / Movimiento", icon: "crosshair" },
-    { img: "/images/1752027992582.webp", alt: "Bebidas de café para llevar", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VAINILLA / LECHE", tag: "Café / Frío", icon: "star" },
-    { img: "/images/1516011762365.webp", alt: "Empaque de café para llevar", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "Sin café / Fresco", icon: "star" },
-    { img: "/images/1497935586351.webp", alt: "Espresso siendo extraído junto a un latte", name: "Protein Mocha", coord: "ESPRESSO / CACAO / PROTEÍNA", tag: "Café / Energía", icon: "plus" },
-    { img: "/images/1461023058943.webp", alt: "Vaso de cold brew", name: "Cold Brew", coord: "COLD BREW / SIN SABOR AGREGADO", tag: "Café / Natural", icon: "plus" },
+    { img: "/images/orange-tonic.webp", alt: "Bebida Orange Tonic", name: "Orange Tonic", coord: "NARANJA / TÓNICA / SODA", tag: "Sin café / Fresco", icon: "star" },
+    { img: "/images/vanilla-coldbrew-latte.webp", alt: "Bebida Vanilla Cold Brew Latte", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VAINILLA / LECHE", tag: "Café / Frío", icon: "star" },
+    { img: "/images/mango-lychee-refresher.webp", alt: "Bebida Mango Lychee Refresher", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "Sin café / Fresco", icon: "star" },
+    { img: "/images/protein-mocha.webp", alt: "Bebida Protein Mocha", name: "Protein Mocha", coord: "ESPRESSO / CACAO / PROTEÍNA", tag: "Café / Energía", icon: "plus" },
+    { img: "/images/matcha-horchata.webp", alt: "Bebida Matcha Horchata", name: "Matcha Horchata", coord: "MATCHA / HORCHATA / LECHE", tag: "Sin café / Firma", icon: "crosshair" },
   ],
 } as const;
 

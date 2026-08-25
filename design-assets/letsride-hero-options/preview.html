@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:Inter,Arial,sans-serif;background:#f4f4f2}
+  .frame{width:1400px;background:#fff;margin:0 auto 40px;border-bottom:6px solid #000}
+  .label{font-family:ui-monospace,monospace;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:16px 44px;background:#000;color:#fff}
+
+  .meta{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;line-height:1.35;text-transform:uppercase;letter-spacing:.11em}
+  .muted{color:#737373}
+  .btn{display:inline-flex;align-items:center;gap:28px;min-width:190px;padding:14px 16px;border:1px solid #000;background:transparent;font-size:12px;text-transform:uppercase;letter-spacing:.08em;justify-content:space-between}
+  .coord-strip{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:44px;justify-content:center}
+  .coord-strip span{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:#737373}
+  .hero-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:36px}
+
+  /* ---------------- VERSION A: logo-forward ---------------- */
+  .hero-a{padding:150px 72px 100px;text-align:center}
+  .hero-a .eyebrow{margin-bottom:30px}
+  .hero-a .logo-wrap{
+    display:inline-block;padding:20px 26px;border-radius:18px;overflow:hidden;
+    box-shadow:0 24px 60px rgba(0,0,0,.16);
+  }
+  .hero-a .logo-wrap img{display:block;height:200px;width:auto}
+  .hero-a h1{
+    margin:40px 0 0;font-size:56px;font-weight:700;letter-spacing:-.045em;line-height:1.02;
+  }
+  .hero-a p{max-width:600px;margin:22px auto 0;color:#525252;font-size:18px;line-height:1.5}
+
+  /* ---------------- VERSION B: badge + editorial headline ---------------- */
+  .hero-b{padding:150px 72px 100px;text-align:center}
+  .hero-b .eyebrow{margin-bottom:22px}
+  .hero-b .lockup{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:26px}
+  .hero-b .lockup svg{height:30px;width:auto;fill:#000}
+  .hero-b .lockup .x{font-size:18px;color:#a0a0a0;font-weight:600}
+  .hero-b .badge{
+    height:56px;padding:6px 14px 6px 6px;border-radius:10px;overflow:hidden;
+    display:flex;align-items:center;box-shadow:0 8px 20px rgba(0,0,0,.14);
+  }
+  .hero-b .badge img{height:100%;width:auto;display:block;border-radius:6px}
+  .hero-b h1{
+    margin:0;font-size:clamp(52px,7vw,100px);font-weight:700;letter-spacing:-.06em;line-height:.9;
+  }
+  .hero-b p{max-width:640px;margin:26px auto 0;color:#525252;font-size:19px;line-height:1.5}
+</style>
+</head>
+<body>
+
+  <div class="label">VERSION A — Logo-forward hero</div>
+  <div class="frame hero-a">
+    <div class="meta muted eyebrow">LATTITUDE&deg; &times; LET&rsquo;S RIDE</div>
+    <div class="logo-wrap">
+      <img src="./letsride-logo.png" alt="LET'S RIDE" />
+    </div>
+    <h1>Class ends. The rhythm doesn&rsquo;t.</h1>
+    <p>LET&rsquo;S RIDE gets your legs moving to the beat. LATTITUDE&deg; keeps it going after &mdash; coffee, ceremonial matcha and food made for people who don&rsquo;t sit still.</p>
+    <div class="hero-actions">
+      <div class="btn">Get directions <span>&#8599;</span></div>
+      <div class="btn">View full menu <span>&rarr;</span></div>
+    </div>
+    <div class="coord-strip">
+      <span>RHYTHM / CONTINUOUS</span><span>STATUS / OPEN</span><span>DIRECTION / FORWARD</span><span>MOVEMENT / SHARED</span>
+    </div>
+  </div>
+
+  <div class="label">VERSION B — Badge + editorial headline (LATTITUDE voice stays primary)</div>
+  <div class="frame hero-b">
+    <div class="meta muted eyebrow">LATTITUDE&deg; &times; LET&rsquo;S RIDE</div>
+    <div class="lockup">
+      <svg viewBox="672 442 540 220" role="img" aria-label="LATTITUDE">
+        <path d="M687.81,644.08V457.64h8.88v178.89h38.62v7.55H687.81z"/>
+        <path d="M742.39,644.08l27.97-186.44h8.88l27.97,186.44h-8.88l-7.99-52.82h-31.07l-7.99,52.82H742.39z M774.63,475.19l-3.32,26.84l-10.72,81.68H789l-10.85-81.68l-3.18-26.84"/>
+        <path d="M824.51,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H824.51z"/>
+        <path d="M885.76,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H885.76z"/>
+        <path d="M977.93,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H977.93z"/>
+        <path d="M931.92,644.08V457.64h8.88v186.44H931.92z"/>
+        <path d="M977.85,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H977.85z"/>
+        <path d="M1018.02,617.45v-159.8h8.88v161.13c0,14.65,7.55,20.42,18.2,20.42c10.65,0,18.2-5.77,18.2-20.42V457.64h8.88v159.8c0,18.64-9.32,29.3-27.08,29.3C1027.35,646.74,1018.02,636.09,1018.02,617.45z"/>
+        <path d="M1083.94,457.64h24.86c17.76,0,27.08,9.77,27.08,29.3v127.84c0,19.53-9.32,29.3-27.08,29.3h-24.86V457.64z M1092.82,636.53h16.42c11.54,0,17.76-7.1,17.76-20.42V485.61c0-13.76-6.22-20.42-17.76-20.42h-16.42V636.53z"/>
+        <path d="M1148.52,644.08V457.64h47.5v7.55h-38.62v81.68h31.96v7.55h-31.96v82.12h38.62v7.55H1148.52z"/>
+      </svg>
+      <span class="x">&times;</span>
+      <div class="badge"><img src="./letsride-logo.png" alt="LET'S RIDE" /></div>
+    </div>
+    <h1>Class ends. The rhythm doesn&rsquo;t.</h1>
+    <p>LET&rsquo;S RIDE gets your legs moving to the beat. LATTITUDE&deg; keeps it going after &mdash; coffee, ceremonial matcha and food made for people who don&rsquo;t sit still.</p>
+    <div class="hero-actions">
+      <div class="btn">Get directions <span>&#8599;</span></div>
+      <div class="btn">View full menu <span>&rarr;</span></div>
+    </div>
+    <div class="coord-strip">
+      <span>RHYTHM / CONTINUOUS</span><span>STATUS / OPEN</span><span>DIRECTION / FORWARD</span><span>MOVEMENT / SHARED</span>
+    </div>
+  </div>
+
+</body>
+</html>

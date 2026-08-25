@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#e5e5e5;font-family:Inter,Arial,sans-serif;display:flex;gap:60px;padding:60px}
+
+  .card{
+    width:600px;height:1050px;background:#f7f5f0;color:#000;position:relative;
+    overflow:hidden;flex:0 0 auto;border:2.5px solid #000;border-radius:28px;
+  }
+  .pad{position:absolute;inset:0;padding:40px;display:flex;flex-direction:column}
+
+  .meta{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  }
+  .muted{color:#737373}
+  .line{height:1px;background:rgba(0,0,0,.16);width:100%}
+
+  /* micrographic icons, same recipe as the site's global.css */
+  .crosshair{width:26px;height:26px;border:1.3px solid currentColor;border-radius:50%;position:relative;display:inline-block;flex:0 0 auto}
+  .crosshair:before,.crosshair:after{content:"";position:absolute;left:50%;top:50%;background:currentColor;transform:translate(-50%,-50%)}
+  .crosshair:before{width:36px;height:1.3px}
+  .crosshair:after{width:1.3px;height:36px}
+  .crosshair i{position:absolute;left:50%;top:50%;width:4px;height:4px;border-radius:50%;background:currentColor;transform:translate(-50%,-50%)}
+
+  .ruler{
+    height:11px;
+    background:
+      repeating-linear-gradient(90deg,currentColor 0 1px,transparent 1px 32px),
+      repeating-linear-gradient(90deg,currentColor 0 1px,transparent 1px 8px);
+    opacity:.35;
+  }
+
+  .pill{
+    display:inline-flex;align-items:center;gap:9px;border:1.4px solid #000;border-radius:999px;
+    padding:9px 16px 9px 14px;
+  }
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:#000;flex:0 0 auto}
+
+  .stamp-text{
+    font-size:19px;font-weight:800;letter-spacing:-.01em;color:#000;
+  }
+
+  .brands-row{display:flex;align-items:center;justify-content:space-between;width:100%;gap:16px}
+  .brands-row svg{height:32px;width:auto;fill:#000;flex:0 0 auto}
+  .brands-row .x{font-size:20px;color:#a0a0a0;font-weight:600;flex:0 0 auto}
+  .letsride-word-big{
+    font-size:38px;font-weight:800;letter-spacing:-.03em;font-style:italic;white-space:nowrap;flex:0 0 auto;
+  }
+
+  .status-row{display:flex;align-items:center;margin-top:6px}
+  .tagline{display:flex;align-items:center;gap:12px;margin-top:44px}
+  .tagline span.txt{font-size:15px;font-style:italic;letter-spacing:-.01em;color:#525252}
+
+  /* ---------- PROMO: one hero numeral + one stamp ---------- */
+  .promo{margin-top:64px}
+  .promo-pct{font-size:308px;font-weight:800;letter-spacing:-.04em;line-height:.76}
+  .promo-pct .pct-sign{font-size:.44em;font-weight:800;vertical-align:.62em;margin-left:.01em}
+  .promo-stamp{margin-top:34px}
+
+  .pulse-row{display:flex;align-items:center;gap:14px;margin-top:64px}
+  .pulse-row svg{flex:1;height:26px;width:100%}
+  .caption{margin-top:16px}
+
+  .footer-sig{margin-top:36px}
+  .bottom-ruler{margin-top:auto;padding-top:24px}
+
+  /* ---------- BACK ---------- */
+  .back .pad{align-items:center;text-align:center}
+  .back .top-row{width:100%;display:flex;justify-content:space-between;align-items:center}
+  .back .qr-wrap{
+    margin-top:44px;width:250px;height:250px;border:1px solid #000;
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  .back .qr-wrap svg{width:100%;height:100%}
+  .back h2{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1.14;margin-top:32px;max-width:400px}
+  .back .url{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:14px;letter-spacing:.02em;margin-top:14px;color:#525252;
+  }
+
+  .back .drinks-block{width:380px;margin-top:44px}
+  .back .drinks-block .meta{margin-bottom:16px}
+  .back .drinks-list{border-top:1px solid #000}
+  .back .drink-row{
+    padding:13px 0;border-bottom:1px solid rgba(0,0,0,.16);
+    font-size:16px;font-weight:700;letter-spacing:-.02em;
+  }
+
+  .back .footer-sig{margin-top:auto;padding-top:36px;width:100%;text-align:center}
+</style>
+</head>
+<body>
+
+  <!-- FRONT -->
+  <div class="card front">
+    <div class="pad">
+      <div class="brands-row">
+        <svg viewBox="672 442 540 220" role="img" aria-label="LATTITUDE">
+          <path d="M687.81,644.08V457.64h8.88v178.89h38.62v7.55H687.81z"/>
+          <path d="M742.39,644.08l27.97-186.44h8.88l27.97,186.44h-8.88l-7.99-52.82h-31.07l-7.99,52.82H742.39z M774.63,475.19l-3.32,26.84l-10.72,81.68H789l-10.85-81.68l-3.18-26.84"/>
+          <path d="M824.51,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H824.51z"/>
+          <path d="M885.76,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H885.76z"/>
+          <path d="M977.93,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H977.93z"/>
+          <path d="M931.92,644.08V457.64h8.88v186.44H931.92z"/>
+          <path d="M977.85,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H977.85z"/>
+          <path d="M1018.02,617.45v-159.8h8.88v161.13c0,14.65,7.55,20.42,18.2,20.42c10.65,0,18.2-5.77,18.2-20.42V457.64h8.88v159.8c0,18.64-9.32,29.3-27.08,29.3C1027.35,646.74,1018.02,636.09,1018.02,617.45z"/>
+          <path d="M1083.94,457.64h24.86c17.76,0,27.08,9.77,27.08,29.3v127.84c0,19.53-9.32,29.3-27.08,29.3h-24.86V457.64z M1092.82,636.53h16.42c11.54,0,17.76-7.1,17.76-20.42V485.61c0-13.76-6.22-20.42-17.76-20.42h-16.42V636.53z"/>
+          <path d="M1148.52,644.08V457.64h47.5v7.55h-38.62v81.68h31.96v7.55h-31.96v82.12h38.62v7.55H1148.52z"/>
+        </svg>
+        <span class="x">&times;</span>
+        <span class="letsride-word-big">LET&rsquo;S RIDE</span>
+      </div>
+
+      <div class="line" style="margin-top:22px"></div>
+
+      <div class="status-row" style="margin-top:20px">
+        <span class="pill"><span class="dot"></span><span class="meta">COLABORACI&Oacute;N / ACTIVA</span></span>
+      </div>
+
+      <div class="promo">
+        <div class="promo-pct">20<span class="pct-sign">%</span></div>
+        <div class="promo-stamp">
+          <span class="stamp-text">De descuento &middot; una bebida</span>
+        </div>
+      </div>
+
+      <div class="pulse-row">
+        <svg viewBox="0 0 460 26" preserveAspectRatio="none">
+          <path d="M0,13 L150,13 L168,4 L184,22 L200,13 L460,13" stroke="#000" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="crosshair"><i></i></span>
+      </div>
+      <div class="meta muted caption">PARA LA COMUNIDAD LET&rsquo;S RIDE</div>
+
+      <div class="tagline"><span class="crosshair"><i></i></span><span class="txt">Coffee for people in motion.</span></div>
+
+      <div class="meta muted footer-sig">M&Eacute;RIDA, YUCAT&Aacute;N &mdash; 21&deg;01&rsquo;11.6&Prime;N / 89&deg;34&rsquo;16.2&Prime;W</div>
+
+      <div class="bottom-ruler">
+        <div class="ruler"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACK -->
+  <div class="card back">
+    <div class="pad">
+      <div class="top-row">
+        <span class="pill"><span class="dot"></span><span class="meta">ESCANEA / VISITA</span></span>
+        <span class="crosshair"><i></i></span>
+      </div>
+
+      <div class="qr-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shape-rendering="crispEdges"><path stroke="#000000" d="M0 0.5h7m2 0h3m3 0h2m1 0h3m1 0h7M0 1.5h1m5 0h1m5 0h1m7 0h1m1 0h1m5 0h1M0 2.5h1m1 0h3m1 0h1m1 0h1m3 0h1m1 0h1m1 0h1m3 0h1m1 0h1m1 0h3m1 0h1M0 3.5h1m1 0h3m1 0h1m1 0h5m4 0h2m3 0h1m1 0h3m1 0h1M0 4.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h4m1 0h4m1 0h1m1 0h3m1 0h1M0 5.5h1m5 0h1m1 0h2m3 0h5m4 0h1m5 0h1M0 6.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M8 7.5h3m1 0h2m1 0h2m1 0h3M0 8.5h1m1 0h5m7 0h2m1 0h1m4 0h5M0 9.5h1m1 0h4m1 0h2m2 0h2m3 0h9m3 0h1M1 10.5h1m1 0h1m1 0h5m1 0h2m2 0h1m5 0h2m1 0h1M0 11.5h1m1 0h1m5 0h1m1 0h1m3 0h3m2 0h2m2 0h3m1 0h1M1 12.5h1m2 0h1m1 0h7m2 0h1m1 0h1m5 0h1m1 0h2M0 13.5h1m1 0h1m1 0h1m4 0h1m2 0h3m1 0h2m1 0h2m1 0h3m3 0h1M6 14.5h1m1 0h4m1 0h4m1 0h1m1 0h1m3 0h3M1 15.5h2m2 0h1m1 0h1m1 0h1m2 0h2m1 0h1m2 0h4m1 0h2m2 0h1M2 16.5h1m2 0h4m1 0h1m3 0h1m2 0h3m3 0h1m1 0h2M0 17.5h1m1 0h1m2 0h1m1 0h2m1 0h3m3 0h5m1 0h3m1 0h1m1 0h1M0 18.5h1m3 0h4m1 0h1m5 0h1m1 0h1m2 0h1m2 0h2m1 0h1M0 19.5h1m2 0h1m1 0h1m2 0h1m5 0h1m4 0h1m4 0h1m2 0h1M0 20.5h1m1 0h1m1 0h1m1 0h2m1 0h1m2 0h1m2 0h3m2 0h5m1 0h3M8 21.5h2m2 0h3m1 0h3m1 0h1m3 0h5M0 22.5h7m3 0h1m2 0h4m2 0h2m1 0h1m1 0h3M0 23.5h1m5 0h1m1 0h2m1 0h3m4 0h3m3 0h1m3 0h1M0 24.5h1m1 0h3m1 0h1m1 0h1m5 0h4m2 0h5m1 0h2M0 25.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m3 0h1m1 0h2m5 0h4M0 26.5h1m1 0h3m1 0h1m1 0h4m1 0h3m3 0h1m1 0h7M0 27.5h1m5 0h1m3 0h3m2 0h2m3 0h1m3 0h2m1 0h1M0 28.5h7m1 0h1m3 0h1m2 0h3m1 0h1m1 0h1m2 0h1"/></svg>
+      </div>
+
+      <h2>Muestra esta tarjeta o escanea para canjear.</h2>
+      <div class="url">lattitudecoffee.mx/letsride</div>
+
+      <div class="drinks-block">
+        <div class="meta muted">LO M&Aacute;S PEDIDO EN LET&rsquo;S RIDE</div>
+        <div class="drinks-list">
+          <div class="drink-row">Dirty Horchata</div>
+          <div class="drink-row">Vanilla Cold Brew Latte</div>
+          <div class="drink-row">Mango Lychee Refresher</div>
+          <div class="drink-row">Protein Mocha</div>
+          <div class="drink-row">Cold Brew</div>
+        </div>
+      </div>
+
+      <div class="meta muted footer-sig">M&Eacute;RIDA, YUCAT&Aacute;N &mdash; 21&deg;01&rsquo;11.6&Prime;N / 89&deg;34&rsquo;16.2&Prime;W</div>
+
+      <div class="bottom-ruler" style="width:100%">
+        <div class="ruler"></div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
