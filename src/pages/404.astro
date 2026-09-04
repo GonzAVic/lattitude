@@ -3,10 +3,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import ArrowIcon from "../components/ArrowIcon.astro";
 import { notFound } from "../i18n/content";
 
-const t = notFound.en;
+const t = notFound.es;
 ---
 
-<BaseLayout lang="en" title={t.seoTitle} noindex>
+<BaseLayout lang="es" title={t.seoTitle} noindex>
   <section class="founders-hero">
     <div class="status-code" aria-hidden="true">{t.code}</div>
     <div class="meta muted eyebrow" id="nfEyebrow">{t.eyebrow}</div>
@@ -23,37 +23,39 @@ const t = notFound.en;
 
 <script>
   // GitHub Pages serves a single 404.html for every unmatched path on the
-  // domain (both English and Spanish routes), so this page can't be built
-  // per-locale like the rest of the site. It renders in English by default
-  // and swaps to Spanish client-side using the same signal BaseLayout's
-  // auto-detect script uses: a stored preference first, then browser language.
+  // domain (both Spanish and English routes), so this page can't be built
+  // per-locale like the rest of the site. It renders in Spanish (the default
+  // locale) and swaps to English client-side using the same signal
+  // BaseLayout's auto-detect script uses: a stored preference first, then
+  // browser language.
   const dict = {
-    en: {
-      eyebrow: "STATUS / NOT FOUND",
-      heading: "Wrong coordinates.",
-      body: "This page moved, or it was never here. Either way, you're not lost — just off the route.",
-      cta: "Back to LATTITUDE",
-      micro: ["STATUS / 404", "DIRECTION / HOME", "CURRENT POSITION / UNKNOWN"],
-      home: "/",
-    },
     es: {
       eyebrow: "ESTADO / NO ENCONTRADO",
       heading: "Coordenadas equivocadas.",
       body: "Esta página se movió, o nunca existió. De cualquier forma, no estás perdido — solo fuera de ruta.",
       cta: "Volver a LATTITUDE",
       micro: ["ESTADO / 404", "DIRECCIÓN / INICIO", "POSICIÓN ACTUAL / DESCONOCIDA"],
-      home: "/es/",
+      home: "/",
+    },
+    en: {
+      eyebrow: "STATUS / NOT FOUND",
+      heading: "Wrong coordinates.",
+      body: "This page moved, or it was never here. Either way, you're not lost — just off the route.",
+      cta: "Back to LATTITUDE",
+      micro: ["STATUS / 404", "DIRECTION / HOME", "CURRENT POSITION / UNKNOWN"],
+      home: "/en/",
     },
   } as const;
 
   try {
     const stored = localStorage.getItem("lattitude-lang");
-    const browserLang = (navigator.language || "en").slice(0, 2).toLowerCase();
-    const lang = stored === "es" || (!stored && browserLang === "es") ? "es" : "en";
+    const browserLang = (navigator.language || "es").slice(0, 2).toLowerCase();
+    const lang =
+      stored === "en" || (!stored && browserLang !== "es") ? "en" : "es";
 
-    if (lang === "es") {
-      const t = dict.es;
-      document.documentElement.lang = "es";
+    if (lang === "en") {
+      const t = dict.en;
+      document.documentElement.lang = "en";
       const eyebrow = document.getElementById("nfEyebrow");
       const heading = document.getElementById("nfHeading");
       const body = document.getElementById("nfBody");
@@ -68,7 +70,8 @@ const t = notFound.en;
         const arrow = document.createElement("span");
         arrow.className = "arrow";
         arrow.setAttribute("aria-hidden", "true");
-        arrow.innerHTML = '<svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="13" y2="8"></line><polyline points="8,3 13,8 8,13"></polyline></svg>';
+        arrow.innerHTML =
+          '<svg viewBox="0 0 16 16"><line x1="2" y1="8" x2="13" y2="8"></line><polyline points="8,3 13,8 8,13"></polyline></svg>';
         cta.appendChild(arrow);
       }
       if (micro) {
@@ -78,9 +81,9 @@ const t = notFound.en;
       }
       const langSwitch = document.getElementById("langSwitch");
       if (langSwitch) {
-        langSwitch.textContent = "EN";
+        langSwitch.textContent = "ES";
         langSwitch.setAttribute("href", "/");
-        langSwitch.setAttribute("aria-label", "Switch to English");
+        langSwitch.setAttribute("aria-label", "Switch to Spanish");
       }
     }
   } catch (e) {}

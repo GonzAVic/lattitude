@@ -7,6 +7,7 @@ import Intent from "./Intent.astro";
 import Drinks from "./Drinks.astro";
 import Lab from "./Lab.astro";
 import People from "./People.astro";
+import Neighborhood from "./Neighborhood.astro";
 import Location from "./Location.astro";
 import FAQ from "./FAQ.astro";
 import type { Locale } from "../i18n/content";
@@ -25,6 +26,7 @@ const { lang } = Astro.props;
   <Drinks lang={lang} />
   <Lab lang={lang} />
   <People lang={lang} />
+  <Neighborhood lang={lang} />
   <Location lang={lang} />
   <FAQ lang={lang} />
 </BaseLayout>

@@ -1,0 +1,25 @@
+LATTITUDE° — Descripción para Google Business Profile
+=====================================================
+
+Dónde se pega:
+google.com/business -> tu ficha -> Editar perfil -> Acerca de -> Descripción
+(Máximo 750 caracteres. Sin URLs, sin teléfono, sin ofertas ni "el mejor de Mérida".)
+
+
+DESCRIPCIÓN (≈660 caracteres)
+-----------------------------
+
+LATTITUDE° es una cafetería de especialidad en Paraíso Maya, al norte de Mérida, donde transformamos el café en una experiencia. Trabajamos con granos seleccionados y distintos métodos de extracción para descubrir nuevos sabores y aromas.
+
+Además del café servimos matcha ceremonial, cold brew, refrescos y comida, con ingredientes naturales primero. Puedes agregar proteína natural sin sabor a cualquier bebida.
+
+El espacio está pensado para gente en movimiento: mesas cómodas para trabajar, buen internet, contactos donde los necesitas y lugar para reuniones o talleres.
+
+Abrimos lunes a viernes de 9:00 a 21:00 y sábados de 10:00 a 18:00. Sin reservación, solo llega. Efectivo y tarjeta.
+
+
+NOTAS
+-----
+- La primera frase (qué eres + dónde) es lo único que se ve sin dar clic en "más". Déjala intacta.
+- Mantén el mismo nombre, dirección y horario que en la web y en TripAdvisor (consistencia NAP).
+- Puedes actualizar el horario aquí si cambia por temporada.

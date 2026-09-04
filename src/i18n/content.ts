@@ -1,29 +1,29 @@
 export type Locale = "en" | "es";
 export const locales: Locale[] = ["en", "es"];
-export const defaultLocale: Locale = "en";
+export const defaultLocale: Locale = "es";
 
 export function otherLocale(lang: Locale): Locale {
   return lang === "en" ? "es" : "en";
 }
 
-/** Prefix for locale-aware absolute paths. English lives at "/", Spanish at "/es/". */
+/** Prefix for locale-aware absolute paths. Spanish lives at "/", English at "/en/". */
 export function localePath(lang: Locale, path: string = "/"): string {
   const clean = path.startsWith("/") ? path : `/${path}`;
-  return lang === "en" ? clean : `/es${clean}`;
+  return lang === "es" ? clean : `/en${clean}`;
 }
 
 export const site = {
   en: {
-    title: "LATTITUDE° — Coffee for people in motion",
+    title: "LATTITUDE° — Specialty coffee shop in Mérida, Yucatán",
     description:
-      "LATTITUDE° — Coffee for people in motion. Specialty coffee, ceremonial matcha and food in Mérida, Yucatán. Made with intention.",
-    ogAlt: "LATTITUDE° — Specialty coffee in Mérida, Yucatán",
+      "Specialty coffee shop in Paraíso Maya, Mérida. Coffee, ceremonial matcha, cold brew and food made with natural ingredients — and a good space to work. Open Mon–Sat.",
+    ogAlt: "LATTITUDE° — Specialty coffee shop in Mérida, Yucatán",
   },
   es: {
-    title: "LATTITUDE° — Café para gente en movimiento",
+    title: "LATTITUDE° — Cafetería de especialidad en Mérida, Yucatán",
     description:
-      "LATTITUDE° — Café para gente en movimiento. Café de especialidad, matcha ceremonial y comida en Mérida, Yucatán. Hecho con intención.",
-    ogAlt: "LATTITUDE° — Café de especialidad en Mérida, Yucatán",
+      "Cafetería de especialidad en Paraíso Maya, Mérida. Café, matcha ceremonial, cold brew y comida con ingredientes naturales — y un buen espacio para trabajar. Abierto Lun–Sáb.",
+    ogAlt: "LATTITUDE° — Cafetería de especialidad en Mérida, Yucatán",
   },
 } as const;
 
@@ -205,6 +205,8 @@ export const location = {
     heading: "Find your way here.",
     addressLabel: "Address",
     address: "Paraiso Maya · Calle 16 A, between 15 A and 15 B · Mérida, Yucatán",
+    phoneLabel: "Phone",
+    phone: "+52 999 955 6212",
     hoursLabel: "Hours",
     hoursWeekday: "Monday–Friday · 9:00 AM–9:00 PM",
     hoursSaturday: "Saturday · 10:00 AM–6:00 PM",
@@ -218,6 +220,8 @@ export const location = {
     heading: "Encuentra tu camino aquí.",
     addressLabel: "Dirección",
     address: "Paraíso Maya · Calle 16 A, entre 15 A y 15 B · Mérida, Yucatán",
+    phoneLabel: "Teléfono",
+    phone: "+52 999 955 6212",
     hoursLabel: "Horario",
     hoursWeekday: "Lunes–Viernes · 9:00 AM–9:00 PM",
     hoursSaturday: "Sábado · 10:00 AM–6:00 PM",
@@ -225,6 +229,25 @@ export const location = {
     googleMaps: "Google Maps",
     instagram: "Instagram",
     coordEyebrow: "LATTITUDE° / Coordenadas exactas",
+  },
+} as const;
+
+export const neighborhood = {
+  en: {
+    eyebrow: "The area / Paraíso Maya",
+    heading: "In the north of Mérida, inside Paraíso Maya.",
+    body: [
+      "LATTITUDE° is on Calle 16 A, between 15 A and 15 B, inside Paraíso Maya in the north of Mérida — a calm, residential pocket right off the Periférico and easy to reach by car from the north side of the city.",
+      "There is street parking out front. Coming by rideshare? Set the destination to “LATTITUDE°, Paraíso Maya.” We're open Monday to Friday 9:00 AM–9:00 PM and Saturday 10:00 AM–6:00 PM — no reservation, just walk in.",
+    ],
+  },
+  es: {
+    eyebrow: "La zona / Paraíso Maya",
+    heading: "En el norte de Mérida, dentro de Paraíso Maya.",
+    body: [
+      "LATTITUDE° está en Calle 16 A, entre 15 A y 15 B, dentro de Paraíso Maya, en el norte de Mérida — una zona residencial y tranquila, a un lado del Periférico y fácil de alcanzar en coche desde el norte de la ciudad.",
+      "Puedes estacionarte sobre la calle. ¿Llegas en aplicación de transporte? Marca como destino «LATTITUDE°, Paraíso Maya». Abrimos de lunes a viernes de 9:00 a 21:00 y los sábados de 10:00 a 18:00 — sin reservación, solo llega.",
+    ],
   },
 } as const;
 
@@ -340,12 +363,12 @@ export const footer = {
 
 export const foundersSeo = {
   en: {
-    title: "LATTITUDE° — About",
-    description: "Built for people in motion — good coffee, useful design and the details that make LATTITUDE° worth the trip in Mérida, Yucatán.",
+    title: "About LATTITUDE° — Specialty coffee shop in Mérida",
+    description: "The story and intention behind LATTITUDE°, a specialty coffee shop in Paraíso Maya, Mérida — good coffee, useful design and details that have a reason to exist.",
   },
   es: {
-    title: "LATTITUDE° — Nosotros",
-    description: "Construido para gente en movimiento — buen café, diseño útil y los detalles que hacen que valga la pena venir a LATTITUDE° en Mérida, Yucatán.",
+    title: "Nosotros — LATTITUDE° · Cafetería de especialidad en Mérida",
+    description: "La historia y la intención detrás de LATTITUDE°, una cafetería de especialidad en Paraíso Maya, Mérida — buen café, diseño útil y detalles con una razón de ser.",
   },
 } as const;
 

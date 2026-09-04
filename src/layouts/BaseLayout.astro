@@ -27,22 +27,36 @@ const ogImage = new URL(lang === "en" ? "/og-en.jpg" : "/og-es.jpg", Astro.site)
 const ogLocale = lang === "en" ? "en_US" : "es_MX";
 const ogLocaleAlt = lang === "en" ? "es_MX" : "en_US";
 
+// Public contact number for LATTITUDE°. Leave empty to omit `telephone` from the
+// business JSON-LD; fill it (E.164, e.g. "+52 999 123 4567") to publish it.
+const telephone = "+52 999 955 6212";
+const mapsURL = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CafeOrCoffeeShop",
+  "@id": new URL("/#business", Astro.site).toString(),
   "name": "LATTITUDE°",
   "image": ogImage.toString(),
-  "url": canonicalURL.toString(),
-  "servesCuisine": "Coffee",
+  "url": new URL(localePath("es"), Astro.site).toString(),
+  "hasMap": mapsURL,
+  ...(telephone ? { telephone } : {}),
+  "servesCuisine": ["Coffee", "Café de especialidad", "Matcha", "Breakfast"],
   "priceRange": "$$",
+  "currenciesAccepted": "MXN",
   "paymentAccepted": "Cash, Credit Card",
   "acceptsReservations": false,
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Calle 16 A, Paraíso Maya",
+    "streetAddress": "Calle 16 A, Paraíso Maya, entre 15 A y 15 B",
     "addressLocality": "Mérida",
     "addressRegion": "Yucatán",
+    "postalCode": "97134",
     "addressCountry": "MX",
+  },
+  "areaServed": {
+    "@type": "City",
+    "name": "Mérida",
   },
   "geo": {
     "@type": "GeoCoordinates",
@@ -72,6 +86,42 @@ const jsonLd = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script define:vars={{ lang, enPath: localePath("en", path) }}>
+      (function () {
+        try {
+          var stored = localStorage.getItem("lattitude-lang");
+          if (stored) return;
+          // Only the default-locale (Spanish) page auto-redirects on first visit.
+          // Any locale-specific URL (e.g. /en/, reached via a direct link, the
+          // switcher, or a search engine) is respected as-is and never bounced.
+          // Runs first, before any other tag, so a redirect aborts the page
+          // before it requests fonts or other assets for the wrong locale.
+          if (lang === "es") {
+            var browserLang = (navigator.language || "es").slice(0, 2).toLowerCase();
+            if (browserLang !== "es") {
+              localStorage.setItem("lattitude-lang", "en");
+              window.location.replace(enPath + window.location.hash);
+              return;
+            }
+          }
+          localStorage.setItem("lattitude-lang", lang);
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Google tag (gtag.js) — loaded after the locale redirect so a bounce
+         never records a pageview for the wrong-locale URL. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YG6EXXY9SV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-YG6EXXY9SV");
+    </script>
+
     <meta name="theme-color" content="#ffffff" />
     <meta name="description" content={pageDescription} />
     <meta name="generator" content={Astro.generator} />
@@ -82,9 +132,9 @@ const jsonLd = {
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
     <link rel="canonical" href={canonicalURL} />
-    <link rel="alternate" hreflang="en" href={enURL} />
     <link rel="alternate" hreflang="es" href={esURL} />
-    <link rel="alternate" hreflang="x-default" href={enURL} />
+    <link rel="alternate" hreflang="en" href={enURL} />
+    <link rel="alternate" hreflang="x-default" href={esURL} />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -111,31 +161,23 @@ const jsonLd = {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
+    <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
     <title>{pageTitle}</title>
-
-    <script define:vars={{ lang, esPath: localePath("es", path) }}>
-      (function () {
-        try {
-          var stored = localStorage.getItem("lattitude-lang");
-          if (stored) return;
-          // Only the default-locale (English) page auto-redirects on first visit.
-          // Any locale-specific URL (e.g. /es/, reached via a direct link, the
-          // switcher, or a search engine) is respected as-is and never bounced.
-          if (lang === "en") {
-            var browserLang = (navigator.language || "en").slice(0, 2).toLowerCase();
-            if (browserLang === "es") {
-              localStorage.setItem("lattitude-lang", "es");
-              window.location.replace(esPath + window.location.hash);
-              return;
-            }
-          }
-          localStorage.setItem("lattitude-lang", lang);
-        } catch (e) {}
-      })();
-    </script>
   </head>
   <body>
     <CursorRail />

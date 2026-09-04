@@ -17,6 +17,7 @@ const t = location[lang];
     </div>
     <div class="location-card">
       <div class="location-row"><span class="meta muted">{t.addressLabel}</span><strong>{t.address}</strong></div>
+      <div class="location-row"><span class="meta muted">{t.phoneLabel}</span><strong><a class="hoverable" href={`tel:${t.phone.replace(/\s/g, "")}`}>{t.phone}</a></strong></div>
       <div class="location-row"><span class="meta muted">{t.hoursLabel}</span><strong>{t.hoursWeekday}<br>{t.hoursSaturday}</strong></div>
       <div class="location-row"><span class="meta muted">{t.instagramLabel}</span><strong>@lattitudecoffee</strong></div>
       <div class="location-actions">
