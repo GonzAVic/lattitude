@@ -7,6 +7,9 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = hero[lang];
+// The tagline stays in English on every locale — it's treated as the brand line,
+// not translatable copy. Marked lang="en" so it's correct inside the es document.
+const tagline = hero.en.subhead;
 ---
 
 <section class="hero">
@@ -33,7 +36,7 @@ const t = hero[lang];
         </svg>
       </span>
     </h1>
-    <h2>{t.subhead}</h2>
+    <h2 lang="en">{tagline}</h2>
     <div class="hero-actions">
       <a class="btn hoverable" href="https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7" target="_blank" rel="noopener">{t.directions} <ArrowIcon dir="up-right" /></a>
       <a class="btn hoverable" href="#drinks">{t.explore} <ArrowIcon dir="down" /></a>
