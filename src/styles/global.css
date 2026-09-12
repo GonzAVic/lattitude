@@ -508,7 +508,6 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
 .founders-closing .coord-strip{justify-content:center;margin-top:56px}
 
 /* COMMUNITIES */
-.communities-crosspromo{border-top:1px solid var(--line)}
 .communities-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3vw,40px)}
 .community-card{
   border:1px solid #000;border-radius:4px;padding:clamp(26px,3vw,40px);
@@ -524,6 +523,13 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
 .community-card > p.muted{margin-top:14px;color:var(--secondary);line-height:1.55;font-size:15px}
 .community-card .coord-strip{margin-top:26px}
 .community-card-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+
+.communities-teaser{padding:clamp(100px,11vw,170px) var(--pad);border-top:1px solid var(--line)}
+.communities-teaser-top{
+  display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;
+  margin-bottom:clamp(40px,5vw,58px);
+}
+.communities-teaser-top h3{margin:0;font-size:clamp(38px,5vw,76px);letter-spacing:-.055em;line-height:.95}
 
 @media(max-width:950px){
   .founder-media{grid-template-columns:1fr}
@@ -542,7 +548,7 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
   .hero{padding-top:116px;min-height:92svh}
   .hero-logo svg{width:82vw}
   .hero h2{font-size:29px}
-  .marquee-head,.section-head{flex-direction:column;align-items:flex-start}
+  .marquee-head,.section-head,.communities-teaser-top{flex-direction:column;align-items:flex-start}
   .mcard{width:67vw}
   .story-copy{grid-template-columns:1fr}
   .drink-menu-item{min-height:88px}

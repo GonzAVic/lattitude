@@ -4,7 +4,6 @@ import {
   communitiesHero,
   communitiesIntro,
   communitiesList,
-  communitiesCrossPromo,
   communitiesClosing,
   localePath,
   type Locale,
@@ -18,10 +17,9 @@ const { lang } = Astro.props;
 const hero = communitiesHero[lang];
 const intro = communitiesIntro[lang];
 const list = communitiesList[lang];
-const crossPromo = communitiesCrossPromo[lang];
 const closing = communitiesClosing[lang];
 
-const viewLabel = lang === "en" ? "View page" : "Ver página";
+const viewLabel = lang === "en" ? "See more" : "Ver más";
 const activeLabel = lang === "en" ? "ACTIVE" : "ACTIVA";
 ---
 
@@ -32,12 +30,6 @@ const activeLabel = lang === "en" ? "ACTIVE" : "ACTIVA";
   <div class="coord-strip" aria-hidden="true">
     {hero.micro.map((m) => <span>{m}</span>)}
   </div>
-</section>
-
-<section class="founder-section center">
-  <div class="meta muted eyebrow">{intro.eyebrow}</div>
-  <h2>{intro.heading}</h2>
-  {intro.body.map((p) => <p>{p}</p>)}
 </section>
 
 <section class="founder-section">
@@ -56,39 +48,19 @@ const activeLabel = lang === "en" ? "ACTIVE" : "ACTIVA";
         </div>
         <div class="community-card-actions">
           <a class="btn hoverable" href={localePath(lang, `/${item.slug}`)}>{viewLabel} <ArrowIcon dir="right" /></a>
-          {item.external && (
-            <a class="btn hoverable" href={item.external.href} target="_blank" rel="noopener">{item.external.label} <ArrowIcon dir="up-right" /></a>
-          )}
-          {item.instagram && (
-            <a class="btn hoverable" href={item.instagram} target="_blank" rel="noopener">Instagram <ArrowIcon dir="up-right" /></a>
-          )}
+          {item.links.map((link) => (
+            <a class="btn hoverable" href={link.href} target="_blank" rel="noopener">{link.label} <ArrowIcon dir="up-right" /></a>
+          ))}
         </div>
       </div>
     ))}
   </div>
 </section>
 
-<section class="lab communities-crosspromo">
-  <div class="lab-grid">
-    <div>
-      <div class="meta muted" style="margin-bottom:18px">{crossPromo.eyebrow}</div>
-      <h2>{crossPromo.heading}</h2>
-      <p class="lab-note">{crossPromo.note}</p>
-    </div>
-    <div class="lab-list">
-      {crossPromo.rows.map((row) => (
-        <div class="lab-row">
-          <strong>{row.title}</strong>
-          <div class="mini">
-            <span class="meta muted">{row.tag}</span>
-            {row.icon === "star" && <span class="star"><i></i></span>}
-            {row.icon === "crosshair" && <span class="crosshair"><i></i></span>}
-            {row.icon === "arrow" && <ArrowIcon dir="up-right" />}
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
+<section class="founder-section center">
+  <div class="meta muted eyebrow">{intro.eyebrow}</div>
+  <h2>{intro.heading}</h2>
+  {intro.body.map((p) => <p>{p}</p>)}
 </section>
 
 <section class="founders-closing">

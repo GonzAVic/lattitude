@@ -6,6 +6,7 @@ import {
   rideDrinksSection,
   rideDrinks,
   rideProtein,
+  rideBenefit,
   rideClosing,
   localePath,
   type Locale,
@@ -20,10 +21,14 @@ const hero = rideHero[lang];
 const drinksSection = rideDrinksSection[lang];
 const drinks = rideDrinks[lang];
 const protein = rideProtein[lang];
+const benefit = rideBenefit[lang];
 const closing = rideClosing[lang];
 
 const popularHref = `${localePath(lang)}#drinks`;
 const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
+const letsrideHref = "https://www.letsridemerida.com/";
+const letsrideInstagram = "https://www.instagram.com/letsridemid/";
+const fortressInstagram = "https://www.instagram.com/fortressmerida/";
 ---
 
 <section class="founders-hero">
@@ -109,11 +114,22 @@ const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
   }
 </script>
 
+<section class="founder-section center">
+  <div class="meta muted eyebrow">{benefit.eyebrow}</div>
+  <h2>{benefit.heading}</h2>
+  <p>{benefit.body}</p>
+</section>
+
 <section class="founders-closing">
   <h2>{closing.heading}</h2>
   <p>{closing.supporting}</p>
   <div class="hero-actions">
     <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
     <a class="btn hoverable" href={popularHref}>{closing.ctaPopular} <ArrowIcon dir="right" /></a>
+  </div>
+  <div class="hero-actions" style="margin-top:14px">
+    <a class="btn hoverable" href={letsrideHref} target="_blank" rel="noopener">LET'S RIDE <ArrowIcon dir="up-right" /></a>
+    <a class="btn hoverable" href={letsrideInstagram} target="_blank" rel="noopener">Instagram <ArrowIcon dir="up-right" /></a>
+    <a class="btn hoverable" href={fortressInstagram} target="_blank" rel="noopener">FORTRESS <ArrowIcon dir="up-right" /></a>
   </div>
 </section>

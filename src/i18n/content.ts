@@ -579,6 +579,19 @@ export const rideClosing = {
   },
 } as const;
 
+export const rideBenefit = {
+  en: {
+    eyebrow: "BENEFIT / HOW IT WORKS",
+    heading: "20% off, every visit.",
+    body: "Show your LET'S RIDE coupon card when you order and get 20% off one drink per member, every time you visit.",
+  },
+  es: {
+    eyebrow: "BENEFICIO / CÓMO FUNCIONA",
+    heading: "20% de descuento, en cada visita.",
+    body: "Muestra tu tarjeta de cupón de LET'S RIDE al ordenar y obtén 20% de descuento en una bebida por miembro, en cada visita.",
+  },
+} as const;
+
 /* Community partner page — VATTEN (physical therapy & rehab). Linked from the Communities hub. */
 export const vattenSeo = {
   en: {
@@ -595,14 +608,14 @@ export const vattenHero = {
   en: {
     eyebrow: "Lattitude Coffee × Vatten",
     heading: "Therapy ends. Recovery keeps going.",
-    subhead: "Vatten Terapia Física works on physiotherapy, rehabilitation and prevention across Mérida. Lattitude Coffee is where the recovery continues — good coffee, natural ingredients and a place to sit still for once.",
+    subhead: "Vatten Terapia Física works on physiotherapy, rehabilitation and prevention across Mérida. Lattitude Coffee is a small benefit for that community after a session — hydration, natural ingredients and a calm place to sit still while the body does the rest.",
     micro: ["RECOVERY / CONTINUOUS", "STATUS / OPEN", "DIRECTION / FORWARD", "MOVEMENT / SHARED"],
     ctaFavorites: "See favorite drinks",
   },
   es: {
     eyebrow: "Lattitude Coffee × Vatten",
     heading: "La terapia termina. La recuperación sigue.",
-    subhead: "Vatten Terapia Física trabaja fisioterapia, rehabilitación y prevención en Mérida. Lattitude Coffee es donde sigue la recuperación — buen café, ingredientes naturales y un lugar para quedarte quieto, por una vez.",
+    subhead: "Vatten Terapia Física trabaja fisioterapia, rehabilitación y prevención en Mérida. Lattitude Coffee es un pequeño beneficio para esa comunidad después de una sesión — hidratación, ingredientes naturales y un lugar tranquilo para quedarte quieto mientras el cuerpo hace lo suyo.",
     micro: ["RECUPERACIÓN / CONTINUA", "ESTADO / ABIERTO", "DIRECCIÓN / ADELANTE", "MOVIMIENTO / COMPARTIDO"],
     ctaFavorites: "Ver bebidas favoritas",
   },
@@ -612,12 +625,12 @@ export const vattenDrinksSection = {
   en: {
     eyebrow: "GOOD AFTER A SESSION",
     heading: "What to order on your way out.",
-    body: "Nothing that fights recovery — just coffee, matcha and food that make the rest of the day easier.",
+    body: "Nothing that works against recovery — hydration, natural ingredients and options that don't overdo the caffeine, so the body keeps doing its job while you enjoy something good.",
   },
   es: {
     eyebrow: "BUENO DESPUÉS DE UNA SESIÓN",
     heading: "Qué pedir al salir.",
-    body: "Nada que compita con la recuperación — solo café, matcha y comida que hacen más fácil el resto del día.",
+    body: "Nada que le juegue en contra a la recuperación — hidratación, ingredientes naturales y opciones que no se pasan de cafeína, para que el cuerpo siga haciendo lo suyo mientras tú disfrutas algo rico.",
   },
 } as const;
 
@@ -642,12 +655,12 @@ export const vattenWellness = {
   en: {
     eyebrow: "ADD-ON / AVAILABLE",
     heading: "Protein, if your plan calls for it.",
-    body: "Natural, unflavored protein you can add to any drink on this menu — no fitness-shake taste, no upsell talk. Just ask at the counter.",
+    body: "Muscles rebuild on protein as much as on rest. Natural, unflavored, you can add it to any drink on this menu — no fitness-shake taste, no upsell talk. Just ask at the counter.",
   },
   es: {
     eyebrow: "EXTRA / DISPONIBLE",
     heading: "Proteína, si tu plan la pide.",
-    body: "Proteína natural, sin sabor, que puedes agregar a cualquier bebida del menú — sin sabor a shake, sin discurso de venta. Solo pídela en la barra.",
+    body: "El músculo se reconstruye con proteína tanto como con descanso. Natural, sin sabor, la puedes agregar a cualquier bebida del menú — sin sabor a shake, sin discurso de venta. Solo pídela en la barra.",
   },
 } as const;
 
@@ -663,6 +676,19 @@ export const vattenClosing = {
     supporting: "Trae a tu terapeuta. La recuperación se disfruta más con buen café.",
     ctaDirections: "Cómo llegar",
     ctaPopular: "Ver lo que más se pide",
+  },
+} as const;
+
+export const vattenBenefit = {
+  en: {
+    eyebrow: "BENEFIT / HOW IT WORKS",
+    heading: "20% off, every visit.",
+    body: "Show your Vatten Woncards loyalty card when you order and get 20% off one drink per member, every time you visit.",
+  },
+  es: {
+    eyebrow: "BENEFICIO / CÓMO FUNCIONA",
+    heading: "20% de descuento, en cada visita.",
+    body: "Muestra tu tarjeta de lealtad Woncards de Vatten al ordenar y obtén 20% de descuento en una bebida por miembro, en cada visita.",
   },
 } as const;
 
@@ -719,20 +745,25 @@ export const communitiesList = {
       name: "LET'S RIDE",
       kind: "Indoor cycling",
       tagline: "Class ends. The rhythm doesn't.",
-      body: "An indoor cycling community that trains in rhythm. Lattitude Coffee is where the ride continues after class — coffee, ceremonial matcha and food for people who don't sit still.",
+      body: "LET'S RIDE is an indoor cycling community in Mérida — rhythm-based classes, group energy and a space to actually train. FORTRESS is its functional-training sub-community.",
       tags: ["Movement / Cardio", "Community / Active"],
-      instagram: null as string | null,
-      external: null as { label: string; href: string } | null,
+      links: [
+        { label: "Website", href: "https://www.letsridemerida.com/" },
+        { label: "Instagram", href: "https://www.instagram.com/letsridemid/" },
+        { label: "Fortress · Instagram", href: "https://www.instagram.com/fortressmerida/" },
+      ],
     },
     {
       slug: "vatten",
       name: "VATTEN",
       kind: "Physical therapy & rehab",
       tagline: "Recovery has a rhythm too.",
-      body: "Vatten Terapia Física works on physiotherapy, rehabilitation and prevention across Mérida. Lattitude Coffee is where the recovery continues — hydration, natural ingredients and a place to sit still for once.",
+      body: "Vatten Terapia Física works on physiotherapy, rehabilitation and prevention across Mérida, with personalized care focused on getting people back to pain-free movement.",
       tags: ["Movement / Recovery", "Community / Wellness"],
-      instagram: "https://www.instagram.com/vattenterapia/" as string | null,
-      external: { label: "Book a session", href: "https://vattenmerida.site.agendapro.com/mx/sucursal/159438" } as { label: string; href: string } | null,
+      links: [
+        { label: "Book a session", href: "https://vattenmerida.site.agendapro.com/mx/sucursal/159438" },
+        { label: "Instagram", href: "https://www.instagram.com/vattenterapia/" },
+      ],
     },
   ],
   es: [
@@ -741,47 +772,27 @@ export const communitiesList = {
       name: "LET'S RIDE",
       kind: "Ciclismo indoor",
       tagline: "La clase termina. El ritmo no.",
-      body: "Una comunidad de ciclismo indoor que entrena al ritmo de la clase. Lattitude Coffee es donde sigue el ride después — café, matcha ceremonial y comida para quienes no se quedan quietos.",
+      body: "LET'S RIDE es una comunidad de ciclismo indoor en Mérida — clases al ritmo de la música, energía de grupo y un espacio para entrenar en serio. FORTRESS es su sub-comunidad de entrenamiento funcional.",
       tags: ["Movimiento / Cardio", "Comunidad / Activa"],
-      instagram: null as string | null,
-      external: null as { label: string; href: string } | null,
+      links: [
+        { label: "Sitio web", href: "https://www.letsridemerida.com/" },
+        { label: "Instagram", href: "https://www.instagram.com/letsridemid/" },
+        { label: "Fortress · Instagram", href: "https://www.instagram.com/fortressmerida/" },
+      ],
     },
     {
       slug: "vatten",
       name: "VATTEN",
       kind: "Fisioterapia y rehabilitación",
       tagline: "La recuperación también tiene ritmo.",
-      body: "Vatten Terapia Física trabaja fisioterapia, rehabilitación y prevención en Mérida. Lattitude Coffee es donde sigue la recuperación — hidratación, ingredientes naturales y un lugar para quedarte quieto, por una vez.",
+      body: "Vatten Terapia Física trabaja fisioterapia, rehabilitación y prevención en Mérida, con atención personalizada enfocada en volver al movimiento sin dolor.",
       tags: ["Movimiento / Recuperación", "Comunidad / Bienestar"],
-      instagram: "https://www.instagram.com/vattenterapia/" as string | null,
-      external: { label: "Agenda una sesión", href: "https://vattenmerida.site.agendapro.com/mx/sucursal/159438" } as { label: string; href: string } | null,
+      links: [
+        { label: "Agenda una sesión", href: "https://vattenmerida.site.agendapro.com/mx/sucursal/159438" },
+        { label: "Instagram", href: "https://www.instagram.com/vattenterapia/" },
+      ],
     },
   ],
-} as const;
-
-export const communitiesCrossPromo = {
-  en: {
-    eyebrow: "HOW IT WORKS",
-    heading: "One relationship, two directions.",
-    note: "The same playbook, adapted for every community we add — none of it depends on either side having a marketing team.",
-    rows: [
-      { title: "Shared perk card", tag: "Redeemable both ways", icon: "crosshair" },
-      { title: "Joint social content", tag: "Same story, two accounts", icon: "star" },
-      { title: "Welcome code after class or session", tag: "One community, one perk", icon: "crosshair" },
-      { title: "QR signage in both spaces", tag: "Table tents, front desk, receipts", icon: "arrow" },
-    ],
-  },
-  es: {
-    eyebrow: "CÓMO FUNCIONA",
-    heading: "Una relación, dos direcciones.",
-    note: "El mismo esquema, adaptado a cada comunidad que sumamos — nada de esto depende de que alguno de los dos tenga equipo de marketing.",
-    rows: [
-      { title: "Tarjeta de beneficio compartida", tag: "Canjeable en ambos sentidos", icon: "crosshair" },
-      { title: "Contenido conjunto en redes", tag: "Misma historia, dos cuentas", icon: "star" },
-      { title: "Código de bienvenida post-clase o sesión", tag: "Una comunidad, un beneficio", icon: "crosshair" },
-      { title: "Señalética con QR en ambos espacios", tag: "Mesas, recepción, tickets", icon: "arrow" },
-    ],
-  },
 } as const;
 
 export const communitiesClosing = {

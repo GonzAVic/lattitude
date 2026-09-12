@@ -6,6 +6,7 @@ import {
   vattenDrinksSection,
   vattenDrinks,
   vattenWellness,
+  vattenBenefit,
   vattenClosing,
   localePath,
   type Locale,
@@ -20,6 +21,7 @@ const hero = vattenHero[lang];
 const drinksSection = vattenDrinksSection[lang];
 const drinks = vattenDrinks[lang];
 const wellness = vattenWellness[lang];
+const benefit = vattenBenefit[lang];
 const closing = vattenClosing[lang];
 
 const popularHref = `${localePath(lang)}#drinks`;
@@ -109,6 +111,12 @@ const vattenHref = "https://vattenmerida.site.agendapro.com/mx/sucursal/159438";
     }, CYCLE_MS);
   }
 </script>
+
+<section class="founder-section center">
+  <div class="meta muted eyebrow">{benefit.eyebrow}</div>
+  <h2>{benefit.heading}</h2>
+  <p>{benefit.body}</p>
+</section>
 
 <section class="founders-closing">
   <h2>{closing.heading}</h2>
