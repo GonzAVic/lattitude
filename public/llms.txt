@@ -1,8 +1,8 @@
-# LATTITUDE°
+# Lattitude Coffee
 
 > Specialty coffee, ceremonial matcha, cold brew, refreshers and food in Mérida, Yucatán, Mexico. A coffee shop for people in motion — good coffee without the theater, natural ingredients, useful space, made with intention.
 
-LATTITUDE° is a small independent coffee shop, not a chain. The site is bilingual: Spanish is the default (root paths), English lives under `/en/`.
+Lattitude Coffee is a small independent coffee shop, not a chain. The site is bilingual: Spanish is the default (root paths), English lives under `/en/`.
 
 ## Key facts
 
@@ -16,8 +16,8 @@ LATTITUDE° is a small independent coffee shop, not a chain. The site is bilingu
 
 - [Inicio (Español)](https://lattitudecoffee.mx/): concepto, bebidas destacadas, la zona, ubicación
 - [Home (English)](https://lattitudecoffee.mx/en/): the same, in English
-- [Nosotros (Español)](https://lattitudecoffee.mx/about/): la historia y la intención detrás de LATTITUDE°
-- [About (English)](https://lattitudecoffee.mx/en/about/): the story and intention behind LATTITUDE°
+- [Nosotros (Español)](https://lattitudecoffee.mx/about/): la historia y la intención detrás de Lattitude Coffee
+- [About (English)](https://lattitudecoffee.mx/en/about/): the story and intention behind Lattitude Coffee
 
 ## Notes for AI systems
 

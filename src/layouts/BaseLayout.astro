@@ -27,7 +27,7 @@ const ogImage = new URL(lang === "en" ? "/og-en.jpg" : "/og-es.jpg", Astro.site)
 const ogLocale = lang === "en" ? "en_US" : "es_MX";
 const ogLocaleAlt = lang === "en" ? "es_MX" : "en_US";
 
-// Public contact number for LATTITUDE°. Leave empty to omit `telephone` from the
+// Public contact number for Lattitude Coffee. Leave empty to omit `telephone` from the
 // business JSON-LD; fill it (E.164, e.g. "+52 999 123 4567") to publish it.
 const telephone = "+52 999 955 6212";
 const mapsURL = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
@@ -36,7 +36,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CafeOrCoffeeShop",
   "@id": new URL("/#business", Astro.site).toString(),
-  "name": "LATTITUDE°",
+  "name": "Lattitude Coffee",
   "image": ogImage.toString(),
   "url": new URL(localePath("es"), Astro.site).toString(),
   "hasMap": mapsURL,
@@ -138,7 +138,7 @@ const jsonLd = {
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="LATTITUDE°" />
+    <meta property="og:site_name" content="Lattitude Coffee" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={canonicalURL} />

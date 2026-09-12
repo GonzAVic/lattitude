@@ -14,16 +14,16 @@ export function localePath(lang: Locale, path: string = "/"): string {
 
 export const site = {
   en: {
-    title: "LATTITUDE° — Specialty coffee shop in Mérida, Yucatán",
+    title: "Lattitude Coffee — Specialty coffee shop in Mérida, Yucatán",
     description:
       "Specialty coffee shop in Paraíso Maya, Mérida. Coffee, ceremonial matcha, cold brew and food made with natural ingredients — and a good space to work. Open Mon–Sat.",
-    ogAlt: "LATTITUDE° — Specialty coffee shop in Mérida, Yucatán",
+    ogAlt: "Lattitude Coffee — Specialty coffee shop in Mérida, Yucatán",
   },
   es: {
-    title: "LATTITUDE° — Cafetería de especialidad en Mérida, Yucatán",
+    title: "Lattitude Coffee | Cafetería de especialidad en Mérida, Yucatán",
     description:
       "Cafetería de especialidad en Paraíso Maya, Mérida. Café, matcha ceremonial, cold brew y comida con ingredientes naturales — y un buen espacio para trabajar. Abierto Lun–Sáb.",
-    ogAlt: "LATTITUDE° — Cafetería de especialidad en Mérida, Yucatán",
+    ogAlt: "Lattitude Coffee — Cafetería de especialidad en Mérida, Yucatán",
   },
 } as const;
 
@@ -76,14 +76,14 @@ export const hero = {
 export const marqueeCards = {
   en: [
     { variant: "a", img: "/images/marquee-overhead-duo.webp", alt: "Overhead shot of a latte with leaf art and an iced coffee to go, a hand's shadow crossing the pavement", label: "Coffee / Craft" },
-    { variant: "b", img: "/images/marquee-plant-cup.webp", alt: "LATTITUDE to-go cup tucked into green plant leaves", label: "Natural / Ingredients" },
-    { variant: "c", img: "/images/marquee-two-cups.webp", alt: "Two LATTITUDE cups on a table, a latte with heart art next to a to-go cup", label: "Movement / To go" },
+    { variant: "b", img: "/images/marquee-plant-cup.webp", alt: "Lattitude Coffee to-go cup tucked into green plant leaves", label: "Natural / Ingredients" },
+    { variant: "c", img: "/images/marquee-two-cups.webp", alt: "Two Lattitude Coffee cups on a table, a latte with heart art next to a to-go cup", label: "Movement / To go" },
     { variant: "d", img: "/images/marquee-cookie-hand.webp", alt: "Hand holding a chocolate chip cookie against a green ribbed wall", label: "Food / Sweet" },
   ],
   es: [
     { variant: "a", img: "/images/marquee-overhead-duo.webp", alt: "Toma cenital de un latte con arte y un café helado para llevar, con la sombra de una mano sobre el pavimento", label: "Café / Oficio" },
-    { variant: "b", img: "/images/marquee-plant-cup.webp", alt: "Vaso de LATTITUDE para llevar entre hojas de una planta verde", label: "Natural / Ingredientes" },
-    { variant: "c", img: "/images/marquee-two-cups.webp", alt: "Dos vasos de LATTITUDE sobre una mesa, un latte con arte de corazón junto a un vaso para llevar", label: "Movimiento / Para llevar" },
+    { variant: "b", img: "/images/marquee-plant-cup.webp", alt: "Vaso de Lattitude Coffee para llevar entre hojas de una planta verde", label: "Natural / Ingredientes" },
+    { variant: "c", img: "/images/marquee-two-cups.webp", alt: "Dos vasos de Lattitude Coffee sobre una mesa, un latte con arte de corazón junto a un vaso para llevar", label: "Movimiento / Para llevar" },
     { variant: "d", img: "/images/marquee-cookie-hand.webp", alt: "Mano sosteniendo una galleta con chispas de chocolate contra una pared verde acanalada", label: "Comida / Dulce" },
   ],
 } as const;
@@ -100,22 +100,22 @@ export const intent = {
 
 export const intentStories = {
   en: [
-    { img: "/images/1704770064557.webp", alt: "Person working from a café", label: "Table / Useful", title: "A place to get something done.", body: "Come with a laptop, a conversation or a half-finished idea. Stay comfortable. Keep moving." },
-    { img: "/images/1766250343186.webp", alt: "Barista working with an espresso machine", label: "Detail / Matters", title: "Good coffee without the theater.", body: "We care about quality, balance and the details that make a drink worth coming back for." },
-    { img: "/images/1516011762365.webp", alt: "Minimal takeaway packaging", label: "Simple / Useful", title: "Ingredients with a reason.", body: "Natural ingredients first. Sugar-free options where they make sense—not just because a trend told us to." },
-    { img: "/images/1495474472287.webp", alt: "People meeting in a coffee shop", label: "Meet / Share", title: "More than a table and a cup.", body: "Workdays, meetups, workshops and moments that put the right people in the same room." },
+    { img: "/images/trabajar-en-lattitude-cafe-especialidad.webp", alt: "Person working on a laptop at Lattitude Coffee, with a coffee, a water bottle and a slice of cake on the table", label: "Table / Useful", title: "A place to get something done.", body: "Come with a laptop, a conversation or a half-finished idea. Stay comfortable. Keep moving." },
+    { img: "/images/barista-lattitude-cafe-especialidad.webp", alt: "Lattitude Coffee barista pulling a shot of specialty coffee with a brass milk pitcher", label: "Detail / Matters", title: "Good coffee without the theater.", body: "We care about quality, balance and the details that make a drink worth coming back for." },
+    { img: "/images/cafe-de-especialidad-para-llevar.webp", alt: "Specialty coffee to go in a minimalist white cup", label: "Simple / Useful", title: "Ingredients with a reason.", body: "Natural ingredients first. Sugar-free options where they make sense—not just because a trend told us to." },
+    { img: "/images/personas-brindando-cafe-lattitude.webp", alt: "Three people toasting with latte-art flat whites and a cold brew at Lattitude Coffee", label: "Meet / Share", title: "More than a table and a cup.", body: "Workdays, meetups, workshops and moments that put the right people in the same room." },
   ],
   es: [
-    { img: "/images/1704770064557.webp", alt: "Persona trabajando desde un café", label: "Mesa / Útil", title: "Un lugar para sacar las cosas adelante.", body: "Ven con una laptop, una conversación o una idea a medias. Ponte cómodo. Sigue en movimiento." },
-    { img: "/images/1766250343186.webp", alt: "Barista trabajando con una máquina de espresso", label: "Detalle / Importa", title: "Buen café sin tanto show.", body: "Nos importa la calidad, el balance y los detalles que hacen que una bebida valga la pena repetir." },
-    { img: "/images/1516011762365.webp", alt: "Empaque minimalista para llevar", label: "Simple / Útil", title: "Ingredientes con una razón.", body: "Ingredientes naturales primero. Opciones sin azúcar donde tienen sentido — no solo porque una tendencia lo diga." },
-    { img: "/images/1495474472287.webp", alt: "Personas reuniéndose en una cafetería", label: "Reunirse / Compartir", title: "Más que una mesa y una taza.", body: "Días de trabajo, meetups, talleres y momentos que reúnen a las personas correctas en el mismo lugar." },
+    { img: "/images/trabajar-en-lattitude-cafe-especialidad.webp", alt: "Persona trabajando en una laptop en Lattitude Coffee, con un café, un termo y una rebanada de pastel sobre la mesa", label: "Mesa / Útil", title: "Un lugar para sacar las cosas adelante.", body: "Ven con una laptop, una conversación o una idea a medias. Ponte cómodo. Sigue en movimiento." },
+    { img: "/images/barista-lattitude-cafe-especialidad.webp", alt: "Barista de Lattitude Coffee preparando un café de especialidad con una jarra de latón", label: "Detalle / Importa", title: "Buen café sin tanto show.", body: "Nos importa la calidad, el balance y los detalles que hacen que una bebida valga la pena repetir." },
+    { img: "/images/cafe-de-especialidad-para-llevar.webp", alt: "Café de especialidad para llevar en un vaso blanco minimalista", label: "Simple / Útil", title: "Ingredientes con una razón.", body: "Ingredientes naturales primero. Opciones sin azúcar donde tienen sentido — no solo porque una tendencia lo diga." },
+    { img: "/images/personas-brindando-cafe-lattitude.webp", alt: "Tres personas brindando con flat whites de arte latte y un cold brew en Lattitude Coffee", label: "Reunirse / Compartir", title: "Más que una mesa y una taza.", body: "Días de trabajo, meetups, talleres y momentos que reúnen a las personas correctas en el mismo lugar." },
   ],
 } as const;
 
 export const drinksSection = {
-  en: { eyebrow: "Featured at LATTITUDE°", heading: "What people order the most.", body: "Coffee leads the menu. Matcha brings a different rhythm. Food keeps the day moving." },
-  es: { eyebrow: "Destacado en LATTITUDE°", heading: "Lo que la gente más pide.", body: "El café lidera el menú. El matcha trae otro ritmo. La comida mantiene el día en movimiento." },
+  en: { eyebrow: "Featured at Lattitude Coffee", heading: "What people order the most.", body: "Coffee leads the menu. Matcha brings a different rhythm. Food keeps the day moving." },
+  es: { eyebrow: "Destacado en Lattitude Coffee", heading: "Lo que la gente más pide.", body: "El café lidera el menú. El matcha trae otro ritmo. La comida mantiene el día en movimiento." },
 } as const;
 
 export const drinksList = {
@@ -124,26 +124,26 @@ export const drinksList = {
     { img: "/images/vanilla-coldbrew-latte.webp", alt: "Vanilla Cold Brew Latte drink", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VANILLA / MILK", tag: "Coffee / Cold", icon: "star" },
     { img: "/images/flat-white.webp", alt: "Flat White drink", name: "Flat White", coord: "ESPRESSO / STEAMED MILK", tag: "Coffee / Classic", icon: "crosshair" },
     { img: "/images/mango-lychee-refresher.webp", alt: "Mango Lychee Refresher drink", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "No coffee / Bright", icon: "star" },
-    { img: "/images/1495474472287.webp", alt: "People in a contemporary café", name: "Grilled Cheese", coord: "BREAD / CHEESE / BUTTER", tag: "Food / Comfort", icon: "crosshair" },
+    { img: "/images/personas-brindando-cafe-lattitude.webp", alt: "Coffees being shared over a table at Lattitude Coffee", name: "Grilled Cheese", coord: "BREAD / CHEESE / BUTTER", tag: "Food / Comfort", icon: "crosshair" },
   ],
   es: [
     { img: "/images/dirty-horchata.webp", alt: "Bebida Dirty Horchata", name: "Dirty Horchata", coord: "ESPRESSO / MATCHA / HORCHATA", tag: "Firma / Movimiento", icon: "crosshair" },
     { img: "/images/vanilla-coldbrew-latte.webp", alt: "Bebida Vanilla Cold Brew Latte", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VAINILLA / LECHE", tag: "Café / Frío", icon: "star" },
     { img: "/images/flat-white.webp", alt: "Bebida Flat White", name: "Flat White", coord: "ESPRESSO / LECHE VAPORIZADA", tag: "Café / Clásico", icon: "crosshair" },
     { img: "/images/mango-lychee-refresher.webp", alt: "Bebida Mango Lychee Refresher", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "Sin café / Fresco", icon: "star" },
-    { img: "/images/1495474472287.webp", alt: "Personas en un café contemporáneo", name: "Grilled Cheese", coord: "PAN / QUESO / MANTEQUILLA", tag: "Comida / Confort", icon: "crosshair" },
+    { img: "/images/personas-brindando-cafe-lattitude.webp", alt: "Cafés compartidos sobre una mesa en Lattitude Coffee", name: "Grilled Cheese", coord: "PAN / QUESO / MANTEQUILLA", tag: "Comida / Confort", icon: "crosshair" },
   ],
 } as const;
 
 export const statement = {
   en: {
-    eyebrow: "The idea behind LATTITUDE°",
+    eyebrow: "The idea behind Lattitude Coffee",
     heading: "Nothing here is here by accident.",
     body: "The space, the drinks and the small decisions around them are designed with a reason. A table you can actually work from. Power when you need it. Good internet. Natural ingredients. Coffee worth leaving the house for.",
     micrographic: "Nothing by accident",
   },
   es: {
-    eyebrow: "La idea detrás de LATTITUDE°",
+    eyebrow: "La idea detrás de Lattitude Coffee",
     heading: "Nada aquí está por accidente.",
     body: "El espacio, las bebidas y las pequeñas decisiones detrás de ellas están diseñadas con una razón. Una mesa desde la que realmente puedes trabajar. Contactos cuando los necesitas. Buen internet. Ingredientes naturales. Café que vale la pena salir de casa a buscar.",
     micrographic: "Nada por accidente",
@@ -180,7 +180,7 @@ export const labRows = {
 
 export const people = {
   en: {
-    alt: "People spending time together in a café",
+    alt: "Friends toasting with latte-art coffees and a cold brew at Lattitude Coffee",
     pill: "ROOM / ACTIVE",
     heading: "Built for people building things.",
     body: "You do not need a job title to belong here. Bring the laptop. Meet someone. Start something. Finish something. Stay for another coffee.",
@@ -189,7 +189,7 @@ export const people = {
     leave: "Leave motivated",
   },
   es: {
-    alt: "Personas pasando tiempo juntas en un café",
+    alt: "Amigos brindando con cafés de arte latte y un cold brew en Lattitude Coffee",
     pill: "SALA / ACTIVA",
     heading: "Hecho para gente que construye cosas.",
     body: "No necesitas un puesto de trabajo para pertenecer aquí. Trae la laptop. Conoce a alguien. Empieza algo. Termina algo. Quédate por otro café.",
@@ -213,7 +213,8 @@ export const location = {
     instagramLabel: "Instagram",
     googleMaps: "Google Maps",
     instagram: "Instagram",
-    coordEyebrow: "LATTITUDE° / Exact coordinates",
+    mapTitle: "Map showing Lattitude Coffee in Paraíso Maya, Mérida, Yucatán",
+    coordEyebrow: "Lattitude Coffee / Exact coordinates",
   },
   es: {
     eyebrow: "Posición actual / Mérida",
@@ -228,7 +229,8 @@ export const location = {
     instagramLabel: "Instagram",
     googleMaps: "Google Maps",
     instagram: "Instagram",
-    coordEyebrow: "LATTITUDE° / Coordenadas exactas",
+    mapTitle: "Mapa con la ubicación de Lattitude Coffee en Paraíso Maya, Mérida, Yucatán",
+    coordEyebrow: "Lattitude Coffee / Coordenadas exactas",
   },
 } as const;
 
@@ -237,16 +239,16 @@ export const neighborhood = {
     eyebrow: "The area / Paraíso Maya",
     heading: "In the north of Mérida, inside Paraíso Maya.",
     body: [
-      "LATTITUDE° is on Calle 16 A, between 15 A and 15 B, inside Paraíso Maya in the north of Mérida — a calm, residential pocket right off the Periférico and easy to reach by car from the north side of the city.",
-      "There is street parking out front. Coming by rideshare? Set the destination to “LATTITUDE°, Paraíso Maya.” We're open Monday to Friday 9:00 AM–9:00 PM and Saturday 10:00 AM–6:00 PM — no reservation, just walk in.",
+      "Lattitude Coffee is on Calle 16 A, between 15 A and 15 B, inside Paraíso Maya in the north of Mérida — a calm, residential pocket right off the Periférico and easy to reach by car from the north side of the city.",
+      "There is street parking out front. Coming by rideshare? Set the destination to “Lattitude Coffee, Paraíso Maya.” We're open Monday to Friday 9:00 AM–9:00 PM and Saturday 10:00 AM–6:00 PM — no reservation, just walk in.",
     ],
   },
   es: {
     eyebrow: "La zona / Paraíso Maya",
     heading: "En el norte de Mérida, dentro de Paraíso Maya.",
     body: [
-      "LATTITUDE° está en Calle 16 A, entre 15 A y 15 B, dentro de Paraíso Maya, en el norte de Mérida — una zona residencial y tranquila, a un lado del Periférico y fácil de alcanzar en coche desde el norte de la ciudad.",
-      "Puedes estacionarte sobre la calle. ¿Llegas en aplicación de transporte? Marca como destino «LATTITUDE°, Paraíso Maya». Abrimos de lunes a viernes de 9:00 a 21:00 y los sábados de 10:00 a 18:00 — sin reservación, solo llega.",
+      "Lattitude Coffee está en Calle 16 A, entre 15 A y 15 B, dentro de Paraíso Maya, en el norte de Mérida — una zona residencial y tranquila, a un lado del Periférico y fácil de alcanzar en coche desde el norte de la ciudad.",
+      "Puedes estacionarte sobre la calle. ¿Llegas en aplicación de transporte? Marca como destino «Lattitude Coffee, Paraíso Maya». Abrimos de lunes a viernes de 9:00 a 21:00 y los sábados de 10:00 a 18:00 — sin reservación, solo llega.",
     ],
   },
 } as const;
@@ -257,7 +259,7 @@ export const faq = {
     heading: "Before you come by.",
     items: [
       {
-        q: "Where is LATTITUDE°?",
+        q: "Where is Lattitude Coffee?",
         a: "Paraiso Maya · Calle 16 A, between 15 A and 15 B · Mérida, Yucatán.",
       },
       {
@@ -265,7 +267,7 @@ export const faq = {
         a: "Monday–Friday, 9:00 AM–9:00 PM. Saturday, 10:00 AM–6:00 PM.",
       },
       {
-        q: "What does LATTITUDE° serve?",
+        q: "What does Lattitude Coffee serve?",
         a: "Specialty coffee, ceremonial matcha, cold brew, refreshers and food — natural ingredients first.",
       },
       {
@@ -273,19 +275,19 @@ export const faq = {
         a: "Yes. Natural, unflavored protein you can add to any drink on the menu — no fitness-shake taste, no upsell talk. Just ask at the counter.",
       },
       {
-        q: "Is LATTITUDE° good for working?",
+        q: "Is Lattitude Coffee good for working?",
         a: "Yes. Come with a laptop, a conversation or a half-finished idea. The space is built to stay comfortable while you get things done.",
       },
       {
         q: "Do you take reservations?",
-        a: "No — LATTITUDE° is walk-in only.",
+        a: "No — Lattitude Coffee is walk-in only.",
       },
       {
         q: "What payment methods do you accept?",
         a: "Cash and card.",
       },
       {
-        q: "What is LATTITUDE° × LET'S RIDE?",
+        q: "What is Lattitude Coffee × LET'S RIDE?",
         a: "An ongoing collaboration with the LET'S RIDE cycling community — coffee, ceremonial matcha and food for people who don't sit still.",
       },
     ],
@@ -295,7 +297,7 @@ export const faq = {
     heading: "Antes de venir.",
     items: [
       {
-        q: "¿Dónde está LATTITUDE°?",
+        q: "¿Dónde está Lattitude Coffee?",
         a: "Paraíso Maya · Calle 16 A, entre 15 A y 15 B · Mérida, Yucatán.",
       },
       {
@@ -303,7 +305,7 @@ export const faq = {
         a: "Lunes–Viernes, 9:00 AM–9:00 PM. Sábado, 10:00 AM–6:00 PM.",
       },
       {
-        q: "¿Qué sirve LATTITUDE°?",
+        q: "¿Qué sirve Lattitude Coffee?",
         a: "Café de especialidad, matcha ceremonial, cold brew, refrescos y comida — ingredientes naturales primero.",
       },
       {
@@ -316,14 +318,14 @@ export const faq = {
       },
       {
         q: "¿Aceptan reservaciones?",
-        a: "No — LATTITUDE° es solo walk-in.",
+        a: "No — Lattitude Coffee es solo walk-in.",
       },
       {
         q: "¿Qué métodos de pago aceptan?",
         a: "Efectivo y tarjeta.",
       },
       {
-        q: "¿Qué es LATTITUDE° × LET'S RIDE?",
+        q: "¿Qué es Lattitude Coffee × LET'S RIDE?",
         a: "Una colaboración activa con la comunidad ciclista LET'S RIDE — café, matcha ceremonial y comida para gente que no se queda quieta.",
       },
     ],
@@ -363,12 +365,12 @@ export const footer = {
 
 export const foundersSeo = {
   en: {
-    title: "About LATTITUDE° — Specialty coffee shop in Mérida",
-    description: "The story and intention behind LATTITUDE°, a specialty coffee shop in Paraíso Maya, Mérida — good coffee, useful design and details that have a reason to exist.",
+    title: "About Lattitude Coffee — Specialty coffee shop in Mérida",
+    description: "The story and intention behind Lattitude Coffee, a specialty coffee shop in Paraíso Maya, Mérida — good coffee, useful design and details that have a reason to exist.",
   },
   es: {
-    title: "Nosotros — LATTITUDE° · Cafetería de especialidad en Mérida",
-    description: "La historia y la intención detrás de LATTITUDE°, una cafetería de especialidad en Paraíso Maya, Mérida — buen café, diseño útil y detalles con una razón de ser.",
+    title: "Nosotros — Lattitude Coffee · Cafetería de especialidad en Mérida",
+    description: "La historia y la intención detrás de Lattitude Coffee, una cafetería de especialidad en Paraíso Maya, Mérida — buen café, diseño útil y detalles con una razón de ser.",
   },
 } as const;
 
@@ -376,13 +378,13 @@ export const foundersHero = {
   en: {
     eyebrow: "PEOPLE / IN MOTION",
     heading: "Built in motion.",
-    subhead: "LATTITUDE° is a coffee shop for people who are building something — a table to work from, a coffee worth the trip, a place that gets the details right.",
+    subhead: "Lattitude Coffee is a coffee shop for people who are building something — a table to work from, a coffee worth the trip, a place that gets the details right.",
     micro: ["STATUS / OPEN", "DIRECTION / FORWARD", "MADE WITH / INTENTION", "CURRENT POSITION / MÉRIDA"],
   },
   es: {
     eyebrow: "GENTE / EN MOVIMIENTO",
     heading: "Construido en movimiento.",
-    subhead: "LATTITUDE° es una cafetería para gente que está construyendo algo — una mesa desde donde trabajar, un café que valga la pena, un lugar que entiende los detalles.",
+    subhead: "Lattitude Coffee es una cafetería para gente que está construyendo algo — una mesa desde donde trabajar, un café que valga la pena, un lugar que entiende los detalles.",
     micro: ["ESTADO / ABIERTO", "DIRECCIÓN / ADELANTE", "HECHO CON / INTENCIÓN", "POSICIÓN ACTUAL / MÉRIDA"],
   },
 } as const;
@@ -393,7 +395,7 @@ export const foundersCommunity = {
     heading: "The people who show up are the point.",
     body: [
       "Entrepreneurs. Creatives. Students. Dancers between rehearsals. People passing through. Different jobs, similar momentum.",
-      "LATTITUDE° was built around the people who actually use it — not around an idea of what a coffee shop should look like.",
+      "Lattitude Coffee was built around the people who actually use it — not around an idea of what a coffee shop should look like.",
     ],
     micro: ["WORK MODE / ON", "ROOM / ACTIVE", "PEOPLE / BUILDING", "MOVEMENT / CONTINUOUS"],
   },
@@ -402,7 +404,7 @@ export const foundersCommunity = {
     heading: "La gente que llega es el punto.",
     body: [
       "Emprendedores. Creativos. Estudiantes. Bailarines entre ensayos. Gente de paso. Trabajos distintos, el mismo impulso.",
-      "LATTITUDE° se construyó alrededor de la gente que realmente lo usa — no alrededor de una idea de cómo debería verse una cafetería.",
+      "Lattitude Coffee se construyó alrededor de la gente que realmente lo usa — no alrededor de una idea de cómo debería verse una cafetería.",
     ],
     micro: ["MODO TRABAJO / ON", "SALA / ACTIVA", "GENTE / CONSTRUYENDO", "MOVIMIENTO / CONTINUO"],
   },
@@ -427,12 +429,12 @@ export const foundersOrigin = {
   en: {
     eyebrow: "HOW IT STARTED",
     heading: "Two people. No shortcuts.",
-    body: "LATTITUDE° started with two people who loved coffee before they knew how to make it well. They learned with help from a barista friend, one question at a time — and paid attention to everything else along the way: how spaces feel, how rhythm works, how small decisions add up. None of that is the interesting part. What happens here is.",
+    body: "Lattitude Coffee started with two people who loved coffee before they knew how to make it well. They learned with help from a barista friend, one question at a time — and paid attention to everything else along the way: how spaces feel, how rhythm works, how small decisions add up. None of that is the interesting part. What happens here is.",
   },
   es: {
     eyebrow: "CÓMO EMPEZÓ",
     heading: "Dos personas. Sin atajos.",
-    body: "LATTITUDE° empezó con dos personas que amaban el café antes de saber prepararlo bien. Aprendieron con la ayuda de un amigo barista, una pregunta a la vez — y pusieron atención a todo lo demás en el camino: cómo se sienten los espacios, cómo funciona el ritmo, cómo se suman las pequeñas decisiones. Esa no es la parte interesante. Lo que pasa aquí, sí.",
+    body: "Lattitude Coffee empezó con dos personas que amaban el café antes de saber prepararlo bien. Aprendieron con la ayuda de un amigo barista, una pregunta a la vez — y pusieron atención a todo lo demás en el camino: cómo se sienten los espacios, cómo funciona el ritmo, cómo se suman las pequeñas decisiones. Esa no es la parte interesante. Lo que pasa aquí, sí.",
   },
 } as const;
 
@@ -444,8 +446,8 @@ export const foundersIntention = {
       "A table should be comfortable because someone might work from it for hours. An outlet should be where you need it. The internet should work. The ingredients should make sense.",
       "That is not a campaign line. It is the filter behind every decision — so the time you spend here works a little better than the time before it.",
     ],
-    img: "/images/1766250343186.webp",
-    alt: "Barista preparing specialty coffee",
+    img: "/images/barista-lattitude-cafe-especialidad.webp",
+    alt: "Lattitude Coffee barista preparing specialty coffee at the espresso machine",
     micro: ["STANDARD / RISING", "STATUS / READY", "QUALITY / STANDARD", "SIGNAL / CLEAR"],
   },
   es: {
@@ -455,8 +457,8 @@ export const foundersIntention = {
       "Una mesa debe ser cómoda porque alguien podría trabajar desde ahí por horas. Un contacto debe estar donde lo necesitas. El internet debe funcionar. Los ingredientes deben tener sentido.",
       "Eso no es una frase de campaña. Es el filtro detrás de cada decisión — para que el tiempo que pasas aquí funcione un poco mejor que el de antes.",
     ],
-    img: "/images/1766250343186.webp",
-    alt: "Barista preparando café de especialidad",
+    img: "/images/barista-lattitude-cafe-especialidad.webp",
+    alt: "Barista de Lattitude Coffee preparando café de especialidad en la máquina de espresso",
     micro: ["ESTÁNDAR / SUBIENDO", "ESTADO / LISTO", "CALIDAD / ESTÁNDAR", "SEÑAL / CLARA"],
   },
 } as const;
@@ -466,14 +468,14 @@ export const foundersClosing = {
     eyebrow: "CURRENT POSITION / MÉRIDA",
     heading: ["This isn't about where we've been.", "It's about where you're headed next."],
     supporting: "Coffee for people in motion. Made with intention in Mérida, Yucatán.",
-    ctaVisit: "Visit LATTITUDE",
+    ctaVisit: "Visit Lattitude Coffee",
     ctaPopular: "See what people order most",
   },
   es: {
     eyebrow: "POSICIÓN ACTUAL / MÉRIDA",
     heading: ["Esto no se trata de dónde hemos estado.", "Se trata de hacia dónde vas tú ahora."],
     supporting: "Café para gente en movimiento. Hecho con intención en Mérida, Yucatán.",
-    ctaVisit: "Visitar LATTITUDE",
+    ctaVisit: "Visitar Lattitude Coffee",
     ctaPopular: "Ver lo que más se pide",
   },
 } as const;
@@ -481,27 +483,27 @@ export const foundersClosing = {
 /* Unlisted partner page — LET'S RIDE. Not linked from nav/footer/sitemap; direct-link only. */
 export const rideSeo = {
   en: {
-    title: "LATTITUDE° × LET'S RIDE",
+    title: "Lattitude Coffee × LET'S RIDE",
     description: "Coffee, ceremonial matcha and food for the LET'S RIDE community — made for people who don't sit still.",
   },
   es: {
-    title: "LATTITUDE° × LET'S RIDE",
+    title: "Lattitude Coffee × LET'S RIDE",
     description: "Café, matcha ceremonial y comida para la comunidad de LET'S RIDE — hecho para quienes no se quedan quietos.",
   },
 } as const;
 
 export const rideHero = {
   en: {
-    eyebrow: "LATTITUDE° × LET'S RIDE",
+    eyebrow: "Lattitude Coffee × LET'S RIDE",
     heading: "Class ends. The rhythm doesn't.",
-    subhead: "LET'S RIDE gets your legs moving to the beat. LATTITUDE° keeps it going after — coffee, ceremonial matcha and food made for people who don't sit still.",
+    subhead: "LET'S RIDE gets your legs moving to the beat. Lattitude Coffee keeps it going after — coffee, ceremonial matcha and food made for people who don't sit still.",
     micro: ["RHYTHM / CONTINUOUS", "STATUS / OPEN", "DIRECTION / FORWARD", "MOVEMENT / SHARED"],
     ctaFavorites: "See favorite drinks",
   },
   es: {
-    eyebrow: "LATTITUDE° × LET'S RIDE",
+    eyebrow: "Lattitude Coffee × LET'S RIDE",
     heading: "La clase termina. El ritmo no.",
-    subhead: "LET'S RIDE pone tus piernas en movimiento al ritmo de la clase. LATTITUDE° lo sigue después — café, matcha ceremonial y comida para quienes no se quedan quietos.",
+    subhead: "LET'S RIDE pone tus piernas en movimiento al ritmo de la clase. Lattitude Coffee lo sigue después — café, matcha ceremonial y comida para quienes no se quedan quietos.",
     micro: ["RITMO / CONTINUO", "ESTADO / ABIERTO", "DIRECCIÓN / ADELANTE", "MOVIMIENTO / COMPARTIDO"],
     ctaFavorites: "Ver bebidas favoritas",
   },
@@ -567,21 +569,21 @@ export const rideClosing = {
 
 export const notFound = {
   en: {
-    seoTitle: "404 — LATTITUDE°",
+    seoTitle: "404 — Lattitude Coffee",
     code: "404",
     eyebrow: "STATUS / NOT FOUND",
     heading: "Wrong coordinates.",
     body: "This page moved, or it was never here. Either way, you're not lost — just off the route.",
-    cta: "Back to LATTITUDE",
+    cta: "Back to Lattitude Coffee",
     micro: ["STATUS / 404", "DIRECTION / HOME", "CURRENT POSITION / UNKNOWN"],
   },
   es: {
-    seoTitle: "404 — LATTITUDE°",
+    seoTitle: "404 — Lattitude Coffee",
     code: "404",
     eyebrow: "ESTADO / NO ENCONTRADO",
     heading: "Coordenadas equivocadas.",
     body: "Esta página se movió, o nunca existió. De cualquier forma, no estás perdido — solo fuera de ruta.",
-    cta: "Volver a LATTITUDE",
+    cta: "Volver a Lattitude Coffee",
     micro: ["ESTADO / 404", "DIRECCIÓN / INICIO", "POSICIÓN ACTUAL / DESCONOCIDA"],
   },
 } as const;
