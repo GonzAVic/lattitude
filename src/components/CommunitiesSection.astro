@@ -1,0 +1,38 @@
+---
+import ArrowIcon from "./ArrowIcon.astro";
+import { communitiesList, localePath, type Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const list = communitiesList[lang];
+
+const t = lang === "en"
+  ? { eyebrow: "Communities", heading: "Who we ride and recover with.", cta: "All communities", viewLabel: "View page", active: "ACTIVE" }
+  : { eyebrow: "Comunidades", heading: "Con quién nos movemos y recuperamos.", cta: "Todas las comunidades", viewLabel: "Ver página", active: "ACTIVA" };
+
+const communitiesHref = localePath(lang, "/communities/");
+---
+
+<section class="intent" id="communities">
+  <div class="section-head">
+    <h3>{t.heading}</h3>
+    <a class="btn hoverable" href={communitiesHref}>{t.cta} <ArrowIcon dir="right" /></a>
+  </div>
+  <div class="communities-grid">
+    {list.map((item) => (
+      <div class="community-card">
+        <div class="community-card-top">
+          <span class="meta muted">{item.kind}</span>
+          <span class="pill"><span class="dot"></span><span>{t.active}</span></span>
+        </div>
+        <h3>{item.name}</h3>
+        <p class="community-tagline">{item.tagline}</p>
+        <div class="community-card-actions">
+          <a class="btn hoverable" href={localePath(lang, `/${item.slug}`)}>{t.viewLabel} <ArrowIcon dir="right" /></a>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

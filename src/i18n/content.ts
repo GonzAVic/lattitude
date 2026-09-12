@@ -34,6 +34,7 @@ export const nav = {
     concept: "Concept",
     drinks: "Drinks",
     people: "People",
+    communities: "Communities",
     visit: "Visit",
     about: "About",
     currentPosition: "Current position",
@@ -48,6 +49,7 @@ export const nav = {
     concept: "Concepto",
     drinks: "Bebidas",
     people: "Gente",
+    communities: "Comunidades",
     visit: "Visítanos",
     about: "Nosotros",
     currentPosition: "Posición actual",
@@ -290,6 +292,10 @@ export const faq = {
         q: "What is Lattitude Coffee × LET'S RIDE?",
         a: "An ongoing collaboration with the LET'S RIDE cycling community — coffee, ceremonial matcha and food for people who don't sit still.",
       },
+      {
+        q: "What is Lattitude Coffee × Vatten?",
+        a: "An ongoing collaboration with Vatten Terapia Física, a physiotherapy and rehabilitation clinic in Mérida — coffee and food to recover on, after therapy.",
+      },
     ],
   },
   es: {
@@ -328,6 +334,10 @@ export const faq = {
         q: "¿Qué es Lattitude Coffee × LET'S RIDE?",
         a: "Una colaboración activa con la comunidad ciclista LET'S RIDE — café, matcha ceremonial y comida para gente que no se queda quieta.",
       },
+      {
+        q: "¿Qué es Lattitude Coffee × Vatten?",
+        a: "Una colaboración activa con Vatten Terapia Física, una clínica de fisioterapia y rehabilitación en Mérida — café y comida para reponerte, después de terapia.",
+      },
     ],
   },
 } as const;
@@ -339,6 +349,7 @@ export const footer = {
     concept: "Concept",
     drinks: "Drinks",
     people: "People",
+    communities: "Communities",
     visit: "Visit",
     about: "About",
     connectLabel: "Connect",
@@ -353,6 +364,7 @@ export const footer = {
     concept: "Concepto",
     drinks: "Bebidas",
     people: "Gente",
+    communities: "Comunidades",
     visit: "Visítanos",
     about: "Nosotros",
     connectLabel: "Conecta",
@@ -480,7 +492,7 @@ export const foundersClosing = {
   },
 } as const;
 
-/* Unlisted partner page — LET'S RIDE. Not linked from nav/footer/sitemap; direct-link only. */
+/* Community partner page — LET'S RIDE. Linked from the Communities hub. */
 export const rideSeo = {
   en: {
     title: "Lattitude Coffee × LET'S RIDE",
@@ -564,6 +576,224 @@ export const rideClosing = {
     supporting: "Trae a toda la clase. El ritmo se disfruta más en grupo.",
     ctaDirections: "Cómo llegar",
     ctaPopular: "Ver lo que más se pide",
+  },
+} as const;
+
+/* Community partner page — VATTEN (physical therapy & rehab). Linked from the Communities hub. */
+export const vattenSeo = {
+  en: {
+    title: "Lattitude Coffee × Vatten",
+    description: "Coffee and food for the Vatten Terapia Física community in Mérida — made for people recovering, rebuilding and getting back in motion.",
+  },
+  es: {
+    title: "Lattitude Coffee × Vatten",
+    description: "Café y comida para la comunidad de Vatten Terapia Física en Mérida — hecho para quienes se recuperan, se reconstruyen y vuelven al movimiento.",
+  },
+} as const;
+
+export const vattenHero = {
+  en: {
+    eyebrow: "Lattitude Coffee × Vatten",
+    heading: "Therapy ends. Recovery keeps going.",
+    subhead: "Vatten Terapia Física works on physiotherapy, rehabilitation and prevention across Mérida. Lattitude Coffee is where the recovery continues — good coffee, natural ingredients and a place to sit still for once.",
+    micro: ["RECOVERY / CONTINUOUS", "STATUS / OPEN", "DIRECTION / FORWARD", "MOVEMENT / SHARED"],
+    ctaFavorites: "See favorite drinks",
+  },
+  es: {
+    eyebrow: "Lattitude Coffee × Vatten",
+    heading: "La terapia termina. La recuperación sigue.",
+    subhead: "Vatten Terapia Física trabaja fisioterapia, rehabilitación y prevención en Mérida. Lattitude Coffee es donde sigue la recuperación — buen café, ingredientes naturales y un lugar para quedarte quieto, por una vez.",
+    micro: ["RECUPERACIÓN / CONTINUA", "ESTADO / ABIERTO", "DIRECCIÓN / ADELANTE", "MOVIMIENTO / COMPARTIDO"],
+    ctaFavorites: "Ver bebidas favoritas",
+  },
+} as const;
+
+export const vattenDrinksSection = {
+  en: {
+    eyebrow: "GOOD AFTER A SESSION",
+    heading: "What to order on your way out.",
+    body: "Nothing that fights recovery — just coffee, matcha and food that make the rest of the day easier.",
+  },
+  es: {
+    eyebrow: "BUENO DESPUÉS DE UNA SESIÓN",
+    heading: "Qué pedir al salir.",
+    body: "Nada que compita con la recuperación — solo café, matcha y comida que hacen más fácil el resto del día.",
+  },
+} as const;
+
+export const vattenDrinks = {
+  en: [
+    { img: "/images/matcha-horchata.webp", alt: "Matcha Horchata drink", name: "Matcha Horchata", coord: "MATCHA / HORCHATA / MILK", tag: "No coffee / Calm", icon: "crosshair" },
+    { img: "/images/vanilla-coldbrew-latte.webp", alt: "Vanilla Cold Brew Latte drink", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VANILLA / MILK", tag: "Coffee / Cold", icon: "star" },
+    { img: "/images/orange-tonic.webp", alt: "Orange Tonic drink", name: "Orange Tonic", coord: "ORANGE / TONIC / SODA", tag: "No coffee / Bright", icon: "star" },
+    { img: "/images/protein-mocha.webp", alt: "Protein Mocha drink", name: "Protein Mocha", coord: "ESPRESSO / COCOA / PROTEIN", tag: "Coffee / Fuel", icon: "plus" },
+    { img: "/images/mango-lychee-refresher.webp", alt: "Mango Lychee Refresher drink", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "No coffee / Bright", icon: "star" },
+  ],
+  es: [
+    { img: "/images/matcha-horchata.webp", alt: "Bebida Matcha Horchata", name: "Matcha Horchata", coord: "MATCHA / HORCHATA / LECHE", tag: "Sin café / Calma", icon: "crosshair" },
+    { img: "/images/vanilla-coldbrew-latte.webp", alt: "Bebida Vanilla Cold Brew Latte", name: "Vanilla Cold Brew Latte", coord: "COLD BREW / VAINILLA / LECHE", tag: "Café / Frío", icon: "star" },
+    { img: "/images/orange-tonic.webp", alt: "Bebida Orange Tonic", name: "Orange Tonic", coord: "NARANJA / TÓNICA / SODA", tag: "Sin café / Fresco", icon: "star" },
+    { img: "/images/protein-mocha.webp", alt: "Bebida Protein Mocha", name: "Protein Mocha", coord: "ESPRESSO / CACAO / PROTEÍNA", tag: "Café / Energía", icon: "plus" },
+    { img: "/images/mango-lychee-refresher.webp", alt: "Bebida Mango Lychee Refresher", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "Sin café / Fresco", icon: "star" },
+  ],
+} as const;
+
+export const vattenWellness = {
+  en: {
+    eyebrow: "ADD-ON / AVAILABLE",
+    heading: "Protein, if your plan calls for it.",
+    body: "Natural, unflavored protein you can add to any drink on this menu — no fitness-shake taste, no upsell talk. Just ask at the counter.",
+  },
+  es: {
+    eyebrow: "EXTRA / DISPONIBLE",
+    heading: "Proteína, si tu plan la pide.",
+    body: "Proteína natural, sin sabor, que puedes agregar a cualquier bebida del menú — sin sabor a shake, sin discurso de venta. Solo pídela en la barra.",
+  },
+} as const;
+
+export const vattenClosing = {
+  en: {
+    heading: "Therapy day. Coffee day.",
+    supporting: "Bring your therapist. Recovery's better with good coffee.",
+    ctaDirections: "Get directions",
+    ctaPopular: "See what people order most",
+  },
+  es: {
+    heading: "Día de terapia. Día de café.",
+    supporting: "Trae a tu terapeuta. La recuperación se disfruta más con buen café.",
+    ctaDirections: "Cómo llegar",
+    ctaPopular: "Ver lo que más se pide",
+  },
+} as const;
+
+/* Communities hub — directory of Lattitude Coffee's partner communities. */
+export const communitiesSeo = {
+  en: {
+    title: "Communities — Lattitude Coffee",
+    description: "The communities Lattitude Coffee partners with in Mérida — LET'S RIDE and Vatten Terapia Física — and how the cross-promotion works.",
+  },
+  es: {
+    title: "Comunidades — Lattitude Coffee",
+    description: "Las comunidades con las que colabora Lattitude Coffee en Mérida — LET'S RIDE y Vatten Terapia Física — y cómo funciona la publicidad cruzada.",
+  },
+} as const;
+
+export const communitiesHero = {
+  en: {
+    eyebrow: "NETWORK / MÉRIDA",
+    heading: "Communities in motion.",
+    subhead: "Lattitude Coffee doesn't grow alone. We partner with communities that share the same idea — coffee for people in motion — whatever that motion looks like for them.",
+    micro: ["STATUS / GROWING", "DIRECTION / FORWARD", "MADE WITH / INTENTION", "CURRENT POSITION / MÉRIDA"],
+  },
+  es: {
+    eyebrow: "RED / MÉRIDA",
+    heading: "Comunidades en movimiento.",
+    subhead: "Lattitude Coffee no crece sola. Colaboramos con comunidades que comparten la misma idea — café para gente en movimiento — sea cual sea la forma que tome ese movimiento.",
+    micro: ["ESTADO / CRECIENDO", "DIRECCIÓN / ADELANTE", "HECHO CON / INTENCIÓN", "POSICIÓN ACTUAL / MÉRIDA"],
+  },
+} as const;
+
+export const communitiesIntro = {
+  en: {
+    eyebrow: "WHY PARTNER",
+    heading: "Different motion, same idea.",
+    body: [
+      "Some communities move fast — a class, a ride, a workout. Others move slow and deliberate — recovery, therapy, prevention. Both end the same way: people looking for a good place to land.",
+      "Each partner community gets its own page here, with the drinks and details that make sense for them — and every person who shows up with that community gets treated like they already belong.",
+    ],
+  },
+  es: {
+    eyebrow: "POR QUÉ COLABORAR",
+    heading: "Movimiento distinto, misma idea.",
+    body: [
+      "Algunas comunidades se mueven rápido — una clase, un ride, un entrenamiento. Otras se mueven despacio y con intención — recuperación, terapia, prevención. Ambas terminan igual: gente buscando un buen lugar para aterrizar.",
+      "Cada comunidad aliada tiene su propia página aquí, con las bebidas y detalles que tienen sentido para ella — y cualquier persona que llegue desde esa comunidad ya pertenece, desde que cruza la puerta.",
+    ],
+  },
+} as const;
+
+export const communitiesList = {
+  en: [
+    {
+      slug: "letsride",
+      name: "LET'S RIDE",
+      kind: "Indoor cycling",
+      tagline: "Class ends. The rhythm doesn't.",
+      body: "An indoor cycling community that trains in rhythm. Lattitude Coffee is where the ride continues after class — coffee, ceremonial matcha and food for people who don't sit still.",
+      tags: ["Movement / Cardio", "Community / Active"],
+      instagram: null as string | null,
+      external: null as { label: string; href: string } | null,
+    },
+    {
+      slug: "vatten",
+      name: "VATTEN",
+      kind: "Physical therapy & rehab",
+      tagline: "Recovery has a rhythm too.",
+      body: "Vatten Terapia Física works on physiotherapy, rehabilitation and prevention across Mérida. Lattitude Coffee is where the recovery continues — hydration, natural ingredients and a place to sit still for once.",
+      tags: ["Movement / Recovery", "Community / Wellness"],
+      instagram: "https://www.instagram.com/vattenterapia/" as string | null,
+      external: { label: "Book a session", href: "https://vattenmerida.site.agendapro.com/mx/sucursal/159438" } as { label: string; href: string } | null,
+    },
+  ],
+  es: [
+    {
+      slug: "letsride",
+      name: "LET'S RIDE",
+      kind: "Ciclismo indoor",
+      tagline: "La clase termina. El ritmo no.",
+      body: "Una comunidad de ciclismo indoor que entrena al ritmo de la clase. Lattitude Coffee es donde sigue el ride después — café, matcha ceremonial y comida para quienes no se quedan quietos.",
+      tags: ["Movimiento / Cardio", "Comunidad / Activa"],
+      instagram: null as string | null,
+      external: null as { label: string; href: string } | null,
+    },
+    {
+      slug: "vatten",
+      name: "VATTEN",
+      kind: "Fisioterapia y rehabilitación",
+      tagline: "La recuperación también tiene ritmo.",
+      body: "Vatten Terapia Física trabaja fisioterapia, rehabilitación y prevención en Mérida. Lattitude Coffee es donde sigue la recuperación — hidratación, ingredientes naturales y un lugar para quedarte quieto, por una vez.",
+      tags: ["Movimiento / Recuperación", "Comunidad / Bienestar"],
+      instagram: "https://www.instagram.com/vattenterapia/" as string | null,
+      external: { label: "Agenda una sesión", href: "https://vattenmerida.site.agendapro.com/mx/sucursal/159438" } as { label: string; href: string } | null,
+    },
+  ],
+} as const;
+
+export const communitiesCrossPromo = {
+  en: {
+    eyebrow: "HOW IT WORKS",
+    heading: "One relationship, two directions.",
+    note: "The same playbook, adapted for every community we add — none of it depends on either side having a marketing team.",
+    rows: [
+      { title: "Shared perk card", tag: "Redeemable both ways", icon: "crosshair" },
+      { title: "Joint social content", tag: "Same story, two accounts", icon: "star" },
+      { title: "Welcome code after class or session", tag: "One community, one perk", icon: "crosshair" },
+      { title: "QR signage in both spaces", tag: "Table tents, front desk, receipts", icon: "arrow" },
+    ],
+  },
+  es: {
+    eyebrow: "CÓMO FUNCIONA",
+    heading: "Una relación, dos direcciones.",
+    note: "El mismo esquema, adaptado a cada comunidad que sumamos — nada de esto depende de que alguno de los dos tenga equipo de marketing.",
+    rows: [
+      { title: "Tarjeta de beneficio compartida", tag: "Canjeable en ambos sentidos", icon: "crosshair" },
+      { title: "Contenido conjunto en redes", tag: "Misma historia, dos cuentas", icon: "star" },
+      { title: "Código de bienvenida post-clase o sesión", tag: "Una comunidad, un beneficio", icon: "crosshair" },
+      { title: "Señalética con QR en ambos espacios", tag: "Mesas, recepción, tickets", icon: "arrow" },
+    ],
+  },
+} as const;
+
+export const communitiesClosing = {
+  en: {
+    heading: "Know a community that fits?",
+    supporting: "If your community already moves toward something — training, recovery, building, learning — there's probably a page here waiting to happen.",
+    ctaInstagram: "Message us on Instagram",
+  },
+  es: {
+    heading: "¿Conoces una comunidad que encaje?",
+    supporting: "Si tu comunidad ya se mueve hacia algo — entrenar, recuperarse, construir, aprender — probablemente hay una página aquí esperando a pasar.",
+    ctaInstagram: "Escríbenos por Instagram",
   },
 } as const;
 

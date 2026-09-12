@@ -11,6 +11,7 @@ const t = nav[lang];
 const switchHref = localePath(otherLocale(lang), path);
 const homeHref = localePath(lang);
 const aboutHref = localePath(lang, "/about/");
+const communitiesHref = localePath(lang, "/communities/");
 ---
 
 <nav>
@@ -50,6 +51,7 @@ const aboutHref = localePath(lang, "/about/");
     <a class="big overlay-link hoverable" href={`${homeHref}#concept`}>{t.concept}</a>
     <a class="big overlay-link hoverable" href={`${homeHref}#drinks`}>{t.drinks}</a>
     <a class="big overlay-link hoverable" href={`${homeHref}#people`}>{t.people}</a>
+    <a class="big overlay-link hoverable" href={communitiesHref}>{t.communities}</a>
     <a class="big overlay-link hoverable" href={`${homeHref}#location`}>{t.visit}</a>
     <a class="big overlay-link hoverable" href={aboutHref}>{t.about}</a>
   </div>

@@ -446,7 +446,8 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
 }
 .brand-lockup svg{height:clamp(24px,3.2vw,36px);width:auto;fill:currentColor}
 .brand-lockup .x{font-size:clamp(16px,1.8vw,22px);color:var(--secondary);font-weight:600}
-.brand-lockup .letsride-word{
+.brand-lockup .letsride-word,
+.brand-lockup .vatten-word{
   font-size:clamp(22px,3vw,34px);font-weight:800;letter-spacing:-.02em;font-style:italic;
 }
 .founders-hero p{
@@ -506,12 +507,30 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
 .founders-closing .hero-actions{margin-top:36px}
 .founders-closing .coord-strip{justify-content:center;margin-top:56px}
 
+/* COMMUNITIES */
+.communities-crosspromo{border-top:1px solid var(--line)}
+.communities-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3vw,40px)}
+.community-card{
+  border:1px solid #000;border-radius:4px;padding:clamp(26px,3vw,40px);
+  display:flex;flex-direction:column;
+}
+.community-card-top{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.community-card h3{
+  margin:22px 0 0;font-size:clamp(30px,3.2vw,44px);font-weight:800;letter-spacing:-.03em;line-height:.98;
+}
+.community-tagline{
+  margin:10px 0 0;font-size:clamp(17px,1.6vw,20px);font-weight:600;letter-spacing:-.02em;
+}
+.community-card > p.muted{margin-top:14px;color:var(--secondary);line-height:1.55;font-size:15px}
+.community-card .coord-strip{margin-top:26px}
+.community-card-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+
 @media(max-width:950px){
   .founder-media{grid-template-columns:1fr}
   .founder-media.reverse .founder-media-copy{order:0}
 
   body{cursor:auto}.cursor{display:none}.menu-btn{cursor:pointer}.coord-rail{display:none}
-  .overlay,.intent-grid,.drinks-top,.drink-feature,.lab-grid,.people-grid,.location-grid,.footer-grid{grid-template-columns:1fr}
+  .overlay,.intent-grid,.drinks-top,.drink-feature,.lab-grid,.people-grid,.location-grid,.footer-grid,.communities-grid{grid-template-columns:1fr}
   .intent-grid{gap:64px}
   .drink-image{min-height:400px;border-right:0;border-bottom:1px solid var(--line)}
   .drink-menu{padding:0 var(--pad)}

@@ -1,0 +1,123 @@
+---
+import ArrowIcon from "./ArrowIcon.astro";
+import DrinkFeature from "./DrinkFeature.astro";
+import {
+  vattenHero,
+  vattenDrinksSection,
+  vattenDrinks,
+  vattenWellness,
+  vattenClosing,
+  localePath,
+  type Locale,
+} from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+
+const hero = vattenHero[lang];
+const drinksSection = vattenDrinksSection[lang];
+const drinks = vattenDrinks[lang];
+const wellness = vattenWellness[lang];
+const closing = vattenClosing[lang];
+
+const popularHref = `${localePath(lang)}#drinks`;
+const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
+const vattenHref = "https://vattenmerida.site.agendapro.com/mx/sucursal/159438";
+---
+
+<section class="founders-hero">
+  <div class="brand-lockup" aria-hidden="true">
+    <svg viewBox="672 442 540 220" role="img" aria-label="Lattitude Coffee">
+      <path d="M687.81,644.08V457.64h8.88v178.89h38.62v7.55H687.81z"/>
+      <path d="M742.39,644.08l27.97-186.44h8.88l27.97,186.44h-8.88l-7.99-52.82h-31.07l-7.99,52.82H742.39z M774.63,475.19l-3.32,26.84l-10.72,81.68H789l-10.85-81.68l-3.18-26.84"/>
+      <path d="M824.51,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H824.51z"/>
+      <path d="M885.76,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H885.76z"/>
+      <path d="M977.93,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H977.93z"/>
+      <path d="M931.92,644.08V457.64h8.88v186.44H931.92z"/>
+      <path d="M977.85,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H977.85z"/>
+      <path d="M1018.02,617.45v-159.8h8.88v161.13c0,14.65,7.55,20.42,18.2,20.42c10.65,0,18.2-5.77,18.2-20.42V457.64h8.88v159.8c0,18.64-9.32,29.3-27.08,29.3C1027.35,646.74,1018.02,636.09,1018.02,617.45z"/>
+      <path d="M1083.94,457.64h24.86c17.76,0,27.08,9.77,27.08,29.3v127.84c0,19.53-9.32,29.3-27.08,29.3h-24.86V457.64z M1092.82,636.53h16.42c11.54,0,17.76-7.1,17.76-20.42V485.61c0-13.76-6.22-20.42-17.76-20.42h-16.42V636.53z"/>
+      <path d="M1148.52,644.08V457.64h47.5v7.55h-38.62v81.68h31.96v7.55h-31.96v82.12h38.62v7.55H1148.52z"/>
+    </svg>
+    <span class="x">&times;</span>
+    <span class="vatten-word">VATTEN</span>
+  </div>
+  <h1>{hero.heading}</h1>
+  <p>{hero.subhead}</p>
+  <div class="hero-actions">
+    <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
+    <a class="btn hoverable" href="#drinks">{hero.ctaFavorites} <ArrowIcon dir="down" /></a>
+  </div>
+  <div class="coord-strip" aria-hidden="true">
+    {hero.micro.map((m) => <span>{m}</span>)}
+  </div>
+  <div class="statement-micro" aria-hidden="true">
+    <img src="/micrographic-letsride.svg" alt="" />
+  </div>
+</section>
+
+<section class="drinks" id="drinks">
+  <div class="drinks-top">
+    <div>
+      <div class="meta muted" style="margin-bottom:18px">{drinksSection.eyebrow}</div>
+      <h2>{drinksSection.heading}</h2>
+    </div>
+    <p>{drinksSection.body}</p>
+  </div>
+
+  <DrinkFeature drinks={drinks} />
+</section>
+
+<section class="founder-section center">
+  <div class="meta muted eyebrow">{wellness.eyebrow}</div>
+  <h2>{wellness.heading}</h2>
+  <p>{wellness.body}</p>
+  <div class="protein-symbol" aria-hidden="true">
+    <img id="proteinSymbolImg" src="/micrographic-symbols/sym-01.svg" alt="" />
+  </div>
+</section>
+
+<script>
+  const SYMBOL_COUNT = 18;
+  const CYCLE_MS = 650;
+  const FADE_MS = 150;
+
+  const el = document.getElementById("proteinSymbolImg") as HTMLImageElement | null;
+  if (el && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const symbols = Array.from(
+      { length: SYMBOL_COUNT },
+      (_, i) => `/micrographic-symbols/sym-${String(i + 1).padStart(2, "0")}.svg`
+    );
+    let last = -1;
+    function pick() {
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * symbols.length);
+      } while (idx === last && symbols.length > 1);
+      last = idx;
+      return symbols[idx];
+    }
+    el.src = pick();
+    setInterval(() => {
+      el.style.opacity = "0";
+      setTimeout(() => {
+        el.src = pick();
+        el.style.opacity = "1";
+      }, FADE_MS);
+    }, CYCLE_MS);
+  }
+</script>
+
+<section class="founders-closing">
+  <h2>{closing.heading}</h2>
+  <p>{closing.supporting}</p>
+  <div class="hero-actions">
+    <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
+    <a class="btn hoverable" href={popularHref}>{closing.ctaPopular} <ArrowIcon dir="right" /></a>
+  </div>
+  <div class="hero-actions" style="margin-top:14px">
+    <a class="btn hoverable" href={vattenHref} target="_blank" rel="noopener">Vatten Terapia Física <ArrowIcon dir="up-right" /></a>
+  </div>
+</section>

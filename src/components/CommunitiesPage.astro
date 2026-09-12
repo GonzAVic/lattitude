@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Communities from "./Communities.astro";
+import { communitiesSeo, type Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const seo = communitiesSeo[lang];
+---
+
+<BaseLayout lang={lang} path="/communities/" title={seo.title} description={seo.description}>
+  <Communities lang={lang} />
+</BaseLayout>

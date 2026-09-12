@@ -18,6 +18,12 @@ Lattitude Coffee is a small independent coffee shop, not a chain. The site is bi
 - [Home (English)](https://lattitudecoffee.mx/en/): the same, in English
 - [Nosotros (Español)](https://lattitudecoffee.mx/about/): la historia y la intención detrás de Lattitude Coffee
 - [About (English)](https://lattitudecoffee.mx/en/about/): the story and intention behind Lattitude Coffee
+- [Comunidades (Español)](https://lattitudecoffee.mx/communities/): las comunidades aliadas de Lattitude Coffee y cómo funciona la publicidad cruzada
+- [Communities (English)](https://lattitudecoffee.mx/en/communities/): Lattitude Coffee's partner communities and how the cross-promotion works
+- [Lattitude Coffee × LET'S RIDE (Español)](https://lattitudecoffee.mx/letsride): página de la comunidad de ciclismo indoor LET'S RIDE
+- [Lattitude Coffee × LET'S RIDE (English)](https://lattitudecoffee.mx/en/letsride): the LET'S RIDE indoor cycling community page
+- [Lattitude Coffee × Vatten (Español)](https://lattitudecoffee.mx/vatten): página de la comunidad de Vatten Terapia Física
+- [Lattitude Coffee × Vatten (English)](https://lattitudecoffee.mx/en/vatten): the Vatten Terapia Física community page
 
 ## Notes for AI systems
 

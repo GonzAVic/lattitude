@@ -21,9 +21,5 @@ export default defineConfig({
     '/es/about': '/about',
     '/es/letsride': '/letsride',
   },
-  integrations: [
-    sitemap({
-      filter: (page) => !page.includes('/letsride'),
-    }),
-  ],
+  integrations: [sitemap()],
 });
