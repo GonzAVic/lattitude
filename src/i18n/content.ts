@@ -31,10 +31,8 @@ export const nav = {
   en: {
     openMenu: "Open menu",
     closeMenu: "Close menu",
-    concept: "Concept",
     drinks: "Drinks",
     menu: "Menu",
-    people: "People",
     communities: "Communities",
     visit: "Visit",
     about: "About",
@@ -47,10 +45,8 @@ export const nav = {
   es: {
     openMenu: "Abrir menú",
     closeMenu: "Cerrar menú",
-    concept: "Concepto",
     drinks: "Bebidas",
     menu: "Menú",
-    people: "Gente",
     communities: "Comunidades",
     visit: "Visítanos",
     about: "Nosotros",
