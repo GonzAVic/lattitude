@@ -40,6 +40,7 @@ const jsonLd = {
   "image": ogImage.toString(),
   "url": new URL(localePath("es"), Astro.site).toString(),
   "hasMap": mapsURL,
+  "hasMenu": new URL(localePath(lang, "/menu/"), Astro.site).toString(),
   ...(telephone ? { telephone } : {}),
   "servesCuisine": ["Coffee", "Café de especialidad", "Matcha", "Breakfast"],
   "priceRange": "$$",

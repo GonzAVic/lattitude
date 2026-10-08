@@ -1,6 +1,7 @@
 ---
 import DrinkFeature from "./DrinkFeature.astro";
-import { drinksSection, drinksList, type Locale } from "../i18n/content";
+import ArrowIcon from "./ArrowIcon.astro";
+import { drinksSection, drinksList, localePath, type Locale } from "../i18n/content";
 
 interface Props {
   lang: Locale;
@@ -20,4 +21,8 @@ const drinks = drinksList[lang];
   </div>
 
   <DrinkFeature drinks={drinks} />
+
+  <div class="hero-actions" style="margin-top:48px">
+    <a class="btn hoverable" href={localePath(lang, "/menu/")}>{t.menuCta} <ArrowIcon dir="right" /></a>
+  </div>
 </section>

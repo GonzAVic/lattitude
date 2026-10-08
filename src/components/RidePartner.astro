@@ -6,6 +6,7 @@ import {
   rideDrinksSection,
   rideDrinks,
   rideProtein,
+  rideWalk,
   rideBenefit,
   rideClosing,
   localePath,
@@ -21,6 +22,7 @@ const hero = rideHero[lang];
 const drinksSection = rideDrinksSection[lang];
 const drinks = rideDrinks[lang];
 const protein = rideProtein[lang];
+const walk = rideWalk[lang];
 const benefit = rideBenefit[lang];
 const closing = rideClosing[lang];
 
@@ -29,6 +31,9 @@ const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
 const letsrideHref = "https://www.letsridemerida.com/";
 const letsrideInstagram = "https://www.instagram.com/letsridemid/";
 const fortressInstagram = "https://www.instagram.com/fortressmerida/";
+// LET'S RIDE / FORTRESS → Lattitude Coffee, verified via Google Maps (~81m / 1 min on foot).
+const walkHref = "https://www.google.com/maps/dir/?api=1&origin=21.019335,-89.571222&destination=Lattitude+Coffee%2C+Para%C3%ADso+Maya%2C+M%C3%A9rida&travelmode=walking";
+const walkEmbedSrc = "https://maps.google.com/maps?saddr=21.019335,-89.571222&daddr=Lattitude+Coffee@21.019888,-89.571167&dirflg=w&output=embed&z=18";
 ---
 
 <section class="founders-hero">
@@ -74,6 +79,35 @@ const fortressInstagram = "https://www.instagram.com/fortressmerida/";
   <DrinkFeature drinks={drinks} />
 </section>
 
+<section class="people">
+  <div class="people-grid">
+    <div class="people-image" style="aspect-ratio:4/3">
+      <iframe
+        src={walkEmbedSrc}
+        title={walk.mapTitle}
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <div class="people-copy">
+      <h2>{benefit.heading}</h2>
+      <p>{benefit.body}</p>
+      <div class="people-tags meta">
+        <span>{benefit.eyebrow}</span>
+        <span>{walk.badge}</span>
+        <a class="hoverable" href={walkHref} target="_blank" rel="noopener">{walk.openLabel} <ArrowIcon dir="up-right" /></a>
+      </div>
+      <div class="people-micro" aria-hidden="true">
+        <span class="star"><i></i></span>
+        <div>
+          <div class="ruler"></div>
+          <div class="meta" style="display:flex;justify-content:space-between;margin-top:9px;color:#888"><span>LET&rsquo;S RIDE</span><span>LATTITUDE COFFEE</span></div>
+        </div>
+        <span class="crosshair"><i></i></span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="founder-section center">
   <div class="meta muted eyebrow">{protein.eyebrow}</div>
   <h2>{protein.heading}</h2>
@@ -113,12 +147,6 @@ const fortressInstagram = "https://www.instagram.com/fortressmerida/";
     }, CYCLE_MS);
   }
 </script>
-
-<section class="founder-section center">
-  <div class="meta muted eyebrow">{benefit.eyebrow}</div>
-  <h2>{benefit.heading}</h2>
-  <p>{benefit.body}</p>
-</section>
 
 <section class="founders-closing">
   <h2>{closing.heading}</h2>

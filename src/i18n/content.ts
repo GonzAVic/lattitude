@@ -33,6 +33,7 @@ export const nav = {
     closeMenu: "Close menu",
     concept: "Concept",
     drinks: "Drinks",
+    menu: "Menu",
     people: "People",
     communities: "Communities",
     visit: "Visit",
@@ -48,6 +49,7 @@ export const nav = {
     closeMenu: "Cerrar menú",
     concept: "Concepto",
     drinks: "Bebidas",
+    menu: "Menú",
     people: "Gente",
     communities: "Comunidades",
     visit: "Visítanos",
@@ -116,8 +118,8 @@ export const intentStories = {
 } as const;
 
 export const drinksSection = {
-  en: { eyebrow: "Featured at Lattitude Coffee", heading: "What people order the most.", body: "Coffee leads the menu. Matcha brings a different rhythm. Food keeps the day moving." },
-  es: { eyebrow: "Destacado en Lattitude Coffee", heading: "Lo que la gente más pide.", body: "El café lidera el menú. El matcha trae otro ritmo. La comida mantiene el día en movimiento." },
+  en: { eyebrow: "Featured at Lattitude Coffee", heading: "What people order the most.", body: "Coffee leads the menu. Matcha brings a different rhythm. Food keeps the day moving.", menuCta: "See the full menu" },
+  es: { eyebrow: "Destacado en Lattitude Coffee", heading: "Lo que la gente más pide.", body: "El café lidera el menú. El matcha trae otro ritmo. La comida mantiene el día en movimiento.", menuCta: "Ver menú completo" },
 } as const;
 
 export const drinksList = {
@@ -348,6 +350,7 @@ export const footer = {
     exploreLabel: "Explore",
     concept: "Concept",
     drinks: "Drinks",
+    menu: "Menu",
     people: "People",
     communities: "Communities",
     visit: "Visit",
@@ -363,6 +366,7 @@ export const footer = {
     exploreLabel: "Explorar",
     concept: "Concepto",
     drinks: "Bebidas",
+    menu: "Menú",
     people: "Gente",
     communities: "Comunidades",
     visit: "Visítanos",
@@ -579,6 +583,11 @@ export const rideClosing = {
   },
 } as const;
 
+export const rideWalk = {
+  en: { eyebrow: "WALKING DISTANCE", badge: "1 MIN · 81M", note: "~1 min · 81m on foot from LET'S RIDE / FORTRESS", openLabel: "Open in Google Maps", mapTitle: "Walking route from LET'S RIDE / FORTRESS to Lattitude Coffee" },
+  es: { eyebrow: "A UN PASO", badge: "1 MIN · 81 M", note: "~1 min · 81 m caminando desde LET'S RIDE / FORTRESS", openLabel: "Abrir en Google Maps", mapTitle: "Ruta caminando desde LET'S RIDE / FORTRESS hasta Lattitude Coffee" },
+} as const;
+
 export const rideBenefit = {
   en: {
     eyebrow: "BENEFIT / HOW IT WORKS",
@@ -679,16 +688,53 @@ export const vattenClosing = {
   },
 } as const;
 
+export const vattenWalk = {
+  en: { eyebrow: "WALKING DISTANCE", badge: "3 MIN · 220M", note: "~3 min · 220m on foot from Vatten Terapia Física", openLabel: "Open in Google Maps", mapTitle: "Walking route from Vatten Terapia Física to Lattitude Coffee" },
+  es: { eyebrow: "A UN PASO", badge: "3 MIN · 220 M", note: "~3 min · 220 m caminando desde Vatten Terapia Física", openLabel: "Abrir en Google Maps", mapTitle: "Ruta caminando desde Vatten Terapia Física hasta Lattitude Coffee" },
+} as const;
+
 export const vattenBenefit = {
   en: {
-    eyebrow: "BENEFIT / HOW IT WORKS",
-    heading: "20% off, every visit.",
-    body: "Show your Vatten Woncards loyalty card when you order and get 20% off one drink per member, every time you visit.",
+    eyebrow: "HOW TO GET THERE",
+    heading: "One step, two perks.",
+    body: "Vatten and Lattitude Coffee are one block apart. Show your Woncards card and get 20% off a drink here, or pay $300 instead of $450 for your session at Vatten.",
+    ctaMore: "See the benefits",
   },
   es: {
-    eyebrow: "BENEFICIO / CÓMO FUNCIONA",
+    eyebrow: "CÓMO LLEGAR",
+    heading: "Un paso, dos beneficios.",
+    body: "Vatten y Lattitude Coffee están a una cuadra. Muestra tu tarjeta Woncards y obtén 20% de descuento en una bebida aquí, o paga $300 en vez de $450 por tu sesión en Vatten.",
+    ctaMore: "Ver los beneficios",
+  },
+} as const;
+
+export const vattenDiscountLattitude = {
+  en: {
+    eyebrow: "COMING FROM VATTEN",
+    heading: "20% off, every visit.",
+    body: "Show your Woncards card and get 20% off one drink at Lattitude Coffee, every visit.",
+  },
+  es: {
+    eyebrow: "SI VIENES DE VATTEN",
     heading: "20% de descuento, en cada visita.",
-    body: "Muestra tu tarjeta de lealtad Woncards de Vatten al ordenar y obtén 20% de descuento en una bebida por miembro, en cada visita.",
+    body: "Muestra tu tarjeta Woncards y obtén 20% de descuento en una bebida en Lattitude Coffee, en cada visita.",
+  },
+} as const;
+
+export const vattenReturnBenefit = {
+  en: {
+    eyebrow: "COMING FROM LATTITUDE",
+    oldPrice: "$450",
+    newPrice: "$300",
+    unit: "/session",
+    body: "Show your Woncards card at Vatten and pay $300 MXN instead of $450 for your session, every visit.",
+  },
+  es: {
+    eyebrow: "SI VIENES DE LATTITUDE",
+    oldPrice: "$450",
+    newPrice: "$300",
+    unit: "/sesión",
+    body: "Muestra tu tarjeta Woncards en Vatten y paga $300 MXN en vez de $450 por tu sesión, en cada visita.",
   },
 } as const;
 
@@ -826,5 +872,173 @@ export const notFound = {
     body: "Esta página se movió, o nunca existió. De cualquier forma, no estás perdido — solo fuera de ruta.",
     cta: "Volver a Lattitude Coffee",
     micro: ["ESTADO / 404", "DIRECCIÓN / INICIO", "POSICIÓN ACTUAL / DESCONOCIDA"],
+  },
+} as const;
+
+export const menuSeo = {
+  en: {
+    title: "Menu — Lattitude Coffee · Specialty coffee in Mérida",
+    description: "The full Lattitude Coffee menu with prices: espresso drinks, cold brew, tonics, ceremonial matcha, refreshers, food and extras. House-made syrups, natural ingredients. Paraíso Maya, Mérida.",
+  },
+  es: {
+    title: "Menú — Lattitude Coffee · Café de especialidad en Mérida",
+    description: "El menú completo de Lattitude Coffee con precios: bebidas con espresso, cold brew, tonics, matcha ceremonial, refreshers, alimentos y extras. Jarabes hechos en casa, ingredientes naturales. Paraíso Maya, Mérida.",
+  },
+} as const;
+
+export const menuHero = {
+  en: {
+    eyebrow: "MENU / 2026",
+    heading: "The menu.",
+    subhead: "Coffee for people in motion. Every drink here has a reason to be on this list — and every syrup is made in-house.",
+    micro: ["COFFEE / 17", "NO COFFEE / 11", "FOOD / 2", "SYRUPS / HOUSE-MADE"],
+    currency: "Prices in MXN",
+  },
+  es: {
+    eyebrow: "MENÚ / 2026",
+    heading: "El menú.",
+    subhead: "Café para gente en movimiento. Cada bebida tiene una razón para estar en esta lista — y cada jarabe se hace en casa.",
+    micro: ["CAFÉ / 17", "SIN CAFÉ / 11", "ALIMENTOS / 2", "JARABES / HECHOS EN CASA"],
+    currency: "Precios en MXN",
+  },
+} as const;
+
+type MenuItem = { name: string; price: number; coord: string; desc: string; signature?: boolean };
+type MenuSection = { id: string; index: string; title: string; note: string; symbol: string; items: MenuItem[] };
+
+export const menuSections: Record<Locale, MenuSection[]> = {
+  es: [
+    {
+      id: "con-cafe", index: "01", title: "Con café", note: "Espresso · Frío · Filtrados", symbol: "/micrographic-symbols/sym-03.svg",
+      items: [
+        { name: "Espresso", price: 40, coord: "ESPRESSO", desc: "Un shot, sin distracciones. El punto de partida de todo lo demás." },
+        { name: "Americano", price: 50, coord: "ESPRESSO / AGUA", desc: "Espresso alargado con agua caliente. Limpio y directo, para quedarte un rato." },
+        { name: "Capuccino", price: 65, coord: "ESPRESSO / LECHE / ESPUMA", desc: "Espresso, leche vaporizada y una capa generosa de espuma. El clásico, bien hecho." },
+        { name: "Flat white", price: 65, coord: "ESPRESSO / LECHE VAPORIZADA", desc: "Menos espuma, más café. Textura sedosa con el espresso al frente." },
+        { name: "Latte", price: 65, coord: "ESPRESSO / LECHE", desc: "Espresso suave con leche vaporizada. Fácil de tomar, fácil de repetir." },
+        { name: "Moka", price: 70, coord: "ESPRESSO / CHOCOLATE / LECHE", desc: "Espresso, chocolate y leche. Para cuando el día pide un poco más." },
+        { name: "Espresso tonic", price: 70, coord: "ESPRESSO / AGUA TÓNICA", desc: "Espresso sobre agua tónica fría. Amargo, burbujeante y despierto." },
+        { name: "Cold brew", price: 70, coord: "CAFÉ / AGUA FRÍA / TIEMPO", desc: "Café extraído en frío, sin prisa. Suave, redondo y con poca acidez." },
+        { name: "Cold brew latte", price: 75, coord: "COLD BREW / LECHE", desc: "Nuestro cold brew con leche fría. Ligero, pero con carácter." },
+        { name: "Caramel latte", price: 75, coord: "ESPRESSO / CARAMELO / LECHE", desc: "Latte con caramelo de la casa. Dulce, sin perder el café de vista." },
+        { name: "Dirty horchata", price: 75, coord: "ESPRESSO / HORCHATA / LECHE", desc: "Horchata de la casa con un shot de espresso. La de siempre, en otras coordenadas.", signature: true },
+        { name: "Orange tonic", price: 80, coord: "ESPRESSO / NARANJA / TÓNICA", desc: "Espresso, naranja y agua tónica. Cítrico, amargo y brillante.", signature: true },
+        { name: "Mango lychee tonic", price: 80, coord: "ESPRESSO / MANGO LYCHEE / TÓNICA", desc: "Espresso sobre tónica con té de mango y lychee. Frutal, con el café al final." },
+        { name: "Frutos rojos tonic", price: 80, coord: "ESPRESSO / FRUTOS ROJOS / TÓNICA", desc: "Espresso sobre tónica con té de frambuesa. Ácido, fresco y diferente." },
+        { name: "Dirty matcha", price: 80, coord: "MATCHA / ESPRESSO / LECHE", desc: "Matcha y espresso en el mismo vaso. Dos ritmos, una sola bebida." },
+        { name: "Dirty chai latte", price: 85, coord: "CHAI / ESPRESSO / LECHE", desc: "Chai de la casa, especiado y cálido, con un shot de espresso encima." },
+        { name: "Filtrados", price: 85, coord: "CHEMEX / V60 / AEROPRESS", desc: "Tú eliges el método. Para probar el café tal como es." },
+      ],
+    },
+    {
+      id: "sin-cafe", index: "02", title: "Sin café", note: "Matcha · Té · Refreshers", symbol: "/micrographic-symbols/sym-06.svg",
+      items: [
+        { name: "Agua", price: 15, coord: "AGUA", desc: "Para seguir en movimiento." },
+        { name: "Coca cola", price: 40, coord: "LATA / FRÍA", desc: "Fría, en lata. Sin más explicación." },
+        { name: "Té / Infusión", price: 45, coord: "TÉ / AGUA CALIENTE", desc: "Té o infusión caliente. Pregunta en barra qué tenemos hoy." },
+        { name: "Chocolate", price: 60, coord: "CHOCOLATE / LECHE", desc: "Chocolate con leche. Sin café, y sin tener que justificarlo." },
+        { name: "London fog", price: 70, coord: "EARL GREY / VAINILLA / LECHE", desc: "Earl grey con vainilla sin azúcar y leche vaporizada. Calma en vaso." },
+        { name: "Orange refresher", price: 75, coord: "NARANJA / AGUA TÓNICA", desc: "Naranja y agua tónica, bien frío. Ligero y cítrico." },
+        { name: "Mango lychee refresher", price: 75, coord: "TÉ MANGO LYCHEE / TÓNICA", desc: "Té de mango y lychee con agua tónica. Frutal y brillante." },
+        { name: "Frutos rojos refresher", price: 75, coord: "TÉ DE FRAMBUESA / TÓNICA", desc: "Té de frambuesa con agua tónica. Ácido, fresco, de color intenso." },
+        { name: "Matcha latte", price: 75, coord: "MATCHA / LECHE", desc: "Matcha batido con leche. Energía tranquila, sin el golpe del café." },
+        { name: "Chai latte", price: 80, coord: "CHAI / LECHE", desc: "Chai de la casa con leche. Canela, especias y nada de prisa." },
+        { name: "Matcha horchata", price: 80, coord: "MATCHA / HORCHATA / LECHE", desc: "Matcha sobre horchata de la casa. Nuestra firma sin café.", signature: true },
+      ],
+    },
+    {
+      id: "alimentos", index: "03", title: "Alimentos", note: "Para que el día siga", symbol: "/micrographic-symbols/sym-14.svg",
+      items: [
+        { name: "Grilled cheese sandwich", price: 110, coord: "PAN / 3 QUESOS / PAPAS", desc: "Mezcla de tres quesos, dorado en plancha. Incluye papas." },
+        { name: "Bagel italiano", price: 110, coord: "BAGEL / JAMÓN / PEPPERONI", desc: "Jamón, queso y pepperoni. Incluye papas." },
+      ],
+    },
+  ],
+  en: [
+    {
+      id: "coffee", index: "01", title: "Coffee", note: "Espresso · Cold · Filter", symbol: "/micrographic-symbols/sym-03.svg",
+      items: [
+        { name: "Espresso", price: 40, coord: "ESPRESSO", desc: "One shot, no distractions. The starting point for everything else." },
+        { name: "Americano", price: 50, coord: "ESPRESSO / WATER", desc: "Espresso lengthened with hot water. Clean and direct, made for staying a while." },
+        { name: "Capuccino", price: 65, coord: "ESPRESSO / MILK / FOAM", desc: "Espresso, steamed milk and a generous layer of foam. The classic, done right." },
+        { name: "Flat white", price: 65, coord: "ESPRESSO / STEAMED MILK", desc: "Less foam, more coffee. Silky texture with the espresso up front." },
+        { name: "Latte", price: 65, coord: "ESPRESSO / MILK", desc: "Smooth espresso with steamed milk. Easy to drink, easy to order again." },
+        { name: "Moka", price: 70, coord: "ESPRESSO / CHOCOLATE / MILK", desc: "Espresso, chocolate and milk. For when the day asks for a little more." },
+        { name: "Espresso tonic", price: 70, coord: "ESPRESSO / TONIC WATER", desc: "Espresso over cold tonic water. Bitter, bubbly and wide awake." },
+        { name: "Cold brew", price: 70, coord: "COFFEE / COLD WATER / TIME", desc: "Coffee extracted cold, without rushing. Smooth, round and low in acidity." },
+        { name: "Cold brew latte", price: 75, coord: "COLD BREW / MILK", desc: "Our cold brew with cold milk. Light, but with character." },
+        { name: "Caramel latte", price: 75, coord: "ESPRESSO / CARAMEL / MILK", desc: "A latte with house-made caramel. Sweet, without losing sight of the coffee." },
+        { name: "Dirty horchata", price: 75, coord: "ESPRESSO / HORCHATA / MILK", desc: "House-made horchata with a shot of espresso. The one you know, at new coordinates.", signature: true },
+        { name: "Orange tonic", price: 80, coord: "ESPRESSO / ORANGE / TONIC", desc: "Espresso, orange and tonic water. Citrus, bitter and bright.", signature: true },
+        { name: "Mango lychee tonic", price: 80, coord: "ESPRESSO / MANGO LYCHEE / TONIC", desc: "Espresso over tonic with mango lychee tea. Fruity, with the coffee at the finish." },
+        { name: "Red berry tonic", price: 80, coord: "ESPRESSO / RED BERRIES / TONIC", desc: "Espresso over tonic with raspberry tea. Tart, fresh and a little different." },
+        { name: "Dirty matcha", price: 80, coord: "MATCHA / ESPRESSO / MILK", desc: "Matcha and espresso in the same glass. Two rhythms, one drink." },
+        { name: "Dirty chai latte", price: 85, coord: "CHAI / ESPRESSO / MILK", desc: "House-made chai, spiced and warm, with a shot of espresso on top." },
+        { name: "Filter coffee", price: 85, coord: "CHEMEX / V60 / AEROPRESS", desc: "You pick the method. To taste the coffee exactly as it is." },
+      ],
+    },
+    {
+      id: "no-coffee", index: "02", title: "No coffee", note: "Matcha · Tea · Refreshers", symbol: "/micrographic-symbols/sym-06.svg",
+      items: [
+        { name: "Water", price: 15, coord: "WATER", desc: "To keep you moving." },
+        { name: "Coca cola", price: 40, coord: "CAN / COLD", desc: "Cold, in a can. No further explanation." },
+        { name: "Tea / Infusion", price: 45, coord: "TEA / HOT WATER", desc: "Hot tea or infusion. Ask at the counter what we have today." },
+        { name: "Chocolate", price: 60, coord: "CHOCOLATE / MILK", desc: "Chocolate with milk. No coffee, and no need to justify it." },
+        { name: "London fog", price: 70, coord: "EARL GREY / VANILLA / MILK", desc: "Earl grey with sugar-free vanilla and steamed milk. Calm in a cup." },
+        { name: "Orange refresher", price: 75, coord: "ORANGE / TONIC WATER", desc: "Orange and tonic water, ice cold. Light and citrusy." },
+        { name: "Mango lychee refresher", price: 75, coord: "MANGO LYCHEE TEA / TONIC", desc: "Mango lychee tea with tonic water. Fruity and bright." },
+        { name: "Red berry refresher", price: 75, coord: "RASPBERRY TEA / TONIC", desc: "Raspberry tea with tonic water. Tart, fresh, deep in color." },
+        { name: "Matcha latte", price: 75, coord: "MATCHA / MILK", desc: "Whisked matcha with milk. Calm energy, without the coffee kick." },
+        { name: "Chai latte", price: 80, coord: "CHAI / MILK", desc: "House-made chai with milk. Cinnamon, spice and no rush at all." },
+        { name: "Matcha horchata", price: 80, coord: "MATCHA / HORCHATA / MILK", desc: "Matcha over house-made horchata. Our coffee-free signature.", signature: true },
+      ],
+    },
+    {
+      id: "food", index: "03", title: "Food", note: "To keep the day going", symbol: "/micrographic-symbols/sym-14.svg",
+      items: [
+        { name: "Grilled cheese sandwich", price: 110, coord: "BREAD / 3 CHEESES / FRIES", desc: "A three-cheese blend, griddled golden. Comes with fries." },
+        { name: "Italian bagel", price: 110, coord: "BAGEL / HAM / PEPPERONI", desc: "Ham, cheese and pepperoni. Comes with fries." },
+      ],
+    },
+  ],
+};
+
+export const menuExtras = {
+  en: {
+    id: "extras", index: "04", title: "Extras", note: "Adjust your coordinates", symbol: "/micrographic-symbols/sym-08.svg",
+    groups: [
+      { group: "Sweeteners", items: [{ name: "Sugar-free vanilla", price: 10 }] },
+      { group: "Milks", items: [{ name: "Oat milk", price: 15 }, { name: "Coconut milk", price: 15 }, { name: "Almond milk", price: 15 }] },
+      { group: "Other extras", items: [{ name: "Extra espresso shot", price: 20 }, { name: "Protein scoop", price: 30 }] },
+    ],
+    milkNote: "Our base milk is lactose-free — swap it for oat, coconut or almond.",
+    signatureLabel: "House signature",
+  },
+  es: {
+    id: "extras", index: "04", title: "Extras", note: "Ajusta tu coordenada", symbol: "/micrographic-symbols/sym-08.svg",
+    groups: [
+      { group: "Endulzantes", items: [{ name: "Vainilla sin azúcar", price: 10 }] },
+      { group: "Leches", items: [{ name: "Leche de avena", price: 15 }, { name: "Leche de coco", price: 15 }, { name: "Leche de almendra", price: 15 }] },
+      { group: "Otros extras", items: [{ name: "Shot extra de espresso", price: 20 }, { name: "Scoop de proteína", price: 30 }] },
+    ],
+    milkNote: "Nuestra leche base es deslactosada — cámbiala por avena, coco o almendra.",
+    signatureLabel: "Firma de la casa",
+  },
+} as const;
+
+export const menuClosing = {
+  en: {
+    eyebrow: "HOUSE-MADE / NATURAL",
+    heading: "Nothing here is here by accident.",
+    body: "Our syrups are made in-house with natural ingredients. Horchata, chai, caramel — prepared here, not poured from a bottle.",
+    ctaDirections: "Get directions",
+    ctaHome: "Back to home",
+  },
+  es: {
+    eyebrow: "HECHO EN CASA / NATURAL",
+    heading: "Nada aquí está por accidente.",
+    body: "Nuestros jarabes se hacen en casa, con ingredientes naturales. Horchata, chai, caramelo — preparados aquí, no servidos de una botella.",
+    ctaDirections: "Cómo llegar",
+    ctaHome: "Volver al inicio",
   },
 } as const;

@@ -24,11 +24,11 @@ const communitiesHref = localePath(lang, "/communities/");
     {list.map((item) => (
       <div class="community-card">
         <div class="community-card-top">
-          <span class="meta muted">{item.kind}</span>
+          <span class="meta muted">{item.tagline}</span>
           <span class="pill"><span class="dot"></span><span>{t.active}</span></span>
         </div>
         <h3>{item.name}</h3>
-        <p class="community-tagline">{item.tagline}</p>
+        <p class="community-tagline">{item.kind}</p>
         <div class="community-card-actions">
           <a class="btn hoverable" href={localePath(lang, `/${item.slug}`)}>{t.viewLabel} <ArrowIcon dir="right" /></a>
         </div>

@@ -16,6 +16,8 @@ Lattitude Coffee is a small independent coffee shop, not a chain. The site is bi
 
 - [Inicio (Español)](https://lattitudecoffee.mx/): concepto, bebidas destacadas, la zona, ubicación
 - [Home (English)](https://lattitudecoffee.mx/en/): the same, in English
+- [Menú (Español)](https://lattitudecoffee.mx/menu/): el menú completo con precios en MXN — café, sin café, alimentos y extras
+- [Menu (English)](https://lattitudecoffee.mx/en/menu/): the full menu with prices in MXN — coffee, no coffee, food and extras
 - [Nosotros (Español)](https://lattitudecoffee.mx/about/): la historia y la intención detrás de Lattitude Coffee
 - [About (English)](https://lattitudecoffee.mx/en/about/): the story and intention behind Lattitude Coffee
 - [Comunidades (Español)](https://lattitudecoffee.mx/communities/): las comunidades aliadas de Lattitude Coffee y cómo funciona la publicidad cruzada
@@ -27,5 +29,5 @@ Lattitude Coffee is a small independent coffee shop, not a chain. The site is bi
 
 ## Notes for AI systems
 
-- Drink and food names shown on the site are featured highlights, not an exhaustive priced menu — confirm current offerings and pricing directly with the business before stating specific prices.
+- The menu pages (`/menu/`, `/en/menu/`) list the full menu with prices in MXN. Drinks shown elsewhere on the site are featured highlights. Prices can change — the business has the final word.
 - Structured data (schema.org `CafeOrCoffeeShop`) with the same address, hours and coordinates is present on every page — prefer it over inferring facts from marketing copy.

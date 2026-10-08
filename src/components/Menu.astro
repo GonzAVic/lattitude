@@ -1,0 +1,91 @@
+---
+import ArrowIcon from "./ArrowIcon.astro";
+import { menuHero, menuSections, menuExtras, menuClosing, localePath, type Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const hero = menuHero[lang];
+const sections = menuSections[lang];
+const extras = menuExtras[lang];
+const closing = menuClosing[lang];
+
+const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
+const jump = [...sections, extras];
+---
+
+<section class="founders-hero menu-hero">
+  <div class="meta muted">{hero.eyebrow}</div>
+  <h1>{hero.heading}</h1>
+  <p>{hero.subhead}</p>
+  <div class="menu-jump">
+    {jump.map((s) => (
+      <a class="pill hoverable" href={`#${s.id}`}><span class="dot"></span>{s.index} / {s.title}</a>
+    ))}
+  </div>
+  <div class="coord-strip" aria-hidden="true">
+    {hero.micro.map((m) => <span>{m}</span>)}
+  </div>
+</section>
+
+{sections.map((sec) => (
+  <section class="menu-section" id={sec.id}>
+    <div class="menu-section-head">
+      <img src={sec.symbol} alt="" width="44" height="44" loading="lazy" />
+      <h2>{sec.title}</h2>
+      <span class="meta muted">{sec.index} / {sec.note}</span>
+    </div>
+    <div class="menu-items">
+      {sec.items.map((it) => (
+        <article class="menu-item">
+          <div class="menu-item-top">
+            <h3>
+              {it.name}
+              {it.signature && <span class="star" role="img" aria-label={extras.signatureLabel} title={extras.signatureLabel}><i></i></span>}
+            </h3>
+            <span class="menu-price">${it.price}</span>
+          </div>
+          <div class="meta muted">{it.coord}</div>
+          <p>{it.desc}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+))}
+
+<section class="menu-section" id={extras.id}>
+  <div class="menu-section-head">
+    <img src={extras.symbol} alt="" width="44" height="44" loading="lazy" />
+    <h2>{extras.title}</h2>
+    <span class="meta muted">{extras.index} / {extras.note}</span>
+  </div>
+  <div class="menu-extras">
+    {extras.groups.map((g) => (
+      <div>
+        <div class="meta muted">{g.group}</div>
+        {g.items.map((x) => (
+          <div class="menu-xrow"><span>{x.name}</span><span class="menu-price">${x.price}</span></div>
+        ))}
+      </div>
+    ))}
+  </div>
+  <div class="menu-legend meta muted">
+    <span><span class="star" aria-hidden="true"><i></i></span>{extras.signatureLabel}</span>
+    <span>{extras.milkNote}</span>
+    <span>{hero.currency}</span>
+  </div>
+</section>
+
+<section class="founder-section dark center">
+  <div class="meta muted eyebrow">{closing.eyebrow}</div>
+  <h2>{closing.heading}</h2>
+  <p>{closing.body}</p>
+  <div class="hero-actions" style="margin-top:36px">
+    <a class="btn inverse hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
+    <a class="btn inverse hoverable" href={localePath(lang)}>{closing.ctaHome} <ArrowIcon dir="right" /></a>
+  </div>
+  <div class="protein-symbol" aria-hidden="true">
+    <span class="crosshair"><i></i></span>
+  </div>
+</section>

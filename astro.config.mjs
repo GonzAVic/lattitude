@@ -21,5 +21,10 @@ export default defineConfig({
     '/es/about': '/about',
     '/es/letsride': '/letsride',
   },
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // Internal design reference and local-only design previews — never in the sitemap.
+      filter: (page) => !page.includes('/ui-design') && !page.includes('/design-assets'),
+    }),
+  ],
 });

@@ -6,7 +6,10 @@ import {
   vattenDrinksSection,
   vattenDrinks,
   vattenWellness,
+  vattenWalk,
   vattenBenefit,
+  vattenDiscountLattitude,
+  vattenReturnBenefit,
   vattenClosing,
   localePath,
   type Locale,
@@ -21,12 +24,22 @@ const hero = vattenHero[lang];
 const drinksSection = vattenDrinksSection[lang];
 const drinks = vattenDrinks[lang];
 const wellness = vattenWellness[lang];
+const walk = vattenWalk[lang];
 const benefit = vattenBenefit[lang];
+const discountLattitude = vattenDiscountLattitude[lang];
+const returnBenefit = vattenReturnBenefit[lang];
 const closing = vattenClosing[lang];
 
 const popularHref = `${localePath(lang)}#drinks`;
 const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
 const vattenHref = "https://vattenmerida.site.agendapro.com/mx/sucursal/159438";
+// Vatten Terapia Física → Lattitude Coffee, verified via Google Maps (~220m / 3 min on foot).
+const walkHref = "https://www.google.com/maps/dir/?api=1&origin=21.0202969,-89.5723502&destination=Lattitude+Coffee%2C+Para%C3%ADso+Maya%2C+M%C3%A9rida&travelmode=walking";
+const walkEmbedSrc = "https://maps.google.com/maps?saddr=21.0202969,-89.5723502&daddr=Lattitude+Coffee@21.019888,-89.571167&dirflg=w&output=embed&z=18";
+
+// Two distinct, non-repeating marquee-card corner shapes for the discount photos below.
+const mediaShapes = ["a", "b", "c", "d"].sort(() => Math.random() - 0.5);
+const [shapeLattitude, shapeVatten] = mediaShapes;
 ---
 
 <section class="founders-hero">
@@ -72,6 +85,72 @@ const vattenHref = "https://vattenmerida.site.agendapro.com/mx/sucursal/159438";
   <DrinkFeature drinks={drinks} />
 </section>
 
+<section class="people">
+  <div class="people-grid">
+    <div class="people-image" style="aspect-ratio:4/3">
+      <iframe
+        src={walkEmbedSrc}
+        title={walk.mapTitle}
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <div class="people-copy">
+      <div class="meta muted eyebrow">{benefit.eyebrow}</div>
+      <h2>{benefit.heading}</h2>
+      <p>{benefit.body}</p>
+      <div class="hero-actions" style="justify-content:flex-start;margin-top:8px">
+        <a class="btn inverse hoverable" href="#beneficios">{benefit.ctaMore} <ArrowIcon dir="down" /></a>
+      </div>
+      <div class="people-tags meta" style="margin-top:32px">
+        <span>{walk.badge}</span>
+        <a class="hoverable" href={walkHref} target="_blank" rel="noopener">{walk.openLabel} <ArrowIcon dir="up-right" /></a>
+      </div>
+      <div class="people-micro" aria-hidden="true">
+        <span class="star"><i></i></span>
+        <div>
+          <div class="ruler"></div>
+          <div class="meta" style="display:flex;justify-content:space-between;margin-top:9px;color:#888"><span>VATTEN</span><span>LATTITUDE COFFEE</span></div>
+        </div>
+        <span class="crosshair"><i></i></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="founder-section dark" id="beneficios">
+  <div class="founder-media reverse">
+    <div class={`founder-media-img shape-${shapeLattitude}`}>
+      <img src="/images/matcha-horchata.webp" alt="" width="1800" height="1200" loading="lazy" decoding="async" />
+    </div>
+    <div class="founder-media-copy">
+      <div class="meta muted eyebrow">{discountLattitude.eyebrow}</div>
+      <h2>{discountLattitude.heading}</h2>
+      <p>{discountLattitude.body}</p>
+    </div>
+  </div>
+</section>
+
+<section class="founder-section dark">
+  <div class="founder-media">
+    <div class={`founder-media-img shape-${shapeVatten}`}>
+      <img src="/images/flat-white.webp" alt="" width="1800" height="1200" loading="lazy" decoding="async" />
+    </div>
+    <div class="founder-media-copy">
+      <div class="meta muted eyebrow">{returnBenefit.eyebrow}</div>
+      <h2 class="price-compare">
+        <span class="price-old">{returnBenefit.oldPrice}</span>
+        <span class="price-arrow" aria-hidden="true">&rarr;</span>
+        <span class="price-new">{returnBenefit.newPrice}</span>
+        <span class="price-unit">{returnBenefit.unit}</span>
+      </h2>
+      <p>{returnBenefit.body}</p>
+      <div class="hero-actions" style="justify-content:flex-start;margin-top:20px">
+        <a class="btn inverse hoverable" href={vattenHref} target="_blank" rel="noopener">Vatten Terapia Física <ArrowIcon dir="up-right" /></a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="founder-section center">
   <div class="meta muted eyebrow">{wellness.eyebrow}</div>
   <h2>{wellness.heading}</h2>
@@ -111,12 +190,6 @@ const vattenHref = "https://vattenmerida.site.agendapro.com/mx/sucursal/159438";
     }, CYCLE_MS);
   }
 </script>
-
-<section class="founder-section center">
-  <div class="meta muted eyebrow">{benefit.eyebrow}</div>
-  <h2>{benefit.heading}</h2>
-  <p>{benefit.body}</p>
-</section>
 
 <section class="founders-closing">
   <h2>{closing.heading}</h2>

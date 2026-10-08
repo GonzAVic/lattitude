@@ -1,0 +1,647 @@
+---
+// Internal design reference — every section/component variant used across the
+// site, rendered with lorem ipsum so it's decoupled from real marketing copy.
+// Wrapped by src/pages/ui-design.astro and src/pages/en/ui-design.astro.
+// Content is language-agnostic on purpose (lorem ipsum), so this component
+// takes no props — only the page-level BaseLayout varies by locale.
+import ArrowIcon from "./ArrowIcon.astro";
+import DrinkFeature from "./DrinkFeature.astro";
+
+const LS = "Lorem ipsum dolor sit amet.";
+const LT = "Lorem ipsum dolor sit amet consectetur.";
+const LP =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+const LP2 =
+  "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
+
+const loremDrinks = [
+  { img: "/images/dirty-horchata.webp", alt: "Placeholder drink image", name: "Lorem Ipsum", coord: "LOREM / IPSUM / DOLOR", tag: "Lorem / Ipsum", icon: "star" as const },
+  { img: "/images/flat-white.webp", alt: "Placeholder drink image", name: "Dolor Sit Amet", coord: "CONSECTETUR / ADIPISCING", tag: "Lorem / Sit", icon: "crosshair" as const },
+  { img: "/images/vanilla-coldbrew-latte.webp", alt: "Placeholder drink image", name: "Consectetur Elit", coord: "SED / DO / EIUSMOD", tag: "Ipsum / Elit", icon: "plus" as const },
+  { img: "/images/mango-lychee-refresher.webp", alt: "Placeholder drink image", name: "Tempor Incididunt", coord: "UT / LABORE / DOLORE", tag: "Lorem / Bright", icon: "star" as const },
+];
+
+const marqueeCards = [
+  { variant: "a", img: "/images/marquee-overhead-duo.webp", label: "Lorem / Ipsum" },
+  { variant: "b", img: "/images/marquee-plant-cup.webp", label: "Dolor / Sit" },
+  { variant: "c", img: "/images/marquee-two-cups.webp", label: "Amet / Consectetur" },
+  { variant: "d", img: "/images/marquee-cookie-hand.webp", label: "Elit / Sed" },
+];
+const marqueeTrack = [...marqueeCards, ...marqueeCards];
+
+const intentStories = [
+  { img: "/images/trabajar-en-lattitude-cafe-especialidad.webp", label: "Lorem / Ipsum", title: "Lorem ipsum dolor sit.", body: LP2 },
+  { img: "/images/barista-lattitude-cafe-especialidad.webp", label: "Dolor / Sit", title: "Consectetur adipiscing elit.", body: LP2 },
+  { img: "/images/cafe-de-especialidad-para-llevar.webp", label: "Amet / Consectetur", title: "Sed do eiusmod tempor.", body: LP2 },
+  { img: "/images/personas-brindando-cafe-lattitude.webp", label: "Elit / Sed", title: "Incididunt ut labore.", body: LP2 },
+];
+
+const labRows = [
+  { title: "Lorem Ipsum Dolor", tag: "Lorem / Ipsum", icon: "crosshair" as const },
+  { title: "Sit Amet Consectetur", tag: "Dolor / Sit", icon: "star" as const },
+  { title: "Adipiscing Elit Sed", tag: "Amet / Consectetur", icon: "crosshair" as const },
+  { title: "Do Eiusmod Tempor", tag: "Changes with rotation", icon: "arrow" as const },
+];
+
+const faqRows = [
+  { q: "Lorem ipsum dolor sit amet?", a: LP },
+  { q: "Consectetur adipiscing elit?", a: LP2 },
+  { q: "Sed do eiusmod tempor incididunt?", a: LP },
+];
+
+const communityCards = [
+  { kind: "Lorem / Ipsum", tagline: "Dolor sit amet, consectetur.", body: LP2, tags: ["Lorem / Ipsum", "Dolor / Sit"] },
+  { kind: "Amet / Consectetur", tagline: "Adipiscing elit sed do.", body: LP2, tags: ["Amet / Elit", "Sed / Do"] },
+];
+
+// Reuses a verified working walking-directions embed (Lattitude ↔ LET'S RIDE)
+// purely as a visual stand-in for the "People — map variant" pattern.
+const mapEmbedSrc = "https://maps.google.com/maps?saddr=21.019335,-89.571222&daddr=Lattitude+Coffee@21.019888,-89.571167&dirflg=w&output=embed&z=18";
+const locationMapSrc = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.3199726481703!2d-89.57373682451059!3d21.01987938062715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f5677ab24f80b91%3A0xdb019bb3cc170f73!2sLattitude%20Coffee!5e0!3m2!1ses!2smx!4v1788920699341!5m2!1ses!2smx";
+
+const toc = [
+  ["typography", "Typography"],
+  ["buttons", "Buttons & links"],
+  ["badges", "Badges, tags & icons"],
+  ["hero-home", "Hero — Home"],
+  ["hero-founders", "Hero — Founders/Hub"],
+  ["hero-partner", "Hero — Partner (brand lockup)"],
+  ["hero-404", "Hero — 404"],
+  ["marquee", "Marquee (drag carousel)"],
+  ["statement", "Statement"],
+  ["intent", "Intent grid (2×2 stories)"],
+  ["drinks", "Drinks feature (interactive)"],
+  ["lab", "Lab list (interactive rows)"],
+  ["people-photo", "People — photo split"],
+  ["people-map", "People — map split"],
+  ["neighborhood", "Neighborhood (text split)"],
+  ["location", "Location (info + map)"],
+  ["faq", "FAQ list"],
+  ["founder-center", "Founder section — centered"],
+  ["founder-media", "Founder section — media split"],
+  ["founders-closing", "Founders closing"],
+  ["communities-grid", "Communities grid (cards)"],
+  ["communities-teaser", "Communities teaser header"],
+] as const;
+---
+
+<section class="founder-section center" style="padding-top:150px">
+  <div class="meta muted eyebrow">INTERNAL / DESIGN REFERENCE</div>
+  <h1 style="margin:22px 0 0;font-size:clamp(40px,6vw,80px);font-weight:700;letter-spacing:-.05em;line-height:.95">UI Design Reference</h1>
+  <p style="max-width:720px">Every section variant on lattitudecoffee.mx, rendered with lorem ipsum so it stays decoupled from real copy. Not linked anywhere on the live site — direct link only, noindex, excluded from the sitemap.</p>
+  <div class="spec-toc">
+    {toc.map(([id, label]) => <a class="hoverable" href={`#${id}`}>{label}</a>)}
+  </div>
+</section>
+
+{/* ===================== TYPOGRAPHY ===================== */}
+<div class="spec-bar" id="typography">TYPOGRAPHY</div>
+<section class="founder-section">
+  <div style="display:grid;gap:28px">
+    <div><div class="meta muted" style="margin-bottom:8px">H1 — hero scale</div><h1 style="margin:0;font-size:clamp(52px,9vw,120px);font-weight:700;line-height:.88;letter-spacing:-.06em">{LT}</h1></div>
+    <div><div class="meta muted" style="margin-bottom:8px">H2 — statement/drinks scale</div><h2 style="margin:0;font-size:clamp(40px,6vw,88px);font-weight:700;line-height:.9;letter-spacing:-.06em">{LT}</h2></div>
+    <div><div class="meta muted" style="margin-bottom:8px">H3 — section-head scale</div><h3 style="margin:0;font-size:clamp(30px,4vw,60px);letter-spacing:-.05em;line-height:.95">{LT}</h3></div>
+    <div><div class="meta muted" style="margin-bottom:8px">H4 — story card title</div><h4 style="margin:0;font-size:24px;letter-spacing:-.04em">{LT}</h4></div>
+    <div><div class="meta muted" style="margin-bottom:8px">Body copy</div><p style="max-width:640px;color:var(--secondary);font-size:19px;line-height:1.6">{LP}</p></div>
+    <div>
+      <div class="meta muted" style="margin-bottom:8px">.meta / .meta.muted — monospace micro-label</div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <span class="meta">LOREM / IPSUM / ACTIVE</span>
+        <span class="meta muted">LOREM / IPSUM / MUTED</span>
+      </div>
+    </div>
+    <div>
+      <div class="meta muted" style="margin-bottom:8px">.coord-strip — micro tag row</div>
+      <div class="coord-strip" aria-hidden="true">
+        <span>LOREM / IPSUM</span><span>DOLOR / SIT</span><span>AMET / CONSECTETUR</span><span>SED / DO</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* ===================== BUTTONS & LINKS ===================== */}
+<div class="spec-bar" id="buttons">BUTTONS & LINKS</div>
+<section class="founder-section">
+  <div class="meta muted" style="margin-bottom:14px">.btn — primary CTA (light bg)</div>
+  <div class="hero-actions" style="justify-content:flex-start">
+    <a class="btn hoverable" href="#buttons">{LS} <ArrowIcon dir="right" /></a>
+    <a class="btn hoverable" href="#buttons">{LS} <ArrowIcon dir="up-right" /></a>
+    <a class="btn hoverable" href="#buttons">{LS} <ArrowIcon dir="down" /></a>
+  </div>
+  <div class="meta muted" style="margin:36px 0 14px">.btn.inverse — on dark background</div>
+  <div style="background:#000;padding:32px;border-radius:4px">
+    <div class="hero-actions" style="justify-content:flex-start">
+      <a class="btn inverse hoverable" href="#buttons">{LS} <ArrowIcon dir="up-right" /></a>
+    </div>
+  </div>
+  <div class="meta muted" style="margin:36px 0 14px">.hoverable plain link (used in footer, location rows, tags)</div>
+  <a class="hoverable" href="#buttons">{LS} <ArrowIcon dir="up-right" /></a>
+</section>
+
+{/* ===================== BADGES / ICONS ===================== */}
+<div class="spec-bar" id="badges">BADGES, TAGS & ICONS</div>
+<section class="founder-section">
+  <div class="meta muted" style="margin-bottom:14px">.pill</div>
+  <span class="pill"><span class="dot"></span><span>LOREM / ACTIVE</span></span>
+
+  <div class="meta muted" style="margin:36px 0 14px">.people-tags — chip row (dark bg): span + clickable a</div>
+  <div style="background:#000;padding:32px;border-radius:4px">
+    <div class="people-tags meta">
+      <span>LOREM / IPSUM</span>
+      <a class="hoverable" href="#badges">{LS} <ArrowIcon dir="up-right" /></a>
+    </div>
+  </div>
+
+  <div class="meta muted" style="margin:36px 0 14px">Micrographic icon set</div>
+  <div style="display:flex;gap:40px;align-items:center;flex-wrap:wrap">
+    <span class="crosshair"><i></i></span>
+    <span class="star"><i></i></span>
+    <span class="plus"></span>
+    <ArrowIcon dir="right" />
+    <ArrowIcon dir="up-right" />
+    <ArrowIcon dir="down" />
+    <div style="width:160px"><div class="ruler"></div></div>
+  </div>
+</section>
+
+{/* ===================== HERO — HOME ===================== */}
+<div class="spec-bar" id="hero-home">HERO — HOME</div>
+<section class="hero" style="min-height:60vh;padding-top:90px">
+  <div class="hero-top">
+    <div class="meta muted right">LOREM · 09:00–21:00</div>
+  </div>
+  <div class="hero-center">
+    <h1 style="margin:0;font-size:clamp(60px,11vw,180px);font-weight:700;letter-spacing:-.07em;line-height:.78;text-transform:uppercase">Lorem</h1>
+    <h2>{LS}</h2>
+    <div class="hero-actions">
+      <a class="btn hoverable" href="#hero-home">{LS} <ArrowIcon dir="up-right" /></a>
+      <a class="btn hoverable" href="#hero-home">{LS} <ArrowIcon dir="down" /></a>
+    </div>
+  </div>
+</section>
+
+{/* ===================== HERO — FOUNDERS / HUB ===================== */}
+<div class="spec-bar" id="hero-founders">HERO — FOUNDERS / ABOUT / COMMUNITIES HUB</div>
+<section class="founders-hero">
+  <div class="meta muted eyebrow">LOREM / IPSUM</div>
+  <h1>{LT}</h1>
+  <p>{LP}</p>
+  <div class="coord-strip" aria-hidden="true">
+    <span>LOREM / IPSUM</span><span>DOLOR / SIT</span><span>AMET / CONSECTETUR</span><span>SED / DO</span>
+  </div>
+</section>
+
+{/* ===================== HERO — PARTNER (brand lockup) ===================== */}
+<div class="spec-bar" id="hero-partner">HERO — PARTNER PAGE (BRAND LOCKUP)</div>
+<section class="founders-hero">
+  <div class="brand-lockup" aria-hidden="true">
+    <span class="letsride-word" style="font-style:normal">LATTITUDE</span>
+    <span class="x">&times;</span>
+    <span class="vatten-word">LOREM IPSUM</span>
+  </div>
+  <h1>{LT}</h1>
+  <p>{LP}</p>
+  <div class="hero-actions">
+    <a class="btn hoverable" href="#hero-partner">{LS} <ArrowIcon dir="up-right" /></a>
+    <a class="btn hoverable" href="#hero-partner">{LS} <ArrowIcon dir="down" /></a>
+  </div>
+  <div class="coord-strip" aria-hidden="true">
+    <span>LOREM / IPSUM</span><span>DOLOR / SIT</span><span>AMET / CONSECTETUR</span><span>SED / DO</span>
+  </div>
+</section>
+
+{/* ===================== HERO — 404 ===================== */}
+<div class="spec-bar" id="hero-404">HERO — 404 / STATUS PAGE</div>
+<section class="founders-hero">
+  <div class="status-code" aria-hidden="true">404</div>
+  <div class="meta muted eyebrow">LOREM / IPSUM</div>
+  <h1>{LT}</h1>
+  <p>{LP}</p>
+  <div class="hero-actions">
+    <a class="btn hoverable" href="#hero-404">{LS} <ArrowIcon dir="right" /></a>
+  </div>
+  <div class="coord-strip" aria-hidden="true">
+    <span>LOREM / IPSUM</span><span>DOLOR / SIT</span><span>AMET / CONSECTETUR</span>
+  </div>
+</section>
+
+{/* ===================== MARQUEE ===================== */}
+<div class="spec-bar" id="marquee">MARQUEE — DRAGGABLE / AUTO-SCROLL CAROUSEL</div>
+<section class="marquee">
+  <div class="marquee-head">
+    <span class="meta muted">LOREM / IPSUM / DOLOR / SIT</span>
+    <span class="meta">Drag to explore / Pause on hover</span>
+  </div>
+  <div class="marquee-scroll" id="specMarqueeScroll" tabindex="0" role="region" aria-label="Lorem ipsum">
+    <div class="track" id="specMarqueeTrack">
+      {marqueeTrack.map((c) => (
+        <article class={`mcard ${c.variant}`}>
+          <img src={c.img} alt="" loading="lazy" />
+          <div class="mmicro">
+            <span class="mlabel meta">{c.label}</span>
+            <div class="ruler"></div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+<script>
+  const scrollEl = document.getElementById("specMarqueeScroll");
+  const track = document.getElementById("specMarqueeTrack");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (scrollEl && track) {
+    const PX_PER_SEC = 56;
+    let paused = false;
+    let resumeTimer: ReturnType<typeof setTimeout> | null = null;
+    let last: number | null = null;
+    function pause() { paused = true; if (resumeTimer !== null) clearTimeout(resumeTimer); }
+    function resumeSoon() { if (resumeTimer !== null) clearTimeout(resumeTimer); resumeTimer = setTimeout(() => (paused = false), 1200); }
+    scrollEl.addEventListener("mouseenter", pause);
+    scrollEl.addEventListener("mouseleave", () => (paused = false));
+    scrollEl.addEventListener("pointerdown", pause);
+    window.addEventListener("pointerup", resumeSoon);
+    scrollEl.addEventListener("touchstart", pause, { passive: true });
+    scrollEl.addEventListener("touchend", resumeSoon);
+    scrollEl.addEventListener("wheel", () => { pause(); resumeSoon(); }, { passive: true });
+    function loop(ts: number) {
+      if (last === null) last = ts;
+      const dt = (ts - last) / 1000;
+      last = ts;
+      if (!paused && !reducedMotion) scrollEl!.scrollLeft += PX_PER_SEC * dt;
+      const half = track!.scrollWidth / 2;
+      if (half > 0) {
+        if (scrollEl!.scrollLeft >= half) scrollEl!.scrollLeft -= half;
+        else if (scrollEl!.scrollLeft < 0) scrollEl!.scrollLeft += half;
+      }
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  }
+</script>
+
+{/* ===================== STATEMENT ===================== */}
+<div class="spec-bar" id="statement">STATEMENT — BIG CENTERED CLAIM</div>
+<section class="statement">
+  <div class="statement-inner">
+    <div class="meta muted" style="margin-bottom:24px">LOREM / IPSUM</div>
+    <h2>{LT}</h2>
+    <p>{LP}</p>
+    <div class="statement-micro" aria-hidden="true">
+      <strong class="micrographic-label">Lorem ipsum</strong>
+      <img src="/micrographic-050.svg" alt="" />
+    </div>
+  </div>
+</section>
+
+{/* ===================== INTENT GRID ===================== */}
+<div class="spec-bar" id="intent">INTENT GRID — 2×2 IMAGE + COPY STORIES</div>
+<section class="intent">
+  <div class="section-head">
+    <h3>{LT}</h3>
+  </div>
+  <div class="intent-grid">
+    {intentStories.map((s) => (
+      <article class="story">
+        <div class="story-media">
+          <img src={s.img} alt="" width="1800" height="1200" loading="lazy" decoding="async" />
+          <div class="mmicro">
+            <span class="mlabel meta">{s.label}</span>
+            <div class="ruler"></div>
+          </div>
+        </div>
+        <div class="story-copy">
+          <h4>{s.title}</h4>
+          <p>{s.body}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+{/* ===================== DRINKS FEATURE ===================== */}
+<div class="spec-bar" id="drinks">DRINKS FEATURE — INTERACTIVE IMAGE + CLICKABLE LIST</div>
+<section class="drinks">
+  <div class="drinks-top">
+    <div>
+      <div class="meta muted" style="margin-bottom:18px">LOREM / IPSUM</div>
+      <h2>{LT}</h2>
+    </div>
+    <p>{LP}</p>
+  </div>
+  <DrinkFeature drinks={loremDrinks} />
+</section>
+
+{/* ===================== LAB LIST ===================== */}
+<div class="spec-bar" id="lab">LAB LIST — INTERACTIVE-LOOKING ROW LIST</div>
+<section class="lab">
+  <div class="lab-grid">
+    <div>
+      <div class="meta muted" style="margin-bottom:18px">LOREM / IPSUM</div>
+      <h2>{LT}</h2>
+      <p class="lab-note">{LP}</p>
+    </div>
+    <div class="lab-list">
+      {labRows.map((row) => (
+        <div class="lab-row">
+          <strong>{row.title}</strong>
+          <div class="mini">
+            <span class="meta muted">{row.tag}</span>
+            {row.icon === "star" && <span class="star"><i></i></span>}
+            {row.icon === "crosshair" && <span class="crosshair"><i></i></span>}
+            {row.icon === "arrow" && <ArrowIcon dir="up-right" />}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+{/* ===================== PEOPLE — PHOTO SPLIT ===================== */}
+<div class="spec-bar" id="people-photo">PEOPLE — DARK SPLIT, PHOTO VARIANT</div>
+<section class="people">
+  <div class="people-grid">
+    <div class="people-image">
+      <img src="/images/personas-brindando-cafe-lattitude.webp" alt="" width="1800" height="1200" loading="lazy" decoding="async" />
+      <div class="inside"><span class="pill">LOREM / ACTIVE</span><span class="crosshair"><i></i></span></div>
+    </div>
+    <div class="people-copy">
+      <h2>{LT}</h2>
+      <p>{LP}</p>
+      <div class="people-tags meta">
+        <span>LOREM / IPSUM</span><span>DOLOR / SIT</span>
+      </div>
+      <div class="people-micro" aria-hidden="true">
+        <span class="star"><i></i></span>
+        <div>
+          <div class="ruler"></div>
+          <div class="meta" style="display:flex;justify-content:space-between;margin-top:9px;color:#888"><span>LOREM</span><span>IPSUM</span></div>
+        </div>
+        <span class="crosshair"><i></i></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* ===================== PEOPLE — MAP SPLIT ===================== */}
+<div class="spec-bar" id="people-map">PEOPLE — DARK SPLIT, MAP/IFRAME VARIANT</div>
+<section class="people">
+  <div class="people-grid">
+    <div class="people-image" style="aspect-ratio:4/3">
+      <iframe src={mapEmbedSrc} title="Lorem ipsum route" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <div class="people-copy">
+      <h2>{LT}</h2>
+      <p>{LP}</p>
+      <div class="people-tags meta">
+        <span>LOREM / IPSUM</span><span>1 MIN · 81M</span>
+        <a class="hoverable" href="#people-map">{LS} <ArrowIcon dir="up-right" /></a>
+      </div>
+      <div class="people-micro" aria-hidden="true">
+        <span class="star"><i></i></span>
+        <div>
+          <div class="ruler"></div>
+          <div class="meta" style="display:flex;justify-content:space-between;margin-top:9px;color:#888"><span>LOREM</span><span>IPSUM</span></div>
+        </div>
+        <span class="crosshair"><i></i></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* ===================== NEIGHBORHOOD ===================== */}
+<div class="spec-bar" id="neighborhood">NEIGHBORHOOD — TEXT-ONLY SPLIT</div>
+<section class="spec-neighborhood">
+  <div class="spec-neighborhood-grid">
+    <div>
+      <div class="meta muted" style="margin-bottom:20px">LOREM / IPSUM</div>
+      <h2>{LT}</h2>
+    </div>
+    <div class="spec-neighborhood-copy">
+      <p>{LP}</p>
+      <p>{LP2}</p>
+    </div>
+  </div>
+</section>
+
+{/* ===================== LOCATION ===================== */}
+<div class="spec-bar" id="location">LOCATION — INFO ROWS + MAP + COORDINATE DISPLAY</div>
+<section class="location">
+  <div class="location-grid">
+    <div>
+      <div class="meta muted" style="margin-bottom:20px">LOREM / IPSUM</div>
+      <h2>{LT}</h2>
+    </div>
+    <div class="location-card">
+      <div class="location-row"><span class="meta muted">Lorem</span><strong>{LS}</strong></div>
+      <div class="location-row"><span class="meta muted">Ipsum</span><strong>{LS}</strong></div>
+      <div class="location-row"><span class="meta muted">Dolor</span><strong>{LS}</strong></div>
+      <div class="location-actions">
+        <a class="btn hoverable" href="#location">{LS} <ArrowIcon dir="up-right" /></a>
+        <a class="btn hoverable" href="#location">{LS} <ArrowIcon dir="up-right" /></a>
+      </div>
+    </div>
+  </div>
+  <figure class="location-map">
+    <iframe src={locationMapSrc} title="Lorem ipsum map" width="1200" height="500" style="border:0" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </figure>
+  <div class="coordinate-display">
+    <span class="crosshair"><i></i></span>
+    <div>
+      <div class="meta muted">LOREM / IPSUM</div>
+      <div class="coord-big">00°00'00.0"N &nbsp; 00°00'00.0"W</div>
+    </div>
+    <span class="star"><i></i></span>
+  </div>
+</section>
+
+{/* ===================== FAQ ===================== */}
+<div class="spec-bar" id="faq">FAQ — STATIC Q&A LIST</div>
+<section class="faq">
+  <div class="faq-top">
+    <div class="meta muted" style="margin-bottom:18px">LOREM / IPSUM</div>
+    <h2>{LT}</h2>
+  </div>
+  <div class="faq-list">
+    {faqRows.map((row) => (
+      <div class="faq-row">
+        <strong>{row.q}</strong>
+        <p>{row.a}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+{/* ===================== FOUNDER SECTION — CENTERED ===================== */}
+<div class="spec-bar" id="founder-center">FOUNDER SECTION — CENTERED (TEXT-ONLY, W/ MICRO OR SYMBOL)</div>
+<section class="founder-section center">
+  <div class="meta muted eyebrow">LOREM / IPSUM</div>
+  <h2>{LT}</h2>
+  <p>{LP}</p>
+  <div class="coord-strip" aria-hidden="true">
+    <span>LOREM / IPSUM</span><span>DOLOR / SIT</span>
+  </div>
+</section>
+
+{/* ===================== FOUNDER SECTION — MEDIA SPLIT ===================== */}
+<div class="spec-bar" id="founder-media">FOUNDER SECTION — MEDIA SPLIT (+ REVERSE)</div>
+<section class="founder-section">
+  <div class="founder-media">
+    <div class="founder-media-img">
+      <img src="/images/barista-lattitude-cafe-especialidad.webp" alt="" width="1800" height="1200" loading="lazy" decoding="async" />
+    </div>
+    <div class="founder-media-copy">
+      <div class="meta muted eyebrow">LOREM / IPSUM</div>
+      <h2>{LT}</h2>
+      <p>{LP}</p>
+      <div class="coord-strip" aria-hidden="true">
+        <span>LOREM / IPSUM</span><span>DOLOR / SIT</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="founder-section">
+  <div class="founder-media reverse">
+    <div class="founder-media-img">
+      <img src="/images/cafe-de-especialidad-para-llevar.webp" alt="" width="1800" height="1200" loading="lazy" decoding="async" />
+    </div>
+    <div class="founder-media-copy">
+      <div class="meta muted eyebrow">LOREM / IPSUM (REVERSED)</div>
+      <h2>{LT}</h2>
+      <p>{LP}</p>
+    </div>
+  </div>
+</section>
+
+{/* ===================== FOUNDERS CLOSING ===================== */}
+<div class="spec-bar" id="founders-closing">FOUNDERS CLOSING — CENTERED CTA BLOCK</div>
+<section class="founders-closing">
+  <h2>{LT}<br />{LT}</h2>
+  <p>{LP}</p>
+  <div class="hero-actions">
+    <a class="btn hoverable" href="#founders-closing">{LS} <ArrowIcon dir="up-right" /></a>
+    <a class="btn hoverable" href="#founders-closing">{LS} <ArrowIcon dir="right" /></a>
+  </div>
+  <div class="coord-strip" aria-hidden="true">
+    <span>LOREM / IPSUM</span><span>00°00'00.0"N / 00°00'00.0"W</span>
+  </div>
+</section>
+
+{/* ===================== COMMUNITIES GRID ===================== */}
+<div class="spec-bar" id="communities-grid">COMMUNITIES GRID — CLICKABLE CARDS</div>
+<section class="founder-section">
+  <div class="communities-grid">
+    {communityCards.map((item) => (
+      <div class="community-card">
+        <div class="community-card-top">
+          <span class="meta muted">{item.kind}</span>
+          <span class="pill"><span class="dot"></span><span>ACTIVE</span></span>
+        </div>
+        <h3>LOREM IPSUM</h3>
+        <p class="community-tagline">{item.tagline}</p>
+        <p class="muted">{item.body}</p>
+        <div class="coord-strip" aria-hidden="true">
+          {item.tags.map((t) => <span>{t}</span>)}
+        </div>
+        <div class="community-card-actions">
+          <a class="btn hoverable" href="#communities-grid">{LS} <ArrowIcon dir="right" /></a>
+          <a class="btn hoverable" href="#communities-grid" target="_blank" rel="noopener">{LS} <ArrowIcon dir="up-right" /></a>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+{/* ===================== COMMUNITIES TEASER HEADER ===================== */}
+<div class="spec-bar" id="communities-teaser">COMMUNITIES TEASER — HOME SECTION HEADER</div>
+<section class="communities-teaser">
+  <div class="communities-teaser-top">
+    <h3>{LT}</h3>
+    <a class="btn hoverable" href="#communities-teaser">{LS} <ArrowIcon dir="right" /></a>
+  </div>
+  <div class="communities-grid">
+    {communityCards.map((item) => (
+      <div class="community-card">
+        <div class="community-card-top">
+          <span class="meta muted">{item.tagline}</span>
+          <span class="pill"><span class="dot"></span><span>ACTIVE</span></span>
+        </div>
+        <h3>LOREM IPSUM</h3>
+        <p class="community-tagline">{item.kind}</p>
+        <div class="community-card-actions">
+          <a class="btn hoverable" href="#communities-teaser">{LS} <ArrowIcon dir="right" /></a>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<div style="height:120px"></div>
+
+<style>
+  .spec-bar {
+    background: #fef08a;
+    color: #000;
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+    padding: 10px var(--pad);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .spec-toc {
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+  }
+  .spec-toc a {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 7px 14px;
+  }
+  /* Scoped stand-in for Neighborhood.astro's component-local styles */
+  .spec-neighborhood {
+    padding: clamp(110px, 14vw, 210px) var(--pad);
+    border-top: 1px solid var(--line);
+  }
+  .spec-neighborhood-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 9vw;
+    align-items: start;
+  }
+  .spec-neighborhood h2 {
+    margin: 0;
+    font-size: clamp(38px, 5vw, 76px);
+    letter-spacing: -0.055em;
+    line-height: 0.95;
+  }
+  .spec-neighborhood-copy {
+    border-top: 1px solid #000;
+    padding-top: 22px;
+  }
+  .spec-neighborhood-copy p {
+    margin: 0 0 20px;
+    color: var(--secondary);
+    font-size: clamp(16px, 1.5vw, 19px);
+    line-height: 1.55;
+    letter-spacing: -0.02em;
+  }
+  .spec-neighborhood-copy p:last-child {
+    margin-bottom: 0;
+  }
+  @media (max-width: 950px) {
+    .spec-neighborhood-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+</style>

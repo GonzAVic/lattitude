@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Menu from "./Menu.astro";
+import { menuSeo, menuSections, menuExtras, localePath, type Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const seo = menuSeo[lang];
+
+// schema.org Menu — lets search engines read the items and prices directly.
+const menuURL = new URL(localePath(lang, "/menu/"), Astro.site).toString();
+const offer = (price: number) => ({ "@type": "Offer", price, priceCurrency: "MXN" });
+const extras = menuExtras[lang];
+const menuLd = {
+  "@context": "https://schema.org",
+  "@type": "Menu",
+  "@id": `${menuURL}#menu`,
+  name: seo.title,
+  url: menuURL,
+  inLanguage: lang,
+  provider: { "@id": new URL("/#business", Astro.site).toString() },
+  hasMenuSection: [
+    ...menuSections[lang].map((sec) => ({
+      "@type": "MenuSection",
+      name: sec.title,
+      hasMenuItem: sec.items.map((it) => ({
+        "@type": "MenuItem",
+        name: it.name,
+        description: it.desc,
+        offers: offer(it.price),
+      })),
+    })),
+    {
+      "@type": "MenuSection",
+      name: extras.title,
+      hasMenuItem: extras.groups.flatMap((g) =>
+        g.items.map((x) => ({ "@type": "MenuItem", name: x.name, offers: offer(x.price) })),
+      ),
+    },
+  ],
+};
+---
+
+<BaseLayout lang={lang} path="/menu/" title={seo.title} description={seo.description}>
+  <script type="application/ld+json" set:html={JSON.stringify(menuLd)} />
+  <Menu lang={lang} />
+</BaseLayout>
