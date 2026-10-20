@@ -11,6 +11,7 @@ import {
   vattenDiscountLattitude,
   vattenReturnBenefit,
   vattenClosing,
+  vattenPromo,
   localePath,
   type Locale,
 } from "../i18n/content";
@@ -29,6 +30,8 @@ const benefit = vattenBenefit[lang];
 const discountLattitude = vattenDiscountLattitude[lang];
 const returnBenefit = vattenReturnBenefit[lang];
 const closing = vattenClosing[lang];
+// Same "what is Vatten" copy as the unlisted /vatten/consulta page.
+const about = vattenPromo[lang];
 
 const popularHref = `${localePath(lang)}#drinks`;
 const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
@@ -191,14 +194,21 @@ const [shapeLattitude, shapeVatten] = mediaShapes;
   }
 </script>
 
-<section class="founders-closing">
-  <h2>{closing.heading}</h2>
-  <p>{closing.supporting}</p>
-  <div class="hero-actions">
-    <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
-    <a class="btn hoverable" href={popularHref}>{closing.ctaPopular} <ArrowIcon dir="right" /></a>
-  </div>
-  <div class="hero-actions" style="margin-top:14px">
-    <a class="btn hoverable" href={vattenHref} target="_blank" rel="noopener">Vatten Terapia Física <ArrowIcon dir="up-right" /></a>
+<section class="founder-section vp-about">
+  <div class="vp-about-grid">
+    <div>
+      <div class="meta muted eyebrow">{about.aboutEyebrow}</div>
+      <h2>{about.aboutHeading}</h2>
+      <p>{about.aboutBody}</p>
+      <div class="vp-tags">
+        {about.aboutTags.map((tag) => <span class="pill">{tag}</span>)}
+      </div>
+      <div class="hero-actions" style="justify-content:flex-start;margin-top:36px">
+        <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
+        <a class="btn hoverable" href={popularHref}>{closing.ctaPopular} <ArrowIcon dir="right" /></a>
+        <a class="btn hoverable" href={vattenHref} target="_blank" rel="noopener">Vatten Terapia Física <ArrowIcon dir="up-right" /></a>
+      </div>
+    </div>
+    <img class="vp-symbol" src="/micrographic-symbols/sym-17.svg" alt="" width="160" height="160" loading="lazy" />
   </div>
 </section>

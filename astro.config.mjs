@@ -23,8 +23,10 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      // Internal design reference and local-only design previews — never in the sitemap.
-      filter: (page) => !page.includes('/ui-design') && !page.includes('/design-assets'),
+      // Internal design reference, local-only design previews and unlisted promo pages — never in the sitemap.
+      filter: (page) =>
+        !page.includes('/ui-design') && !page.includes('/design-assets') && !page.includes('/vatten/consulta') &&
+        !page.includes('/lealtad'),
     }),
   ],
 });

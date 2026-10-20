@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import VattenPromo from "./VattenPromo.astro";
+import { vattenPromoSeo, type Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const seo = vattenPromoSeo[lang];
+---
+
+<!-- Unlisted: direct link only — noindex, excluded from the sitemap (astro.config.mjs). -->
+<BaseLayout lang={lang} path="/vatten/consulta/" title={seo.title} description={seo.description} noindex>
+  <VattenPromo lang={lang} />
+</BaseLayout>

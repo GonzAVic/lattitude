@@ -1,0 +1,251 @@
+---
+import ArrowIcon from "./ArrowIcon.astro";
+import { vattenPromo, type Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = vattenPromo[lang];
+
+const vattenHref = "https://vattenmerida.site.agendapro.com/mx/sucursal/159438";
+// Lattitude Coffee → Vatten Terapia Física (~220m / 3 min on foot) — the reverse of the route on /vatten.
+const routeHref = "https://www.google.com/maps/dir/?api=1&origin=Lattitude+Coffee%2C+Para%C3%ADso+Maya%2C+M%C3%A9rida&destination=Vatten+Terapia+F%C3%ADsica%2C+M%C3%A9rida&travelmode=walking";
+---
+
+<section class="founders-hero vp-hero">
+  <div class="brand-lockup" aria-hidden="true">
+    <svg viewBox="672 442 540 220" role="img" aria-label="Lattitude Coffee">
+      <path d="M687.81,644.08V457.64h8.88v178.89h38.62v7.55H687.81z"/>
+      <path d="M742.39,644.08l27.97-186.44h8.88l27.97,186.44h-8.88l-7.99-52.82h-31.07l-7.99,52.82H742.39z M774.63,475.19l-3.32,26.84l-10.72,81.68H789l-10.85-81.68l-3.18-26.84"/>
+      <path d="M824.51,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H824.51z"/>
+      <path d="M885.76,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H885.76z"/>
+      <path d="M931.92,644.08V457.64h8.88v186.44H931.92z"/>
+      <path d="M977.85,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H977.85z"/>
+      <path d="M1018.02,617.45v-159.8h8.88v161.13c0,14.65,7.55,20.42,18.2,20.42c10.65,0,18.2-5.77,18.2-20.42V457.64h8.88v159.8c0,18.64-9.32,29.3-27.08,29.3C1027.35,646.74,1018.02,636.09,1018.02,617.45z"/>
+      <path d="M1083.94,457.64h24.86c17.76,0,27.08,9.77,27.08,29.3v127.84c0,19.53-9.32,29.3-27.08,29.3h-24.86V457.64z M1092.82,636.53h16.42c11.54,0,17.76-7.1,17.76-20.42V485.61c0-13.76-6.22-20.42-17.76-20.42h-16.42V636.53z"/>
+      <path d="M1148.52,644.08V457.64h47.5v7.55h-38.62v81.68h31.96v7.55h-31.96v82.12h38.62v7.55H1148.52z"/>
+    </svg>
+    <span class="x">&rarr;</span>
+    <span class="vatten-word">VATTEN</span>
+  </div>
+  <div class="meta muted" style="margin-top:28px">{t.eyebrow}</div>
+  <h1 class="vp-price">
+    <span class="vp-old">{t.oldPrice}</span>
+    <span class="vp-new">{t.newPrice}</span>
+    <span class="vp-unit">{t.unit}</span>
+  </h1>
+  <p>{t.subhead}</p>
+  <div class="hero-actions">
+    <a class="btn hoverable" href={vattenHref} target="_blank" rel="noopener">{t.ctaBook} <ArrowIcon dir="up-right" /></a>
+    <a class="btn hoverable" href="#ruta">{t.ctaRoute} <ArrowIcon dir="down" /></a>
+  </div>
+  <div class="coord-strip" aria-hidden="true">
+    {t.micro.map((m) => <span>{m}</span>)}
+  </div>
+</section>
+
+<section class="founder-section vp-about">
+  <div class="vp-about-grid">
+    <div>
+      <div class="meta muted eyebrow">{t.aboutEyebrow}</div>
+      <h2>{t.aboutHeading}</h2>
+      <p>{t.aboutBody}</p>
+      <div class="vp-tags">
+        {t.aboutTags.map((tag) => <span class="pill">{tag}</span>)}
+      </div>
+    </div>
+    <img class="vp-symbol" src="/micrographic-symbols/sym-17.svg" alt="" width="160" height="160" loading="lazy" />
+  </div>
+
+  <div class="meta muted" style="margin-top:clamp(64px,7vw,96px)">{t.stepsEyebrow}</div>
+  <ol class="vp-steps">
+    {t.steps.map((s) => (
+      <li>
+        <span class="vp-step-n">{s.n}</span>
+        <strong>{s.title}</strong>
+        <span>{s.body}</span>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<section class="people vp-route" id="ruta">
+  <div class="vp-route-head">
+    <div>
+      <div class="meta muted">{t.mapEyebrow}</div>
+      <h2>{t.mapHeading}</h2>
+    </div>
+    <div class="people-tags meta">
+      <span>{t.badge}</span>
+      <a class="hoverable" href={routeHref} target="_blank" rel="noopener">{t.openLabel} <ArrowIcon dir="up-right" /></a>
+    </div>
+  </div>
+
+  <!-- Prototype: MapLibre GL + OpenFreeMap vector tiles, styled in-house. The other maps on the site stay Google embeds. -->
+  <figure class="vp-map">
+    <div class="vp-maplibre" data-vp-map data-theme="light" data-lang={lang} data-from={t.from} data-to={t.to} role="region" aria-label={t.mapTitle}></div>
+    <div class="vp-map-overlay" aria-hidden="true">
+      <span class="vp-corner tl"></span><span class="vp-corner tr"></span>
+      <span class="vp-corner bl"></span><span class="vp-corner br"></span>
+    </div>
+  </figure>
+
+  <div class="people-micro" aria-hidden="true">
+    <span class="crosshair"><i></i></span>
+    <div>
+      <div class="ruler"></div>
+      <div class="meta" style="display:flex;justify-content:space-between;margin-top:9px;color:#888"><span>LATTITUDE COFFEE</span><span>220 M</span><span>VATTEN</span></div>
+    </div>
+    <span class="star"><i></i></span>
+  </div>
+</section>
+
+<script>
+  // Walking route Lattitude Coffee → Vatten, from OSRM (foot profile, ~208 m),
+  // with the two door coordinates added at each end.
+  const LATTITUDE: [number, number] = [-89.571167, 21.019888];
+  const VATTEN: [number, number] = [-89.5723502, 21.0202969];
+  const ROUTE: [number, number][] = [
+    LATTITUDE,
+    [-89.571264, 21.019954], [-89.571378, 21.019808], [-89.571725, 21.020225],
+    [-89.571806, 21.020125], [-89.572222, 21.020581], [-89.572471, 21.020355],
+    [-89.572393, 21.020265],
+    VATTEN,
+  ];
+
+  // Two palettes over the same style. Light is the default; set data-theme="dark" on the container to compare.
+  const PALETTES = {
+    light: {
+      bg: "#f7f5f0", land: "#efede7", park: "#eae8e1", water: "#dedcd6", building: "#ecebe6", buildingLine: "#d6d4ce",
+      path: "#c9c7c1", road: "#ffffff", roadMajor: "#ffffff", roadCasing: "#dcdad4", label: "#6b6b6b", route: "#0a0a0a",
+    },
+    dark: {
+      bg: "#0a0a0a", land: "#111111", park: "#121212", water: "#1a1a1a", building: "#141414", buildingLine: "#2a2a2a",
+      path: "#2c2c2c", road: "#262626", roadMajor: "#3a3a3a", roadCasing: "#0a0a0a", label: "#7a7a7a", route: "#f7f5f0",
+    },
+  };
+  type Palette = (typeof PALETTES)["light"];
+
+  const roadWidth = (extra: number) =>
+    ["interpolate", ["exponential", 1.6], ["zoom"], 13, 1 + extra, 16, 6 + extra, 19, 26 + extra];
+
+  // Lattitude style over the OpenMapTiles schema — no POIs, no colour, mono-ish labels.
+  const makeStyle = (c: Palette) => ({
+    version: 8,
+    glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
+    sources: {
+      omt: { type: "vector", url: "https://tiles.openfreemap.org/planet" },
+      route: { type: "geojson", data: { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: ROUTE } } },
+    },
+    layers: [
+      { id: "bg", type: "background", paint: { "background-color": c.bg } },
+      { id: "landcover", type: "fill", source: "omt", "source-layer": "landcover", paint: { "fill-color": c.land } },
+      { id: "park", type: "fill", source: "omt", "source-layer": "park", paint: { "fill-color": c.park } },
+      { id: "water", type: "fill", source: "omt", "source-layer": "water", paint: { "fill-color": c.water } },
+      { id: "building", type: "fill", source: "omt", "source-layer": "building", minzoom: 14,
+        paint: { "fill-color": c.building, "fill-outline-color": c.buildingLine } },
+      { id: "path", type: "line", source: "omt", "source-layer": "transportation",
+        filter: ["in", ["get", "class"], ["literal", ["path", "track"]]],
+        paint: { "line-color": c.path, "line-width": 1, "line-dasharray": [2, 2] } },
+      { id: "road-casing", type: "line", source: "omt", "source-layer": "transportation",
+        filter: ["!", ["in", ["get", "class"], ["literal", ["path", "track", "rail", "transit"]]]],
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: { "line-color": c.roadCasing, "line-width": roadWidth(2) } },
+      { id: "road", type: "line", source: "omt", "source-layer": "transportation",
+        filter: ["!", ["in", ["get", "class"], ["literal", ["path", "track", "rail", "transit"]]]],
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": ["match", ["get", "class"], ["motorway", "trunk", "primary"], c.roadMajor, c.road],
+          "line-width": roadWidth(0),
+        } },
+      { id: "road-label", type: "symbol", source: "omt", "source-layer": "transportation_name", minzoom: 15,
+        layout: {
+          "symbol-placement": "line", "text-field": ["get", "name"], "text-font": ["Noto Sans Regular"],
+          "text-size": 11, "text-letter-spacing": 0.12, "text-transform": "uppercase",
+        },
+        paint: { "text-color": c.label, "text-halo-color": c.bg, "text-halo-width": 2 } },
+      { id: "route-casing", type: "line", source: "route", layout: { "line-cap": "round", "line-join": "round" },
+        paint: { "line-color": c.bg, "line-width": 10 } },
+      { id: "route", type: "line", source: "route", layout: { "line-cap": "round", "line-join": "round" },
+        paint: { "line-color": c.route, "line-width": 3.5 } },
+      { id: "route-dash", type: "line", source: "route", layout: { "line-cap": "butt", "line-join": "round" },
+        paint: { "line-color": c.bg, "line-width": 1.2, "line-dasharray": [1.5, 3] } },
+    ],
+  });
+
+  const gestureText = {
+    es: {
+      "CooperativeGesturesHandler.WindowsHelpText": "Usa Ctrl + scroll para hacer zoom",
+      "CooperativeGesturesHandler.MacHelpText": "Usa ⌘ + scroll para hacer zoom",
+      "CooperativeGesturesHandler.MobileHelpText": "Usa dos dedos para mover el mapa",
+    },
+    en: {},
+  };
+
+  // Map pins: brand marks as inline SVG (fill = currentColor → black in light mode).
+  // Lattitude isotipo (public/isotipo.svg) and Vatten's mark (src/assets/micrographics/symbols/Vector__46-868__vector.svg).
+  const ISOTIPO = `<svg viewBox="428 110 425 806" width="18" height="34" aria-hidden="true"><path d="M461.29,672.47c-20.95,44.59-25.15,98.88-4.23,141.54c8.56,17.45,20.76,33.59,36.78,44.82c40.94,28.71,92.02,41.55,142.37,41.55c30.52,0,61.14-2.47,91.16-8.83c41.09-8.71,73.59-24.8,94.25-56.8c26.56-41.16,22.02-95.63-11.77-132.2c-17.32-18.74-38.79-29.1-64.08-32.46c-59.24-7.89-106.31,37.69-154.85,64.06c-14.06,7.64-32.29,13.85-48.21,12.24c-15.92-1.61-29.42-9.33-39.05-22.1c-11.52-15.29-17.21-39.2-10.04-57.2c9.94-24.97,33.8-39.26,59.53-38.6c76.9,1.97,166.32-8.56,219.3-70.77c27.41-32.18,43.19-70.16,49.23-112.18c3.1-21.59,4.91-51.48,5.27-73.61c0.42-26.04,0.84-52.08,1.26-78.12c0.41-25.39,0.79-51.03-4.54-75.86c-12.33-57.37-65.11-92.56-114.6-93.44c-63.25-1.12-128.24,44.21-128.24,123.74c0,6.87-1.19,25.78-1.46,31.04c-2.73,52.85-9.05,100.1-15.15,161.15c-3.93,39.36-4.95,65.14-16.17,102.92c-10.94,36.87-25.37,53.73-51.79,79.31C482.03,636.46,470.16,653.6,461.29,672.47z"/><path d="M538.67,211.79c-5.89,0-11.27-1.42-16.14-4.26c-4.87-2.84-8.75-6.67-11.63-11.47c-2.88-4.81-4.32-10.12-4.32-15.94c0-5.89,1.44-11.22,4.32-15.99c2.88-4.77,6.75-8.58,11.63-11.42c4.87-2.84,10.26-4.26,16.14-4.26c5.96,0,11.35,1.42,16.2,4.26c4.84,2.84,8.7,6.65,11.58,11.42c2.88,4.77,4.32,10.1,4.32,15.99c0,5.82-1.44,11.14-4.32,15.94c-2.88,4.81-6.74,8.63-11.58,11.47C550.03,210.37,544.63,211.79,538.67,211.79z M538.71,198.04c3.43,0,6.53-0.8,9.3-2.41c2.78-1.61,4.99-3.76,6.65-6.44c1.65-2.68,2.48-5.66,2.48-8.94c0-3.27-0.83-6.25-2.48-8.94c-1.65-2.68-3.87-4.83-6.65-6.44c-2.78-1.61-5.88-2.41-9.3-2.41c-3.43,0-6.53,0.8-9.3,2.41c-2.78,1.61-4.99,3.76-6.65,6.44c-1.65,2.68-2.48,5.66-2.48,8.94c0,3.28,0.83,6.26,2.48,8.94c1.65,2.68,3.87,4.83,6.65,6.44C532.18,197.24,535.28,198.04,538.71,198.04z"/></svg>`;
+  const VATTEN_MARK = `<svg viewBox="0 0 47 57" width="26" height="32" aria-hidden="true"><path d="M 13.84845 54.41071 L 13.78797 47.27675 L 8.13597 47.217 C 6.43157 47.19799 5.24399 45.34594 5.03507 43.76001 C 4.69969 41.21003 4.97734 38.70079 5.16152 36.01503 C 3.74577 35.53165 2.26405 34.99939 0.99949 34.2553 C -0.12211 33.59541 -0.25956 32.42768 0.38646 31.39575 C 2.05787 28.28635 3.66055 25.29644 4.7904 21.93992 C 4.82614 16.77208 6.2089 11.8595 9.52148 7.84309 C 15.48137 0.6168 25.6033 -1.8843 34.36995 1.46679 C 39.38692 3.38402 42.96891 7.09357 44.9922 11.92468 C 49.07175 21.67651 46.6636 30.84447 40.21713 39.01037 L 39.189 50.79078 C 39.05429 52.33325 36.97053 53.59874 35.69773 54.31838 C 29.80656 57.64503 20.03102 58.10125 13.8512 54.41071 L 13.84845 54.41071 Z M 16.49027 46.28826 L 16.50676 52.88995 C 22.46941 55.3829 32.32467 54.83706 36.65714 50.1526 L 37.58631 38.03818 C 43.77438 30.4317 46.34472 22.07027 42.45209 12.80997 C 40.84941 8.99995 38.15536 6.01547 34.26549 4.29104 C 25.85896 0.56248 15.80576 3.27811 10.63209 10.81942 C 8.28717 14.2384 7.65764 17.98868 7.36349 22.07027 C 7.25078 23.61275 6.39858 25.47296 5.70858 26.83892 L 2.91557 32.35708 L 6.78345 33.68774 C 7.43497 33.91042 7.9078 34.50786 7.86657 35.25194 L 7.51194 41.55492 C 7.45696 42.54612 7.75111 43.6025 8.14147 44.61 L 14.49722 44.59914 C 15.60783 44.59914 16.49027 44.8707 16.49302 46.29098 L 16.49027 46.28826 Z" fill-rule="nonzero"/></svg>`;
+
+  function pin(svg: string, label: string) {
+    const el = document.createElement("div");
+    el.className = "vp-pin";
+    const icon = document.createElement("span");
+    icon.className = "vp-pin-icon";
+    icon.innerHTML = svg;
+    const tag = document.createElement("span");
+    tag.className = "vp-pin-label";
+    tag.textContent = label;
+    el.append(icon, tag);
+    return el;
+  }
+
+
+  async function init(container: HTMLElement) {
+    // MapLibre 6 ships named exports only — use the module namespace, not `default`.
+    const [maplibregl, worker] = await Promise.all([
+      import("maplibre-gl"),
+      import("maplibre-gl/dist/maplibre-gl-worker.mjs?url"),
+      import("maplibre-gl/dist/maplibre-gl.css"),
+    ]);
+    // MapLibre locates its worker next to its own module; Vite's dep bundling moves it,
+    // so point it at the worker file explicitly (self-contained, copied as an asset on build).
+    maplibregl.setWorkerUrl(worker.default);
+    const lang = container.dataset.lang === "en" ? "en" : "es";
+    const narrow = container.clientWidth < 600;
+    const bounds = ROUTE.reduce(
+      (b, c) => b.extend(c),
+      new maplibregl.LngLatBounds(ROUTE[0], ROUTE[0]),
+    );
+    const map = new maplibregl.Map({
+      container,
+      style: makeStyle(PALETTES[container.dataset.theme === "dark" ? "dark" : "light"]) as any,
+      bounds,
+      fitBoundsOptions: { padding: narrow ? { top: 70, bottom: 110, left: 60, right: 110 } : { top: 90, bottom: 90, left: 110, right: 110 } },
+      maxZoom: 19,
+      minZoom: 13,
+      attributionControl: { compact: true },
+      cooperativeGestures: true,
+      locale: gestureText[lang],
+      dragRotate: false,
+      pitchWithRotate: false,
+    });
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-left");
+    new maplibregl.Marker({ element: pin(ISOTIPO, container.dataset.from ?? "") }).setLngLat(LATTITUDE).addTo(map);
+    new maplibregl.Marker({ element: pin(VATTEN_MARK, container.dataset.to ?? "") }).setLngLat(VATTEN).addTo(map);
+    // Small screens: start with the credits collapsed behind the (i) button.
+    if (narrow) map.once("load", () => container.querySelector(".maplibregl-ctrl-attrib")?.classList.remove("maplibregl-compact-show"));
+  }
+
+  // Load MapLibre (≈250 KB) only when the map is about to scroll into view.
+  document.querySelectorAll<HTMLElement>("[data-vp-map]").forEach((el) => {
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        io.disconnect();
+        init(el).catch((err) => console.error("[vp-map]", err));
+      }
+    }, { rootMargin: "400px" });
+    io.observe(el);
+  });
+</script>

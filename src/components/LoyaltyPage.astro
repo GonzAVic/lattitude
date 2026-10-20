@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Loyalty from "./Loyalty.astro";
+import { loyaltySeo, type Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const seo = loyaltySeo[lang];
+---
+
+<!-- UI mockup only: direct link, noindex, excluded from the sitemap (astro.config.mjs). -->
+<BaseLayout lang={lang} path="/lealtad/" title={seo.title} description={seo.description} noindex>
+  <Loyalty lang={lang} />
+</BaseLayout>

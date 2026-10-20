@@ -1,0 +1,355 @@
+---
+import ArrowIcon from "./ArrowIcon.astro";
+import { loyalty, localePath, type Locale } from "../i18n/content";
+import { stateFromSeed, bustSvg } from "../scripts/peeps";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = loyalty[lang];
+const c = t.card;
+const f = t.signup;
+
+// UI mockup: a card at 6 of 10 visits. The 10th slot is the reward.
+const filled = Number(c.count);
+const stamps = Array.from({ length: 10 }, (_, i) => ({
+  n: String(i + 1).padStart(2, "0"),
+  filled: i < filled,
+  reward: i === 9,
+}));
+
+// Avatar (Open Peeps via DiceBear): seeded from the holder's name, rendered at build
+// time so the page paints with it; the editor in the sign-up form re-renders on change.
+const a = t.avatar;
+const peep = stateFromSeed(c.holder);
+const bust = bustSvg(peep);
+---
+
+<section class="lt-hero">
+  <div class="lt-hero-copy">
+    <div class="meta muted">{t.eyebrow}</div>
+    <h1>{t.heading}</h1>
+
+    <div class="lt-card-wrap" data-lt-flip>
+      <div class="lt-flip">
+        <!-- FRONT — stamps and progress -->
+        <article class="lt-card lt-face lt-front" aria-label={c.label}>
+          <div class="lt-card-top">
+          <svg viewBox="680 425 556 225" role="img" aria-label="LATTITUDE°">
+          <path d="M687.81,644.08V457.64h8.88v178.89h38.62v7.55H687.81z"/>
+          <path d="M742.39,644.08l27.97-186.44h8.88l27.97,186.44h-8.88l-7.99-52.82h-31.07l-7.99,52.82H742.39z M774.63,475.19l-3.32,26.84l-10.72,81.68H789l-10.85-81.68l-3.18-26.84"/>
+          <path d="M824.51,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H824.51z"/>
+          <path d="M885.76,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H885.76z"/>
+          <path d="M931.92,644.08V457.64h8.88v186.44H931.92z"/>
+          <path d="M977.85,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H977.85z"/>
+          <path d="M1018.02,617.45v-159.8h8.88v161.13c0,14.65,7.55,20.42,18.2,20.42c10.65,0,18.2-5.77,18.2-20.42V457.64h8.88v159.8c0,18.64-9.32,29.3-27.08,29.3C1027.35,646.74,1018.02,636.09,1018.02,617.45z"/>
+          <path d="M1083.94,457.64h24.86c17.76,0,27.08,9.77,27.08,29.3v127.84c0,19.53-9.32,29.3-27.08,29.3h-24.86V457.64z M1092.82,636.53h16.42c11.54,0,17.76-7.1,17.76-20.42V485.61c0-13.76-6.22-20.42-17.76-20.42h-16.42V636.53z"/>
+          <path d="M1148.52,644.08V457.64h47.5v7.55h-38.62v81.68h31.96v7.55h-31.96v82.12h38.62v7.55H1148.52z"/>
+          <path d="M1220.49,453.44c-1.97,0-3.77-0.47-5.39-1.42c-1.63-0.95-2.92-2.23-3.88-3.83c-0.96-1.61-1.44-3.38-1.44-5.32c0-1.97,0.48-3.75,1.44-5.34c0.96-1.59,2.26-2.87,3.88-3.82c1.63-0.95,3.43-1.42,5.39-1.42c1.99,0,3.79,0.47,5.41,1.42c1.62,0.95,2.91,2.22,3.87,3.82c0.96,1.59,1.44,3.37,1.44,5.34c0,1.94-0.48,3.72-1.44,5.32c-0.96,1.61-2.25,2.88-3.87,3.83C1224.28,452.97,1222.48,453.44,1220.49,453.44z M1220.49,449.71c1.26,0,2.4-0.31,3.43-0.93c1.02-0.62,1.84-1.45,2.45-2.48c0.61-1.03,0.91-2.18,0.91-3.44c0-1.26-0.31-2.41-0.91-3.44c-0.61-1.03-1.42-1.86-2.45-2.48c-1.02-0.62-2.17-0.93-3.43-0.93c-1.26,0-2.4,0.31-3.43,0.93c-1.02,0.62-1.84,1.45-2.45,2.48c-0.61,1.03-0.91,2.18-0.91,3.44c0,1.26,0.3,2.41,0.91,3.44c0.61,1.03,1.42,1.86,2.45,2.48C1218.09,449.4,1219.23,449.71,1220.49,449.71z"/>
+          </svg>
+          <span class="lt-card-label">{c.label}</span>
+          </div>
+
+          <div class="lt-card-body">
+            <div class="lt-card-left">
+              <span class="lt-avatar" data-peep-bust set:html={bust} />
+              <span class="lt-mono lt-muted">{c.holderLabel}</span>
+              <strong class="lt-holder">{c.holder}</strong>
+            </div>
+
+            <div class="lt-card-right">
+              <ol class="lt-stamps">
+                {stamps.map((s) => (
+                  <li class:list={["lt-stamp", { filled: s.filled, reward: s.reward }]} title={s.reward ? c.rewardLabel : `${c.stampLabel} ${s.n}`}>
+                    {s.reward ? (
+                      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 5v30M5 20h30M9.4 9.4l21.2 21.2M30.6 9.4L9.4 30.6" /></svg>
+                    ) : s.filled ? (
+                      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="10" fill="none" /><path d="M20 4v32M4 20h32" /><circle class="dot" cx="20" cy="20" r="2.6" /></svg>
+                    ) : (
+                      <span>{s.n}</span>
+                    )}
+                  </li>
+                ))}
+              </ol>
+              <div class="lt-legend lt-mono lt-muted">
+                <span><i class="lt-key filled"></i>{c.stampLabel}</span>
+                <span><i class="lt-key reward"></i>10 = {c.rewardLabel}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="lt-card-foot">
+            <div class="ruler"></div>
+          </div>
+        </article>
+
+        <!-- BACK — avatar, name and a barcode with the code as backup text -->
+        <article class="lt-card lt-face lt-back" aria-label={c.codeLabel} aria-hidden="true" inert>
+          <div class="lt-card-top">
+          <svg viewBox="680 425 556 225" role="img" aria-label="LATTITUDE°">
+          <path d="M687.81,644.08V457.64h8.88v178.89h38.62v7.55H687.81z"/>
+          <path d="M742.39,644.08l27.97-186.44h8.88l27.97,186.44h-8.88l-7.99-52.82h-31.07l-7.99,52.82H742.39z M774.63,475.19l-3.32,26.84l-10.72,81.68H789l-10.85-81.68l-3.18-26.84"/>
+          <path d="M824.51,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H824.51z"/>
+          <path d="M885.76,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H885.76z"/>
+          <path d="M931.92,644.08V457.64h8.88v186.44H931.92z"/>
+          <path d="M977.85,644.08V465.19h-22.64v-7.55h54.16v7.55h-22.64v178.89H977.85z"/>
+          <path d="M1018.02,617.45v-159.8h8.88v161.13c0,14.65,7.55,20.42,18.2,20.42c10.65,0,18.2-5.77,18.2-20.42V457.64h8.88v159.8c0,18.64-9.32,29.3-27.08,29.3C1027.35,646.74,1018.02,636.09,1018.02,617.45z"/>
+          <path d="M1083.94,457.64h24.86c17.76,0,27.08,9.77,27.08,29.3v127.84c0,19.53-9.32,29.3-27.08,29.3h-24.86V457.64z M1092.82,636.53h16.42c11.54,0,17.76-7.1,17.76-20.42V485.61c0-13.76-6.22-20.42-17.76-20.42h-16.42V636.53z"/>
+          <path d="M1148.52,644.08V457.64h47.5v7.55h-38.62v81.68h31.96v7.55h-31.96v82.12h38.62v7.55H1148.52z"/>
+          <path d="M1220.49,453.44c-1.97,0-3.77-0.47-5.39-1.42c-1.63-0.95-2.92-2.23-3.88-3.83c-0.96-1.61-1.44-3.38-1.44-5.32c0-1.97,0.48-3.75,1.44-5.34c0.96-1.59,2.26-2.87,3.88-3.82c1.63-0.95,3.43-1.42,5.39-1.42c1.99,0,3.79,0.47,5.41,1.42c1.62,0.95,2.91,2.22,3.87,3.82c0.96,1.59,1.44,3.37,1.44,5.34c0,1.94-0.48,3.72-1.44,5.32c-0.96,1.61-2.25,2.88-3.87,3.83C1224.28,452.97,1222.48,453.44,1220.49,453.44z M1220.49,449.71c1.26,0,2.4-0.31,3.43-0.93c1.02-0.62,1.84-1.45,2.45-2.48c0.61-1.03,0.91-2.18,0.91-3.44c0-1.26-0.31-2.41-0.91-3.44c-0.61-1.03-1.42-1.86-2.45-2.48c-1.02-0.62-2.17-0.93-3.43-0.93c-1.26,0-2.4,0.31-3.43,0.93c-1.02,0.62-1.84,1.45-2.45,2.48c-0.61,1.03-0.91,2.18-0.91,3.44c0,1.26,0.3,2.41,0.91,3.44c0.61,1.03,1.42,1.86,2.45,2.48C1218.09,449.4,1219.23,449.71,1220.49,449.71z"/>
+          </svg>
+          <span class="lt-card-label">{c.label}</span>
+          </div>
+
+          <div class="lt-back-body">
+            <span class="lt-avatar lt-back-avatar" data-peep-bust set:html={bust} />
+            <div class="lt-back-info">
+              <span class="lt-mono lt-muted">{c.holderLabel}</span>
+              <strong class="lt-back-name">{c.holder}</strong>
+              <!-- Dummy Code 128 barcode: encodes the member code printed under it. -->
+              <svg class="lt-barcode" viewBox="0 0 156 35" preserveAspectRatio="none" shape-rendering="crispEdges" role="img" aria-label={`${c.codeLabel}: ${c.code}`}><path stroke="#000000" stroke-width="2" d="M1 35L1 0M16 35L16 0M23 35L23 0M37 35L37 0M64 35L64 0M71 35L71 0M92 35L92 0M114 35L114 0M122 35L122 0M141 35L141 0M144 35L144 0M155 35L155 0" /><path stroke="#000000" stroke-width="1" d="M3.50 35L3.50 0M6.50 35L6.50 0M11.50 35L11.50 0M31.50 35L31.50 0M33.50 35L33.50 0M44.50 35L44.50 0M74.50 35L74.50 0M77.50 35L77.50 0M88.50 35L88.50 0M99.50 35L99.50 0M110.50 35L110.50 0M117.50 35L117.50 0M125.50 35L125.50 0M132.50 35L132.50 0M135.50 35L135.50 0M152.50 35L152.50 0" /><path stroke="#000000" stroke-width="3" d="M19.50 35L19.50 0M26.50 35L26.50 0M40.50 35L40.50 0M47.50 35L47.50 0M56.50 35L56.50 0M60.50 35L60.50 0M67.50 35L67.50 0M85.50 35L85.50 0M95.50 35L95.50 0M102.50 35L102.50 0M128.50 35L128.50 0M149.50 35L149.50 0" /><path stroke="#000000" stroke-width="4" d="M52 35L52 0M81 35L81 0M107 35L107 0" /></svg>
+              <span class="lt-mono lt-muted lt-code">{c.code}</span>
+            </div>
+          </div>
+
+          <div class="lt-card-foot">
+            <div class="ruler"></div>
+          </div>
+        </article>
+      </div>
+
+      <button class="lt-flip-btn hoverable" type="button" aria-pressed="false" data-front={c.flipToBack} data-back={c.flipToFront}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.7M20 4v4.7h-4.7M20 12a8 8 0 0 1-13.7 5.6L4 15.3M4 20v-4.7h4.7" /></svg>
+        <span>{c.flipToBack}</span>
+      </button>
+    </div>
+
+    <div class="hero-actions" style="justify-content:flex-start">
+      <a class="btn hoverable" href="#registro">{t.ctaJoin} <ArrowIcon dir="down" /></a>
+      <a class="btn hoverable" href={localePath(lang, "/menu/")}>{t.ctaMenu} <ArrowIcon dir="right" /></a>
+    </div>
+    <div class="coord-strip" aria-hidden="true">
+      {t.micro.map((m) => <span>{m}</span>)}
+    </div>
+  </div>
+</section>
+
+<section class="founder-section lt-signup" id="registro">
+  <div class="lt-signup-grid">
+    <div>
+      <div class="meta muted eyebrow">{f.eyebrow}</div>
+      <h2>{f.heading}</h2>
+      <p>{f.body}</p>
+    </div>
+
+    <!-- UI only: no submission yet. -->
+    <form class="lt-form" novalidate onsubmit="return false">
+      <div class="lt-field">
+        <label for="lt-name"><span>{f.nameLabel}</span><span class="lt-req">{f.required}</span></label>
+        <input id="lt-name" name="name" type="text" autocomplete="name" placeholder={f.namePlaceholder} required aria-describedby="lt-name-hint" />
+        <small id="lt-name-hint">{f.nameHint}</small>
+      </div>
+      <fieldset class="lt-field lt-avatar-field" data-peep-editor data-seed={c.holder}>
+        <legend><span>{a.label}</span><span class="lt-req">{a.hint}</span></legend>
+        <div class="lt-avatar-row">
+          <div class="lt-avatar-preview" data-peep-bust set:html={bust} />
+          <div class="lt-avatar-actions">
+            <button class="lt-chip hoverable" type="button" data-peep-random>{a.random}</button>
+            <button class="lt-chip hoverable" type="button" data-peep-reset>{a.reset}</button>
+          </div>
+        </div>
+        <div class="lt-tabs" role="tablist" aria-label={a.label}>
+          {(["head", "face", "facialHair", "accessories"] as const).map((part, i) => (
+            <button class="lt-tab hoverable" type="button" role="tab" id={`lt-tab-${part}`} aria-controls="lt-options" aria-selected={i === 0 ? "true" : "false"} data-part={part}>{a.parts[part]}</button>
+          ))}
+        </div>
+        <div class="lt-options" id="lt-options" role="tabpanel" aria-labelledby="lt-tab-head" data-none={a.none}></div>
+        <small>{a.credit}</small>
+      </fieldset>
+      <div class="lt-field">
+        <label for="lt-phone"><span>{f.phoneLabel}</span><span class="lt-req">{f.required}</span></label>
+        <div class="lt-phone">
+          <span aria-hidden="true">+52</span>
+          <input id="lt-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder={f.phonePlaceholder} required />
+        </div>
+      </div>
+      <div class="lt-field">
+        <label for="lt-email"><span>{f.emailLabel}</span><span class="lt-req">{f.required}</span></label>
+        <input id="lt-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder={f.emailPlaceholder} required />
+      </div>
+      <div class="lt-field">
+        <label for="lt-bday"><span>{f.birthdayLabel}</span><span class="lt-req muted">{f.optional}</span></label>
+        <input id="lt-bday" name="birthday" type="date" autocomplete="bday" />
+      </div>
+      <button class="btn hoverable lt-submit" type="submit">{f.submit} <ArrowIcon dir="right" /></button>
+      <p class="lt-privacy">{f.privacy} <a class="hoverable" href="#">{f.privacyLink}</a></p>
+    </form>
+  </div>
+</section>
+
+<section class="founder-section" id="como-funciona">
+  <div class="meta muted">{t.stepsEyebrow}</div>
+  <ol class="vp-steps">
+    {t.steps.map((s) => (
+      <li>
+        <span class="vp-step-n">{s.n}</span>
+        <strong>{s.title}</strong>
+        <span>{s.body}</span>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<section class="founders-closing">
+  <h2>{t.closingHeading}</h2>
+  <p>{t.closingBody}</p>
+  <div class="hero-actions">
+    <a class="btn hoverable" href={localePath(lang, "/menu/")}>{t.ctaMenu} <ArrowIcon dir="right" /></a>
+  </div>
+  <div class="statement-micro" aria-hidden="true" style="margin-top:56px">
+    <img src="/micrographic-050.svg" alt="" />
+  </div>
+</section>
+
+<script>
+  // Flip the loyalty card (UI only): button, tap, or a horizontal swipe.
+  // The card keeps an accumulated angle so a swipe turns it in the swipe's direction.
+  // The hidden face is made inert so keyboard/screen readers follow the visible one.
+  document.querySelectorAll<HTMLElement>("[data-lt-flip]").forEach((wrap) => {
+    const flip = wrap.querySelector<HTMLElement>(".lt-flip")!;
+    const btn = wrap.querySelector<HTMLButtonElement>(".lt-flip-btn")!;
+    const label = btn.querySelector("span")!;
+    const front = wrap.querySelector<HTMLElement>(".lt-front")!;
+    const back = wrap.querySelector<HTMLElement>(".lt-back")!;
+    let angle = 0;
+
+    const turn = (dir: 1 | -1) => {
+      angle += 180 * dir;
+      flip.style.setProperty("--lt-rot", `${angle}deg`);
+      const flipped = Math.abs(angle / 180) % 2 === 1;
+      flip.classList.toggle("is-flipped", flipped);
+      btn.setAttribute("aria-pressed", String(flipped));
+      label.textContent = (flipped ? btn.dataset.back : btn.dataset.front) ?? "";
+      front.inert = flipped;
+      back.inert = !flipped;
+      front.setAttribute("aria-hidden", String(flipped));
+      back.setAttribute("aria-hidden", String(!flipped));
+    };
+
+    btn.addEventListener("click", () => turn(1));
+
+    // Swipe: horizontal drag of 40px+ that is clearly more horizontal than vertical.
+    let startX = 0, startY = 0, tracking = false, swiped = false;
+    flip.addEventListener("pointerdown", (e) => {
+      tracking = true;
+      swiped = false;
+      startX = e.clientX;
+      startY = e.clientY;
+    });
+    flip.addEventListener("pointerup", (e) => {
+      if (!tracking) return;
+      tracking = false;
+      const dx = e.clientX - startX, dy = e.clientY - startY;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        swiped = true;
+        turn(dx > 0 ? 1 : -1);
+      }
+    });
+    flip.addEventListener("pointercancel", () => (tracking = false));
+    // A plain tap still flips; the click that follows a mouse drag is ignored.
+    flip.addEventListener("click", () => {
+      if (swiped) { swiped = false; return; }
+      turn(1);
+    });
+  });
+</script>
+
+<script>
+  // Avatar editor inside the sign-up form (UI only, state kept in this browser).
+  // Until the visitor customises it, the avatar follows whatever they type as their name.
+  // DiceBear loads only when the form is near.
+  const editor = document.querySelector<HTMLElement>("[data-peep-editor]");
+  if (editor) {
+    const io = new IntersectionObserver(async (entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      io.disconnect();
+      const P = await import("../scripts/peeps");
+      type State = import("../scripts/peeps").PeepState;
+      const KEY = "lattitude-peep";
+      const fallbackSeed = editor.dataset.seed ?? "";
+      const nameInput = document.querySelector<HTMLInputElement>("#lt-name");
+      const seedNow = () => nameInput?.value.trim() || fallbackSeed;
+
+      let state: State = P.stateFromSeed(seedNow());
+      let customised = false;
+      try {
+        const saved = JSON.parse(localStorage.getItem(KEY) ?? "null");
+        if (saved && saved.head && saved.face) { state = saved; customised = true; }
+      } catch {}
+      let part: import("../scripts/peeps").PeepPart = "head";
+      const optionsEl = editor.querySelector<HTMLElement>("#lt-options")!;
+      const tabs = [...editor.querySelectorAll<HTMLButtonElement>(".lt-tab")];
+
+      const paint = () => {
+        const bust = P.bustSvg(state);
+        document.querySelectorAll<HTMLElement>("[data-peep-bust]").forEach((el) => (el.innerHTML = bust));
+        try { customised ? localStorage.setItem(KEY, JSON.stringify(state)) : localStorage.removeItem(KEY); } catch {}
+      };
+
+      const renderOptions = () => {
+        optionsEl.setAttribute("aria-labelledby", `lt-tab-${part}`);
+        optionsEl.innerHTML = "";
+        for (const value of P.OPTIONS[part]) {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "lt-opt hoverable";
+          b.setAttribute("aria-pressed", String(state[part] === value));
+          b.setAttribute("aria-label", value ?? optionsEl.dataset.none ?? "");
+          b.innerHTML = value === null
+            ? `<span class="lt-opt-none">${optionsEl.dataset.none}</span>`
+            : P.headThumb({ ...state, [part]: value });
+          b.addEventListener("click", () => {
+            state = { ...state, [part]: value };
+            customised = true;
+            paint();
+            optionsEl.querySelectorAll(".lt-opt").forEach((o) => o.setAttribute("aria-pressed", "false"));
+            b.setAttribute("aria-pressed", "true");
+          });
+          optionsEl.appendChild(b);
+        }
+      };
+
+      tabs.forEach((tab) =>
+        tab.addEventListener("click", () => {
+          part = tab.dataset.part as typeof part;
+          tabs.forEach((t) => t.setAttribute("aria-selected", String(t === tab)));
+          renderOptions();
+          optionsEl.scrollLeft = 0;
+        }),
+      );
+      editor.querySelector("[data-peep-random]")!.addEventListener("click", () => {
+        state = P.stateFromSeed(Math.random().toString(36).slice(2));
+        customised = true;
+        paint();
+        renderOptions();
+      });
+      editor.querySelector("[data-peep-reset]")!.addEventListener("click", () => {
+        state = P.stateFromSeed(seedNow());
+        customised = false;
+        paint();
+        renderOptions();
+      });
+      nameInput?.addEventListener("input", () => {
+        if (customised) return;
+        state = P.stateFromSeed(seedNow());
+        paint();
+        renderOptions();
+      });
+
+      paint();
+      renderOptions();
+    }, { rootMargin: "400px" });
+    io.observe(editor);
+  }
+</script>
