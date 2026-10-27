@@ -193,6 +193,7 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
       </header>
       <h2 id="lt-album-title" class="lt-album-title" data-lt-album-title></h2>
       <p class="lt-album-progress" data-lt-album-progress></p>
+      <p class="lt-album-tried-line" data-lt-album-tried-line hidden></p>
       <p class="lt-album-note" data-lt-album-note role="status" aria-live="polite"></p>
       <button class="lt-album-packs" type="button" data-lt-album-open hidden>
         <span class="lt-album-packs-ico" aria-hidden="true"></span>
@@ -223,6 +224,16 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
     <p class="lt-mono lt-album-zoom-coord" data-lt-album-zoom-coord hidden></p>
     <button class="lt-album-tried" type="button" data-lt-album-tried aria-pressed="false" hidden><span data-lt-album-tried-label></span></button>
     <p class="lt-album-tried-hint" data-lt-album-tried-hint role="status" aria-live="polite"></p>
+  </dialog>
+
+  <!-- "¿Qué pediste hoy?" (2026-10-27): asked when a visit stamp lands, with the owned, untried stamps. -->
+  <dialog class="lt-ask" data-lt-ask aria-labelledby="lt-ask-title">
+    <button class="lt-album-x" type="button" data-lt-ask-close aria-label={al.close}>×</button>
+    <span class="lt-mono lt-muted">{al.askEyebrow}</span>
+    <h2 id="lt-ask-title" data-lt-ask-title>{al.askTitle}</h2>
+    <p data-lt-ask-sub>{al.askSub}</p>
+    <ol class="lt-ask-grid" data-lt-ask-grid></ol>
+    <button class="lt-ask-skip" type="button" data-lt-ask-skip>{al.askSkip}</button>
   </dialog>
 
   <dialog class="lt-pack" data-lt-pack aria-labelledby="lt-pack-title">
@@ -1261,7 +1272,7 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
     last: { id: string; title: string; svg: string } | null;
     back: string;
   };
-  type AlbumCard = { code: string; album?: Album | null };
+  type AlbumCard = { code: string; stamps?: number; album?: Album | null };
 
   const host = document.querySelector<HTMLElement>("[data-lt-app]");
   const sheet = document.querySelector<HTMLDialogElement>("[data-lt-album]");
@@ -1294,7 +1305,11 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
       svg.querySelectorAll("script,foreignObject,iframe,object,embed").forEach((n) => n.remove());
       for (const el of [svg, ...svg.querySelectorAll("*")]) {
         for (const a of [...el.attributes]) {
-          if (/^on/i.test(a.name) || (/href$/i.test(a.name) && !/^(#|data:image\/(png|jpe?g|webp|gif);)/i.test(a.value.trim()))) el.removeAttribute(a.name);
+          // Uploaded stamps (Lomu's "Subir timbre completo", 2026-10-27) arrive as an <image> pointing
+          // at Lomu's WebP over https: allowed on <image> only, never on <a> or <use>.
+          const v = a.value.trim();
+          const okHref = /^(#|data:image\/(png|jpe?g|webp|gif);)/i.test(v) || (el.nodeName.toLowerCase() === "image" && /^https:\/\//i.test(v));
+          if (/^on/i.test(a.name) || (/href$/i.test(a.name) && !okHref)) el.removeAttribute(a.name);
         }
       }
       svg.setAttribute("aria-hidden", "true");
@@ -1387,11 +1402,17 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
       const left = total - ownedCount;
       const tried = album.triedCount ?? 0;
       $("[data-lt-album-progress]").innerHTML = `<strong>${fill(T.progress, { owned: ownedCount, total })}</strong>`
-        + (tried ? ` · ${tried === 1 ? T.triedCountOne : fill(T.triedCount, { n: tried })}` : "")
         + (complete ? ` · ${T.complete}`
           // Collections can be just for collecting (2026-10-26): no prize, no prize talk.
           : col.reward ? ` · ${left === 1 ? T.leftOne : fill(T.left, { n: left })}`
           : ` · ${left === 1 ? T.toGoOne : fill(T.toGo, { n: left })}`);
+
+      // Second counter, always there once something is owned (Pokédex: seen / caught).
+      const line = $("[data-lt-album-tried-line]");
+      line.hidden = ownedCount === 0;
+      const pending = ownedCount - tried;
+      line.innerHTML = tried === 0 ? escapeHtml(T.triedNone)
+        : `<strong>${fill(T.triedSome, { n: tried, owned: ownedCount })}</strong> · ${escapeHtml(pending > 0 ? fill(T.triedPending, { n: pending }) : T.triedAll)}`;
 
       const open = $<HTMLButtonElement>("[data-lt-album-open]");
       open.hidden = packs.length === 0;
@@ -1408,7 +1429,7 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
 
       // Owned: in colour, tap to see it big. Missing: a dashed slot with its name.
       $("[data-lt-album-grid]").innerHTML = stamps.map((s) => s.owned
-        ? `<li><button type="button" class="lt-album-slot owned${stuck === s.id ? " is-new" : ""}" data-id="${s.id}" aria-label="${escapeAttr(s.triedAt ? `${s.title}, ${T.triedLabel}` : s.title)}">${safeSvg(s.svg)}${s.triedAt ? postmark(s.triedAt) : ""}</button></li>`
+        ? `<li><button type="button" class="lt-album-slot owned${s.triedAt ? " tried" : " pending"}${stuck === s.id ? " is-new" : ""}" data-id="${s.id}" aria-label="${escapeAttr(s.triedAt ? `${s.title}, ${T.triedLabel}` : `${s.title}. ${T.triedAsk}`)}">${safeSvg(s.svg)}${s.triedAt ? postmark(s.triedAt) : ghostmark()}</button></li>`
         : `<li class="lt-album-slot missing" aria-label="${escapeAttr(`${T.missing}: ${s.title}`)}">${s.corner ? `<span class="lt-mono">${escapeHtml(s.corner)}</span>` : ""}<strong>${escapeHtml(s.title)}</strong></li>`).join("");
 
       const reward = $("[data-lt-album-reward]");
@@ -1434,6 +1455,13 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
         + `<g fill="currentColor" text-anchor="middle"><text x="40" y="29" font-family="ui-monospace,Menlo,monospace" font-size="7" letter-spacing=".8">LATTITUDE</text>`
         + `<text x="40" y="46" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="13">${escapeHtml(day)}</text>`
         + `<text x="40" y="58" font-family="ui-monospace,Menlo,monospace" font-size="7.5" letter-spacing=".8">${year}</text></g></svg>`;
+    }
+    // Owned but untried (2026-10-27): the rubber stamp waits on the corner, off the drawing,
+    // and now and then makes the stamping gesture. The postmark itself only lands once tried.
+    function ghostmark() {
+      return `<span class="lt-rubber" aria-hidden="true"><svg viewBox="0 0 60 70"><rect x="22" y="2" width="16" height="22" rx="8" fill="#b8865a" stroke="#0a0a0a" stroke-width="2.5"/>`
+        + `<path d="M26 24h8v10h-8z" fill="#f7f5f0" stroke="#0a0a0a" stroke-width="2.5"/><rect x="8" y="34" width="44" height="14" rx="3" fill="#f7f5f0" stroke="#0a0a0a" stroke-width="2.5"/>`
+        + `<rect x="5" y="48" width="50" height="10" rx="2" fill="#0a0a0a"/><path d="M14 64h32" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 4"/></svg></span>`;
     }
     const escapeHtml = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
     const escapeAttr = escapeHtml;
@@ -1478,37 +1506,83 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
       $("[data-lt-album-tried-label]").textContent = s.triedAt ? fill(T.triedOn, { date: shortDate(s.triedAt) }) : T.triedAsk;
       triedBtn.title = s.triedAt ? T.triedUndo : T.tried;
     }
+    // Marks or unmarks a drink in Lomu; on success the page repaints with Lomu's card.
     let marking = false;
-    triedBtn.addEventListener("click", async () => {
-      const s = zoomId ? byId(zoomId) : undefined;
-      if (!s || marking) return;
+    async function setTried(id: string, want: boolean): Promise<{ ok: boolean; error?: string }> {
+      if (marking) return { ok: false };
       marking = true;
-      triedBtn.disabled = true;
-      const want = !s.triedAt;
-      const hint = $("[data-lt-album-tried-hint]");
-      hint.textContent = T.saving;
+      const before = album?.triedCount ?? 0;
       let res: { ok?: boolean; error?: string; message?: string; card?: AlbumCard } = {};
       try {
         const r = await fetch(`${API}/album/probada`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
-          body: JSON.stringify({ id: s.id, tried: want, lang: LANG }),
+          body: JSON.stringify({ id, tried: want, lang: LANG }),
         });
         res = await r.json().catch(() => ({}));
       } catch {}
       marking = false;
-      triedBtn.disabled = false;
-      if (!res.ok || !res.card?.code) {
-        hint.textContent = res.error ?? res.message ?? T.triedError;
-        return;
-      }
+      if (!res.ok || !res.card?.code) return { ok: false, error: res.error ?? res.message ?? T.triedError };
       // Lomu's card repaints the page (lt:card updates `album` before any await).
       host.dispatchEvent(new CustomEvent("lt:set-card", { detail: res.card }));
+      if (want) {
+        try { navigator.vibrate?.(35); } catch {}
+        if (before === 0) setTimeout(() => burst(90), 250); // the very first one gets confetti
+      }
+      track(want ? "album_stamp_tried" : "album_stamp_untried", { stamp: id, collection: album?.collection.id ?? "", tried: album?.triedCount ?? 0 });
+      return { ok: true };
+    }
+    triedBtn.addEventListener("click", async () => {
+      const s = zoomId ? byId(zoomId) : undefined;
+      if (!s || marking) return;
+      const want = !s.triedAt;
+      const hint = $("[data-lt-album-tried-hint]");
+      triedBtn.disabled = true;
+      hint.textContent = T.saving;
+      const r = await setTried(s.id, want);
+      triedBtn.disabled = false;
+      if (!r.ok) { hint.textContent = r.error ?? T.triedError; return; }
       const now = byId(s.id);
       if (now) paintZoom(now, want);
       hint.textContent = want ? T.triedUndo : "";
-      track(want ? "album_stamp_tried" : "album_stamp_untried", { stamp: s.id, collection: album?.collection.id ?? "", tried: album?.triedCount ?? 0 });
     });
+
+    // ---- "¿Qué pediste hoy?" -------------------------------------------------------------------
+    const ask = $<HTMLDialogElement>("[data-lt-ask]");
+    const askGrid = $("[data-lt-ask-grid]");
+    function showAsk(source: string) {
+      if (!album || ask.open || sheet.open || zoom.open) return;
+      const pendingStamps = album.stamps.filter((s) => s.owned && !s.triedAt);
+      if (!pendingStamps.length) return;
+      $("[data-lt-ask-title]").textContent = T.askTitle;
+      $("[data-lt-ask-sub]").textContent = T.askSub;
+      askGrid.innerHTML = pendingStamps.map((s) =>
+        `<li><button type="button" class="lt-ask-pick" data-id="${s.id}" aria-label="${escapeAttr(s.title)}">${safeSvg(s.svg)}</button></li>`).join("");
+      ask.showModal();
+      track("album_ask_shown", { source, pending: pendingStamps.length });
+    }
+    askGrid.addEventListener("click", async (e) => {
+      const btn = (e.target as Element).closest<HTMLButtonElement>(".lt-ask-pick");
+      if (!btn || btn.disabled || marking) return;
+      askGrid.querySelectorAll<HTMLButtonElement>(".lt-ask-pick").forEach((b) => (b.disabled = true));
+      const r = await setTried(btn.dataset.id!, true);
+      if (!r.ok) {
+        $("[data-lt-ask-sub]").textContent = r.error ?? T.triedError;
+        askGrid.querySelectorAll<HTMLButtonElement>(".lt-ask-pick").forEach((b) => (b.disabled = false));
+        return;
+      }
+      btn.insertAdjacentHTML("beforeend", postmark(new Date().toISOString(), reduced ? "" : "thud"));
+      btn.classList.add("done");
+      askGrid.querySelectorAll(".lt-ask-pick:not(.done)").forEach((b) => b.classList.add("fade"));
+      $("[data-lt-ask-title]").textContent = T.askDone;
+      $("[data-lt-ask-sub]").textContent = "";
+      await wait(1400);
+      ask.close();
+    });
+    $("[data-lt-ask-close]").addEventListener("click", () => ask.close());
+    $("[data-lt-ask-skip]").addEventListener("click", () => { track("album_ask_skipped", {}); ask.close(); });
+    ask.addEventListener("click", (e) => { if (e.target === ask) ask.close(); });
+
     $("[data-lt-album-zoom-close]").addEventListener("click", () => zoom.close());
     zoom.addEventListener("click", (e) => { if (e.target === zoom) zoom.close(); });
 
@@ -1663,6 +1737,8 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
     });
 
     // ---- Every card the page paints --------------------------------------------------------------
+    let seenStamps = -1;
+    let asked = false;
     let seenPacks = -1;
     let seenComplete = false;
     host.addEventListener("lt:card", async (e) => {
@@ -1697,6 +1773,13 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
         track("album_completed", { collection: next.collection.id, total: next.total });
         setTimeout(() => burst(260), 500);
       }
+      // A visit stamp just landed (and no new pack to show): after the stamp celebration, ask
+      // what they ordered. "?probar" in the URL opens it right away (to try the prototype).
+      const stampsNow = card.stamps ?? -1;
+      const newStamp = seenStamps >= 0 && stampsNow > seenStamps;
+      seenStamps = stampsNow;
+      if (newStamp && !morePacks) { await wait(3600); showAsk("visit_stamp"); }
+      else if (first && !asked && new URLSearchParams(location.search).has("probar")) { asked = true; await wait(900); showAsk("url"); }
       if (first) startHints();
     });
   }
