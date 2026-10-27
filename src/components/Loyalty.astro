@@ -1,7 +1,7 @@
 ---
 import ArrowIcon from "./ArrowIcon.astro";
 import { loyalty, localePath, type Locale } from "../i18n/content";
-import { stateFromSeed, bustSvg } from "../scripts/peeps";
+import { sampleState, bustSvg } from "../scripts/peeps";
 
 interface Props {
   lang: Locale;
@@ -10,27 +10,64 @@ const { lang } = Astro.props;
 const t = loyalty[lang];
 const c = t.card;
 const f = t.signup;
+const al = t.album;
 
-// UI mockup: a card at 6 of 10 visits. The 10th slot is the reward.
-const filled = Number(c.count);
-const stamps = Array.from({ length: 10 }, (_, i) => ({
+// Visitors see the card as a PREVIEW (2026-10-23): empty stamps, "Tu nombre", no QR —
+// first-time visitors read the sample as their own card otherwise. A member's real card
+// replaces all of it (script "lt-v2-sample" below).
+const pv = t.preview;
+const stamps = Array.from({ length: c.stampsTotal }, (_, i) => ({
   n: String(i + 1).padStart(2, "0"),
-  filled: i < filled,
-  reward: i === 9,
+  filled: false,
+  reward: i === c.stampsTotal - 1,
 }));
 
 // Avatar (Open Peeps via DiceBear): seeded from the holder's name, rendered at build
 // time so the page paints with it; the editor in the sign-up form re-renders on change.
 const a = t.avatar;
-const peep = stateFromSeed(c.holder);
+// Visitors get a random friendly avatar on every load (script below); this is the no-JS fallback.
+const peep = sampleState(c.holder);
 const bust = bustSvg(peep);
+
+// Live card (2026-10-20): customers, stamps and notifications live in Lomu Studio
+// (same card as lattitude-coffee.lomustudio.com/lealtad; the owner stamps from
+// the Lomu portal). This page only talks to its API. PUBLIC_LOMU_API overrides
+// the base URL and PUBLIC_LOMU_SLUG the business, for local testing.
+const app = t.app;
+const LOMU_API = (import.meta.env.PUBLIC_LOMU_API ?? "https://lomustudio.com").replace(/\/$/, "");
+const LOMU_SLUG = import.meta.env.PUBLIC_LOMU_SLUG ?? "lattitude-coffee";
+const apiBase = `${LOMU_API}/api/lealtad/${LOMU_SLUG}`;
+const privacyUrl = `https://${LOMU_SLUG}.lomustudio.com/lealtad/privacidad${lang === "en" ? "?lang=en" : ""}`;
+// Google review: the "Ask for reviews" link from Google Business Profile — opens the review form.
+const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
 ---
 
-<section class="lt-hero">
+<section class="lt-hero lt-v2-sample" data-lt-app data-api={apiBase} data-lang={lang} data-i18n={JSON.stringify(app)}>
+  <!-- Returning member: start in a loading state so the sample card (someone else's
+       avatar and name) never flashes before Lomu answers. Runs before first paint. -->
+  <script is:inline>
+    (function () {
+      try {
+        var h = document.currentScript.parentElement;
+        if (localStorage.getItem("lattitude-card")) {
+          h.classList.add("lt-loading");
+          h.setAttribute("aria-busy", "true");
+        } else {
+          // No active card: a different random avatar on every load (painted by a script below).
+          document.documentElement.dataset.ltSeed = Math.random().toString(36).slice(2);
+          h.classList.add("lt-random-avatar");
+        }
+      } catch (e) {}
+    })();
+  </script>
   <div class="lt-hero-copy">
     <div class="meta muted">{t.eyebrow}</div>
     <h1>{t.heading}</h1>
 
+    <!-- Outside the card wrap: its container-type would otherwise anchor this fixed toast. -->
+    <p class="lt-toast" role="status" aria-live="polite" data-lt-toast data-stamp={t.celebrate.stamp} data-full={t.celebrate.full} hidden></p>
+
+    <p class="lt-preview-note" data-lt-preview-note><strong>{pv.title}</strong> {pv.body}</p>
     <div class="lt-card-wrap" data-lt-flip>
       <div class="lt-flip">
         <!-- FRONT — stamps and progress -->
@@ -48,22 +85,22 @@ const bust = bustSvg(peep);
           <path d="M1148.52,644.08V457.64h47.5v7.55h-38.62v81.68h31.96v7.55h-31.96v82.12h38.62v7.55H1148.52z"/>
           <path d="M1220.49,453.44c-1.97,0-3.77-0.47-5.39-1.42c-1.63-0.95-2.92-2.23-3.88-3.83c-0.96-1.61-1.44-3.38-1.44-5.32c0-1.97,0.48-3.75,1.44-5.34c0.96-1.59,2.26-2.87,3.88-3.82c1.63-0.95,3.43-1.42,5.39-1.42c1.99,0,3.79,0.47,5.41,1.42c1.62,0.95,2.91,2.22,3.87,3.82c0.96,1.59,1.44,3.37,1.44,5.34c0,1.94-0.48,3.72-1.44,5.32c-0.96,1.61-2.25,2.88-3.87,3.83C1224.28,452.97,1222.48,453.44,1220.49,453.44z M1220.49,449.71c1.26,0,2.4-0.31,3.43-0.93c1.02-0.62,1.84-1.45,2.45-2.48c0.61-1.03,0.91-2.18,0.91-3.44c0-1.26-0.31-2.41-0.91-3.44c-0.61-1.03-1.42-1.86-2.45-2.48c-1.02-0.62-2.17-0.93-3.43-0.93c-1.26,0-2.4,0.31-3.43,0.93c-1.02,0.62-1.84,1.45-2.45,2.48c-0.61,1.03-0.91,2.18-0.91,3.44c0,1.26,0.3,2.41,0.91,3.44c0.61,1.03,1.42,1.86,2.45,2.48C1218.09,449.4,1219.23,449.71,1220.49,449.71z"/>
           </svg>
-          <span class="lt-card-label">{c.label}</span>
+          <span class="lt-card-label" data-lt-card-label data-active={c.label}>{pv.label}</span>
           </div>
 
           <div class="lt-card-body">
             <div class="lt-card-left">
-              <span class="lt-avatar" data-peep-bust set:html={bust} />
-              <span class="lt-mono lt-muted">{c.holderLabel}</span>
-              <strong class="lt-holder">{c.holder}</strong>
+              <span class="lt-avatar" data-peep-bust data-cta={pv.avatarCta} set:html={bust} />
+              <span class="lt-mono lt-muted lt-level-name" data-lt-level-name>{pv.level}</span>
+              <strong class="lt-holder" data-lt-holder>{pv.holder}</strong>
             </div>
 
             <div class="lt-card-right">
-              <ol class="lt-stamps">
+              <ol class="lt-stamps" data-lt-stamps data-stamp-label={c.stampLabel} data-reward-label={c.rewardLabel}>
                 {stamps.map((s) => (
                   <li class:list={["lt-stamp", { filled: s.filled, reward: s.reward }]} title={s.reward ? c.rewardLabel : `${c.stampLabel} ${s.n}`}>
                     {s.reward ? (
-                      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 5v30M5 20h30M9.4 9.4l21.2 21.2M30.6 9.4L9.4 30.6" /></svg>
+                      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M10.5 16h15v8.5a6.5 6.5 0 0 1-6.5 6.5h-2a6.5 6.5 0 0 1-6.5-6.5z" /><path d="M25.5 18.5h2.25a3.25 3.25 0 0 1 0 6.5H25.5" /><path d="M8.5 34.5h20" /><path d="M15 6.5c-1.6 1.7 1.6 3.3 0 5M20.5 6.5c-1.6 1.7 1.6 3.3 0 5" /></svg>
                     ) : s.filled ? (
                       <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="10" fill="none" /><path d="M20 4v32M4 20h32" /><circle class="dot" cx="20" cy="20" r="2.6" /></svg>
                     ) : (
@@ -74,7 +111,7 @@ const bust = bustSvg(peep);
               </ol>
               <div class="lt-legend lt-mono lt-muted">
                 <span><i class="lt-key filled"></i>{c.stampLabel}</span>
-                <span><i class="lt-key reward"></i>10 = {c.rewardLabel}</span>
+                <span><i class="lt-key reward"></i><span data-lt-total>{c.stampsTotal}</span> = {c.rewardLabel}</span>
               </div>
             </div>
           </div>
@@ -84,7 +121,7 @@ const bust = bustSvg(peep);
           </div>
         </article>
 
-        <!-- BACK — avatar, name and a barcode with the code as backup text -->
+        <!-- BACK — avatar, name and the QR the counter scans, with the code as backup text -->
         <article class="lt-card lt-face lt-back" aria-label={c.codeLabel} aria-hidden="true" inert>
           <div class="lt-card-top">
           <svg viewBox="680 425 556 225" role="img" aria-label="LATTITUDE°">
@@ -99,17 +136,19 @@ const bust = bustSvg(peep);
           <path d="M1148.52,644.08V457.64h47.5v7.55h-38.62v81.68h31.96v7.55h-31.96v82.12h38.62v7.55H1148.52z"/>
           <path d="M1220.49,453.44c-1.97,0-3.77-0.47-5.39-1.42c-1.63-0.95-2.92-2.23-3.88-3.83c-0.96-1.61-1.44-3.38-1.44-5.32c0-1.97,0.48-3.75,1.44-5.34c0.96-1.59,2.26-2.87,3.88-3.82c1.63-0.95,3.43-1.42,5.39-1.42c1.99,0,3.79,0.47,5.41,1.42c1.62,0.95,2.91,2.22,3.87,3.82c0.96,1.59,1.44,3.37,1.44,5.34c0,1.94-0.48,3.72-1.44,5.32c-0.96,1.61-2.25,2.88-3.87,3.83C1224.28,452.97,1222.48,453.44,1220.49,453.44z M1220.49,449.71c1.26,0,2.4-0.31,3.43-0.93c1.02-0.62,1.84-1.45,2.45-2.48c0.61-1.03,0.91-2.18,0.91-3.44c0-1.26-0.31-2.41-0.91-3.44c-0.61-1.03-1.42-1.86-2.45-2.48c-1.02-0.62-2.17-0.93-3.43-0.93c-1.26,0-2.4,0.31-3.43,0.93c-1.02,0.62-1.84,1.45-2.45,2.48c-0.61,1.03-0.91,2.18-0.91,3.44c0,1.26,0.3,2.41,0.91,3.44c0.61,1.03,1.42,1.86,2.45,2.48C1218.09,449.4,1219.23,449.71,1220.49,449.71z"/>
           </svg>
-          <span class="lt-card-label">{c.label}</span>
+          <span class="lt-card-label" data-lt-card-label data-active={c.label}>{pv.label}</span>
           </div>
 
+          <!-- Three columns: avatar · QR (same size, aligned) · texts. -->
           <div class="lt-back-body">
             <span class="lt-avatar lt-back-avatar" data-peep-bust set:html={bust} />
+            <!-- QR the counter scans (Lomu's card.qr for members; a sample here). -->
+            <span class="lt-qr lt-qr-placeholder" data-lt-qr role="img" aria-label={pv.qr}><span>{pv.qr}</span></span>
             <div class="lt-back-info">
               <span class="lt-mono lt-muted">{c.holderLabel}</span>
-              <strong class="lt-back-name">{c.holder}</strong>
-              <!-- Dummy Code 128 barcode: encodes the member code printed under it. -->
-              <svg class="lt-barcode" viewBox="0 0 156 35" preserveAspectRatio="none" shape-rendering="crispEdges" role="img" aria-label={`${c.codeLabel}: ${c.code}`}><path stroke="#000000" stroke-width="2" d="M1 35L1 0M16 35L16 0M23 35L23 0M37 35L37 0M64 35L64 0M71 35L71 0M92 35L92 0M114 35L114 0M122 35L122 0M141 35L141 0M144 35L144 0M155 35L155 0" /><path stroke="#000000" stroke-width="1" d="M3.50 35L3.50 0M6.50 35L6.50 0M11.50 35L11.50 0M31.50 35L31.50 0M33.50 35L33.50 0M44.50 35L44.50 0M74.50 35L74.50 0M77.50 35L77.50 0M88.50 35L88.50 0M99.50 35L99.50 0M110.50 35L110.50 0M117.50 35L117.50 0M125.50 35L125.50 0M132.50 35L132.50 0M135.50 35L135.50 0M152.50 35L152.50 0" /><path stroke="#000000" stroke-width="3" d="M19.50 35L19.50 0M26.50 35L26.50 0M40.50 35L40.50 0M47.50 35L47.50 0M56.50 35L56.50 0M60.50 35L60.50 0M67.50 35L67.50 0M85.50 35L85.50 0M95.50 35L95.50 0M102.50 35L102.50 0M128.50 35L128.50 0M149.50 35L149.50 0" /><path stroke="#000000" stroke-width="4" d="M52 35L52 0M81 35L81 0M107 35L107 0" /></svg>
-              <span class="lt-mono lt-muted lt-code">{c.code}</span>
+              <strong class="lt-back-name" data-lt-holder>{pv.holder}</strong>
+              <span class="lt-mono lt-muted lt-back-code-label">{c.codeLabel}</span>
+              <span class="lt-mono lt-code" data-lt-code>{pv.code}</span>
             </div>
           </div>
 
@@ -119,6 +158,9 @@ const bust = bustSvg(peep);
         </article>
       </div>
 
+      <!-- Members only: level and what's left for the next one (Lomu, 2026-10-21). -->
+      <p class="lt-level" data-lt-level hidden><span class="lt-level-line" data-lt-level-line></span></p>
+
       <button class="lt-flip-btn hoverable" type="button" aria-pressed="false" data-front={c.flipToBack} data-back={c.flipToFront}>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.7M20 4v4.7h-4.7M20 12a8 8 0 0 1-13.7 5.6L4 15.3M4 20v-4.7h4.7" /></svg>
         <span>{c.flipToBack}</span>
@@ -126,25 +168,133 @@ const bust = bustSvg(peep);
     </div>
 
     <div class="hero-actions" style="justify-content:flex-start">
-      <a class="btn hoverable" href="#registro">{t.ctaJoin} <ArrowIcon dir="down" /></a>
-      <a class="btn hoverable" href={localePath(lang, "/menu/")}>{t.ctaMenu} <ArrowIcon dir="right" /></a>
+      <a class="btn hoverable" href="#registro" data-lt-join-cta>{t.ctaJoin} <ArrowIcon dir="down" /></a>
+      <a class="btn hoverable" href="#encontrar" data-lt-join-cta>{app.heroFind} <ArrowIcon dir="down" /></a>
+      <a class="btn hoverable" href={localePath(lang, "/menu/")} data-lt-join-cta>{t.ctaMenu} <ArrowIcon dir="right" /></a>
+      <!-- Members only: same share as the member panel (Story image of their avatar). -->
+      <button class="btn hoverable" type="button" data-lt-hero-share hidden>{t.share.button} <ArrowIcon dir="up-right" /></button>
+    </div>
+    <!-- Members only (shown once their card loads): ask for a Google review. -->
+    <div class="lt-review" data-lt-review hidden>
+      <a data-track="review_clicked" data-track-source="loyalty_hero" class="btn hoverable" href={reviewHref} target="_blank" rel="noopener">{t.review.button} <ArrowIcon dir="up-right" /></a>
+      <p>{t.review.text}</p>
     </div>
     <div class="coord-strip" aria-hidden="true">
       {t.micro.map((m) => <span>{m}</span>)}
     </div>
   </div>
+  <!-- Stamp album (Lomu, 2026-10-26). Nothing shows until Lomu sends card.album; then the
+       last stamp sits on the card's corner (script "album" below) and opens these. -->
+  <dialog class="lt-album" data-lt-album aria-labelledby="lt-album-title" data-i18n={JSON.stringify(al)} data-lang={lang}>
+    <div class="lt-album-inner">
+      <header class="lt-album-head">
+        <span class="lt-mono lt-muted" data-lt-album-eyebrow>{al.eyebrow}</span>
+        <button class="lt-album-x" type="button" data-lt-album-close aria-label={al.close}>×</button>
+      </header>
+      <h2 id="lt-album-title" class="lt-album-title" data-lt-album-title></h2>
+      <p class="lt-album-progress" data-lt-album-progress></p>
+      <p class="lt-album-note" data-lt-album-note role="status" aria-live="polite"></p>
+      <button class="lt-album-packs" type="button" data-lt-album-open hidden>
+        <span class="lt-album-packs-ico" aria-hidden="true"></span>
+        <span class="lt-album-packs-txt"><strong data-lt-album-packs></strong><span>{al.packsSub}</span></span>
+        <span class="lt-album-packs-go" aria-hidden="true">{al.packsGo}</span>
+      </button>
+      <div class="lt-album-next" data-lt-album-next hidden>
+        <span class="lt-mono" data-lt-album-next-label></span>
+        <div class="lt-album-bar" data-lt-album-bar aria-hidden="true"></div>
+      </div>
+      <ol class="lt-album-grid" data-lt-album-grid></ol>
+      <div class="lt-album-reward" data-lt-album-reward hidden>
+        <span class="lt-mono lt-muted">{al.reward}</span>
+        <strong data-lt-album-reward-text></strong>
+      </div>
+      <details class="lt-album-how">
+        <summary>{al.how}</summary>
+        <ol data-lt-album-how></ol>
+      </details>
+    </div>
+  </dialog>
+
+  <dialog class="lt-album-zoom" data-lt-album-zoom aria-labelledby="lt-album-zoom-title">
+    <button class="lt-album-x" type="button" data-lt-album-zoom-close aria-label={al.close}>×</button>
+    <div class="lt-album-zoom-art" data-lt-album-zoom-art></div>
+    <h3 id="lt-album-zoom-title" data-lt-album-zoom-title></h3>
+    <p data-lt-album-zoom-tagline></p>
+    <p class="lt-mono lt-album-zoom-coord" data-lt-album-zoom-coord hidden></p>
+    <button class="lt-album-tried" type="button" data-lt-album-tried aria-pressed="false" hidden><span data-lt-album-tried-label></span></button>
+    <p class="lt-album-tried-hint" data-lt-album-tried-hint role="status" aria-live="polite"></p>
+  </dialog>
+
+  <dialog class="lt-pack" data-lt-pack aria-labelledby="lt-pack-title">
+    <div class="lt-pack-stage">
+      <button class="lt-pack-x" type="button" data-lt-pack-close aria-label={al.close}>×</button>
+      <p class="lt-mono lt-pack-eyebrow" data-lt-pack-eyebrow>{al.pack}</p>
+      <h2 id="lt-pack-title" class="lt-pack-title" data-lt-pack-title>{al.tapPack}</h2>
+      <p class="lt-pack-sub" data-lt-pack-sub aria-live="polite"></p>
+      <button class="lt-pack-env" type="button" data-lt-pack-env aria-label={al.openPack}>
+        <svg viewBox="0 0 300 200" aria-hidden="true" class="lt-pack-env-body">
+          <rect x="4" y="4" width="292" height="192" rx="10" fill="#efe7d8" stroke="#0a0a0a" stroke-width="3" />
+          <path d="M4 196 L150 104 L296 196" fill="none" stroke="#0a0a0a" stroke-width="3" stroke-linejoin="round" />
+        </svg>
+        <svg viewBox="0 0 300 120" aria-hidden="true" class="lt-pack-env-flap">
+          <path d="M4 4 L150 112 L296 4Z" fill="#e6dcc8" stroke="#0a0a0a" stroke-width="3" stroke-linejoin="round" />
+        </svg>
+        <span class="lt-pack-seal" aria-hidden="true">L°</span>
+      </button>
+      <div class="lt-pack-picks" data-lt-pack-picks></div>
+      <div class="lt-pack-chosen" data-lt-pack-chosen hidden></div>
+      <div class="lt-pack-actions">
+        <button class="btn inverse" type="button" data-lt-pack-flipall hidden>{al.flipAll}</button>
+        <button class="btn inverse" type="button" data-lt-pack-paste hidden>{al.paste}</button>
+      </div>
+    </div>
+  </dialog>
 </section>
 
 <section class="founder-section lt-signup" id="registro">
   <div class="lt-signup-grid">
-    <div>
-      <div class="meta muted eyebrow">{f.eyebrow}</div>
-      <h2>{f.heading}</h2>
-      <p>{f.body}</p>
+    <div data-lt-intro>
+      <div data-lt-mode-show="new">
+        <div class="meta muted eyebrow">{f.eyebrow}</div>
+        <h2>{f.heading}</h2>
+        <p>{f.body}</p>
+      </div>
+      <div data-lt-mode-show="find" hidden>
+        <div class="meta muted eyebrow">{app.tabFind}</div>
+        <h2>{app.findHeading}</h2>
+        <p>{app.findIntro}</p>
+      </div>
     </div>
 
-    <!-- UI only: no submission yet. -->
-    <form class="lt-form" novalidate onsubmit="return false">
+    <!-- Shown instead of the sign-up once this browser has a card. -->
+    <div class="lt-member" data-lt-member hidden>
+      <div class="meta muted eyebrow">{app.memberEyebrow}</div>
+      <h2 data-lt-member-heading></h2>
+      <p data-lt-member-body></p>
+      <div class="lt-member-actions">
+        <a class="btn hoverable" href="#" data-lt-show-code>{app.showCode} <ArrowIcon dir="up" /></a>
+        <!-- Hidden (2026-10-26): sharing lives in the hero button, which clicks this one. -->
+        <button class="lt-chip hoverable" type="button" data-lt-share data-i18n={JSON.stringify(t.share)} hidden>{t.share.button}</button>
+        <button class="lt-chip hoverable" type="button" data-lt-edit-avatar>{app.editAvatar}</button>
+      </div>
+      <p class="lt-note" data-lt-share-note role="status" hidden></p>
+      <div class="lt-member-avatar" data-lt-avatar-slot hidden>
+        <button class="btn hoverable" type="button" data-lt-save-avatar>{app.saveAvatar} <ArrowIcon dir="right" /></button>
+        <p class="lt-note" data-lt-avatar-note hidden></p>
+      </div>
+      <button class="lt-link hoverable" type="button" data-lt-signout>{app.notMe}</button>
+    </div>
+
+    <div class="lt-signup-side" data-lt-signup>
+    <!-- Two ways in, side by side: create a card or find yours. Switches in place (no reload). -->
+    <div class="lt-seg" role="tablist" aria-label={app.findSummary}>
+      <button class="lt-seg-btn hoverable" type="button" role="tab" id="lt-seg-new" aria-controls="lt-pane-new" aria-selected="true" data-lt-mode="new">{app.tabNew}</button>
+      <button class="lt-seg-btn hoverable" type="button" role="tab" id="lt-seg-find" aria-controls="lt-pane-find" aria-selected="false" tabindex="-1" data-lt-mode="find">{app.tabFind}</button>
+    </div>
+
+    <div id="lt-pane-new" role="tabpanel" aria-labelledby="lt-seg-new" data-lt-mode-show="new">
+    <form class="lt-form" novalidate data-lt-form>
+      <input class="lt-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <div class="lt-field">
         <label for="lt-name"><span>{f.nameLabel}</span><span class="lt-req">{f.required}</span></label>
         <input id="lt-name" name="name" type="text" autocomplete="name" placeholder={f.namePlaceholder} required aria-describedby="lt-name-hint" />
@@ -182,9 +332,28 @@ const bust = bustSvg(peep);
         <label for="lt-bday"><span>{f.birthdayLabel}</span><span class="lt-req muted">{f.optional}</span></label>
         <input id="lt-bday" name="birthday" type="date" autocomplete="bday" />
       </div>
+      <label class="lt-consent">
+        <input type="checkbox" name="consent" value="1" required />
+        <span>{app.consent} <a class="hoverable" href={privacyUrl} target="_blank" rel="noopener">{f.privacyLink}</a></span>
+      </label>
+      <p class="lt-error" data-lt-error role="alert" hidden></p>
       <button class="btn hoverable lt-submit" type="submit">{f.submit} <ArrowIcon dir="right" /></button>
-      <p class="lt-privacy">{f.privacy} <a class="hoverable" href="#">{f.privacyLink}</a></p>
     </form>
+
+    </div>
+
+    <div id="lt-pane-find" role="tabpanel" aria-labelledby="lt-seg-find" data-lt-mode-show="find" hidden>
+      <form class="lt-form" novalidate data-lt-find-form>
+        <div class="lt-field">
+          <label for="lt-find-email"><span>{f.emailLabel}</span><span class="lt-req">{f.required}</span></label>
+          <input id="lt-find-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder={f.emailPlaceholder} required aria-describedby="lt-find-hint" />
+          <small id="lt-find-hint">{app.findBody}</small>
+        </div>
+        <p class="lt-error" data-lt-error role="alert" hidden></p>
+        <button class="btn hoverable lt-submit" type="submit">{app.findButton} <ArrowIcon dir="right" /></button>
+      </form>
+    </div>
+    </div>
   </div>
 </section>
 
@@ -216,6 +385,7 @@ const bust = bustSvg(peep);
   // Flip the loyalty card (UI only): button, tap, or a horizontal swipe.
   // The card keeps an accumulated angle so a swipe turns it in the swipe's direction.
   // The hidden face is made inert so keyboard/screen readers follow the visible one.
+  import { track } from "../scripts/analytics";
   document.querySelectorAll<HTMLElement>("[data-lt-flip]").forEach((wrap) => {
     const flip = wrap.querySelector<HTMLElement>(".lt-flip")!;
     const btn = wrap.querySelector<HTMLButtonElement>(".lt-flip-btn")!;
@@ -224,7 +394,7 @@ const bust = bustSvg(peep);
     const back = wrap.querySelector<HTMLElement>(".lt-back")!;
     let angle = 0;
 
-    const turn = (dir: 1 | -1) => {
+    const turn = (dir: 1 | -1, method: "button" | "tap" | "swipe") => {
       angle += 180 * dir;
       flip.style.setProperty("--lt-rot", `${angle}deg`);
       const flipped = Math.abs(angle / 180) % 2 === 1;
@@ -235,9 +405,10 @@ const bust = bustSvg(peep);
       back.inert = !flipped;
       front.setAttribute("aria-hidden", String(flipped));
       back.setAttribute("aria-hidden", String(!flipped));
+      if (flipped) track("loyalty_code_shown", { method });
     };
 
-    btn.addEventListener("click", () => turn(1));
+    btn.addEventListener("click", () => turn(1, "button"));
 
     // Swipe: horizontal drag of 40px+ that is clearly more horizontal than vertical.
     let startX = 0, startY = 0, tracking = false, swiped = false;
@@ -253,35 +424,82 @@ const bust = bustSvg(peep);
       const dx = e.clientX - startX, dy = e.clientY - startY;
       if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
         swiped = true;
-        turn(dx > 0 ? 1 : -1);
+        turn(dx > 0 ? 1 : -1, "swipe");
       }
     });
     flip.addEventListener("pointercancel", () => (tracking = false));
     // A plain tap still flips; the click that follows a mouse drag is ignored.
     flip.addEventListener("click", () => {
       if (swiped) { swiped = false; return; }
-      turn(1);
+      turn(1, "tap");
     });
   });
+</script>
+
+<script>
+  // "Crear tarjeta" / "Ya tengo tarjeta": one segmented control swaps the form and the intro.
+  // #encontrar (from the hero or a shared link) opens the find view directly.
+  const seg = [...document.querySelectorAll<HTMLButtonElement>("[data-lt-mode]")];
+  const setMode = (mode: string, focus = false) => {
+    seg.forEach((b) => {
+      const on = b.dataset.ltMode === mode;
+      b.setAttribute("aria-selected", String(on));
+      b.tabIndex = on ? 0 : -1;
+      if (on && focus) b.focus();
+    });
+    document.querySelectorAll<HTMLElement>("[data-lt-mode-show]").forEach((el) => (el.hidden = el.dataset.ltModeShow !== mode));
+  };
+  seg.forEach((b, i) => {
+    b.addEventListener("click", () => setMode(b.dataset.ltMode!));
+    b.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      const next = seg[(i + (e.key === "ArrowRight" ? 1 : seg.length - 1)) % seg.length];
+      setMode(next.dataset.ltMode!, true);
+    });
+  });
+  const fromHash = () => {
+    if (location.hash === "#encontrar") {
+      setMode("find");
+      document.getElementById("registro")?.scrollIntoView({ behavior: "smooth" });
+    } else if (location.hash === "#registro") setMode("new");
+  };
+  window.addEventListener("hashchange", fromHash);
+  fromHash();
+  // Clicking a link to the hash already in the URL fires no "hashchange" — and #encontrar isn't a
+  // real anchor — so these buttons switch the view and scroll themselves, every time.
+  document.querySelectorAll<HTMLAnchorElement>('a[href="#encontrar"], a[href="#registro"]').forEach((a) =>
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      setMode(a.getAttribute("href") === "#encontrar" ? "find" : "new");
+      document.getElementById("registro")?.scrollIntoView({ behavior: "smooth" });
+      if (location.hash !== a.hash) history.pushState(null, "", a.hash);
+    }),
+  );
 </script>
 
 <script>
   // Avatar editor inside the sign-up form (UI only, state kept in this browser).
   // Until the visitor customises it, the avatar follows whatever they type as their name.
   // DiceBear loads only when the form is near.
+  import { track as trackEvent } from "../scripts/analytics";
   const editor = document.querySelector<HTMLElement>("[data-peep-editor]");
   if (editor) {
+    // Signup form or a member editing from their card panel.
+    const editorContext = () => (editor.closest("[data-lt-avatar-slot]") ? "member" : "signup");
     const io = new IntersectionObserver(async (entries) => {
       if (!entries.some((e) => e.isIntersecting)) return;
       io.disconnect();
       const P = await import("../scripts/peeps");
       type State = import("../scripts/peeps").PeepState;
       const KEY = "lattitude-peep";
-      const fallbackSeed = editor.dataset.seed ?? "";
       const nameInput = document.querySelector<HTMLInputElement>("#lt-name");
-      const seedNow = () => nameInput?.value.trim() || fallbackSeed;
+      // No name typed yet → the same random sample avatar the card shows (data-seed set below).
+      const fromName = (): State => {
+        const name = nameInput?.value.trim();
+        return name ? P.stateFromSeed(name) : P.sampleState(editor.dataset.seed ?? "");
+      };
 
-      let state: State = P.stateFromSeed(seedNow());
+      let state: State = fromName();
       let customised = false;
       try {
         const saved = JSON.parse(localStorage.getItem(KEY) ?? "null");
@@ -312,6 +530,7 @@ const bust = bustSvg(peep);
           b.addEventListener("click", () => {
             state = { ...state, [part]: value };
             customised = true;
+            trackEvent("avatar_customized", { part, context: editorContext() });
             paint();
             optionsEl.querySelectorAll(".lt-opt").forEach((o) => o.setAttribute("aria-pressed", "false"));
             b.setAttribute("aria-pressed", "true");
@@ -331,18 +550,19 @@ const bust = bustSvg(peep);
       editor.querySelector("[data-peep-random]")!.addEventListener("click", () => {
         state = P.stateFromSeed(Math.random().toString(36).slice(2));
         customised = true;
+        trackEvent("avatar_customized", { part: "random", context: editorContext() });
         paint();
         renderOptions();
       });
       editor.querySelector("[data-peep-reset]")!.addEventListener("click", () => {
-        state = P.stateFromSeed(seedNow());
+        state = fromName();
         customised = false;
         paint();
         renderOptions();
       });
       nameInput?.addEventListener("input", () => {
         if (customised) return;
-        state = P.stateFromSeed(seedNow());
+        state = fromName();
         paint();
         renderOptions();
       });
@@ -351,5 +571,1133 @@ const bust = bustSvg(peep);
       renderOptions();
     }, { rootMargin: "400px" });
     io.observe(editor);
+  }
+</script>
+
+<script>
+  import { track, resetMember } from "../scripts/analytics";
+  // Live card (2026-10-20). Customers, stamps and notifications live in Lomu Studio;
+  // this script only calls its loyalty API (data-api) and paints the card above.
+  // The card token is kept in this browser; without it the page shows the sample card.
+  const root = document.querySelector<HTMLElement>("[data-lt-app]");
+  if (root) {
+    const API = root.dataset.api!;
+    const LANG = root.dataset.lang === "en" ? "en" : "es";
+    const T = JSON.parse(root.dataset.i18n ?? "{}") as Record<string, string>;
+    const TOKEN_KEY = "lattitude-card";
+    const $ = <E extends Element = HTMLElement>(sel: string, el: ParentNode = document) => el.querySelector<E>(sel);
+    const $$ = <E extends Element = HTMLElement>(sel: string, el: ParentNode = document) => [...el.querySelectorAll<E>(sel)];
+    const fill = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ""));
+
+    type Avatar = { head: string; face: string; facialHair: string | null; accessories: string | null };
+    type Level = { card: number; index: number; name: string; next: { name: string; cardsToGo: number } | null };
+    // Lomu API (2026-10-21): `avatar` is what to draw (the member's own face, or the "lovingGrin1"
+    // celebration face while mood === "reward"); `savedAvatar` is what they chose — the editor
+    // starts from it, so the celebration face is never saved by accident.
+    type Card = { token: string; name: string; code: string; stamps: number; stampsRequired: number; rewardReady: boolean; qr: string;
+      avatar: Avatar | null; savedAvatar?: Avatar | null; mood?: "happy" | "reward"; level?: Level | null;
+      album?: { ownedCount: number; triedCount?: number; complete: boolean; packs: unknown[] } | null };
+    // The avatar editor (script above) keeps a customised avatar here; the card in
+    // Lomu is the source of truth once the customer has one.
+    const PEEP_KEY = "lattitude-peep";
+    const savedPeep = (): Avatar | null => {
+      try {
+        const v = JSON.parse(localStorage.getItem(PEEP_KEY) ?? "null");
+        return v && v.head && v.face ? v : null;
+      } catch { return null; }
+    };
+    async function currentAvatar(name: string): Promise<Avatar> {
+      const P = await import("../scripts/peeps");
+      return savedPeep() ?? P.stateFromSeed(name);
+    }
+    type ApiResult = { ok: boolean; error?: string; card?: Card };
+
+    const getToken = () => { try { return localStorage.getItem(TOKEN_KEY); } catch { return null; } };
+    const setToken = (t: string | null) => { try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); } catch {} };
+
+    async function api(path: string, opts: { method?: string; body?: unknown; token?: string | null } = {}): Promise<ApiResult & { status: number }> {
+      try {
+        const res = await fetch(`${API}/${path}`, {
+          method: opts.method ?? "GET",
+          headers: {
+            ...(opts.body ? { "Content-Type": "application/json" } : {}),
+            ...(opts.token ? { Authorization: `Bearer ${opts.token}` } : {}),
+          },
+          body: opts.body ? JSON.stringify({ ...(opts.body as object), lang: LANG }) : undefined,
+        });
+        const data = (await res.json().catch(() => ({ ok: false }))) as ApiResult;
+        return { ...data, status: res.status };
+      } catch {
+        return { ok: false, error: T.errorGeneric, status: 0 };
+      }
+    }
+
+    // --- Painting the card (same markup as the build-time sample) -------------
+    const STAMP_SVG = '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="10" fill="none" /><path d="M20 4v32M4 20h32" /><circle class="dot" cx="20" cy="20" r="2.6" /></svg>';
+    // Reward slot: a coffee cup, same line style as the stamps (2026-10-20).
+    const REWARD_SVG = '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M10.5 16h15v8.5a6.5 6.5 0 0 1-6.5 6.5h-2a6.5 6.5 0 0 1-6.5-6.5z" /><path d="M25.5 18.5h2.25a3.25 3.25 0 0 1 0 6.5H25.5" /><path d="M8.5 34.5h20" /><path d="M15 6.5c-1.6 1.7 1.6 3.3 0 5M20.5 6.5c-1.6 1.7 1.6 3.3 0 5" /></svg>';
+
+    function paintStamps(stamps: number, total: number) {
+      const ol = $("[data-lt-stamps]");
+      if (!ol) return;
+      const stampLabel = ol.dataset.stampLabel ?? "";
+      const rewardLabel = ol.dataset.rewardLabel ?? "";
+      ol.innerHTML = Array.from({ length: total }, (_, i) => {
+        const n = String(i + 1).padStart(2, "0");
+        const filled = i < stamps;
+        const reward = i === total - 1;
+        const cls = ["lt-stamp", filled ? "filled" : "", reward ? "reward" : ""].filter(Boolean).join(" ");
+        // The last slot is always the cup (black on white once earned).
+        const inner = reward ? REWARD_SVG : filled ? STAMP_SVG : `<span>${n}</span>`;
+        return `<li class="${cls}" title="${reward ? rewardLabel : `${stampLabel} ${n}`}">${inner}</li>`;
+      }).join("");
+      $$("[data-lt-total]").forEach((el) => (el.textContent = String(total)));
+    }
+
+    async function paintAvatar(card: Card) {
+      // Draw `avatar` as Lomu sends it; keep `savedAvatar` (the member's choice) for the editor.
+      // Without either it follows the name.
+      const P = await import("../scripts/peeps");
+      const chosen = card.savedAvatar ?? (card.mood === "reward" ? null : card.avatar);
+      if (chosen) { try { localStorage.setItem(PEEP_KEY, JSON.stringify(chosen)); } catch {} }
+      const bust = P.bustSvg(card.avatar ?? chosen ?? savedPeep() ?? P.stateFromSeed(card.name));
+      $$("[data-peep-bust]").forEach((el) => (el.innerHTML = bust));
+      // Full card, not yet redeemed: confetti behind the peep.
+      $$(".lt-hero .lt-avatar").forEach((el) => el.classList.toggle("lt-avatar-reward", card.mood === "reward"));
+    }
+
+    function paintLevel(level: Level | null | undefined) {
+      const box = $("[data-lt-level]");
+      if (!level) { if (box) box.hidden = true; return; }
+      $$("[data-lt-level-name]").forEach((el) => (el.textContent = level.name));
+      $("[data-lt-level-line]")!.textContent = fill(T.levelLine, { name: level.name, card: level.card });
+      if (box) box.hidden = false;
+    }
+
+    async function paintQr(card: Card) {
+      // Lomu's own QR (the one its counter portal scans); without it, one made from the member code.
+      const box = $("[data-lt-qr]");
+      if (!box) return;
+      if (card.qr && card.qr.includes("<svg")) {
+        box.innerHTML = card.qr;
+      } else if (card.code) {
+        const { default: QR } = await import("qrcode");
+        box.innerHTML = await QR.toString(card.code, { type: "svg", margin: 0, color: { dark: "#0a0a0a", light: "#f7f5f0" } });
+      }
+      const svg = box.querySelector("svg");
+      if (svg) { svg.removeAttribute("width"); svg.removeAttribute("height"); svg.setAttribute("aria-hidden", "true"); }
+      box.setAttribute("aria-label", `${box.getAttribute("aria-label")?.split(":")[0] ?? ""}: ${card.code}`);
+    }
+
+    function showMember(card: Card) {
+      $$("[data-lt-holder]").forEach((el) => (el.textContent = card.name));
+      $$("[data-lt-code]").forEach((el) => (el.textContent = card.code));
+      paintStamps(card.stamps, card.stampsRequired);
+      // The back shows the avatar and, under the name, the QR the counter scans.
+      paintQr(card);
+      paintAvatar(card);
+      paintLevel(card.level);
+      member = card;
+
+      $("[data-lt-intro]")!.hidden = true;
+      $("[data-lt-signup]")!.hidden = true;
+      $("[data-lt-member]")!.hidden = false;
+      $$("[data-lt-join-cta]").forEach((el) => el.setAttribute("hidden", ""));
+      $("[data-lt-member-heading]")!.textContent = fill(T.memberHeading, { name: card.name.split(" ")[0] ?? card.name });
+      $("[data-lt-member-body]")!.textContent = card.rewardReady
+        ? T.memberReady
+        : `${T.memberBody} ${fill(T.memberProgress, { stamps: card.stamps, total: card.stampsRequired })}.`;
+      setupPush(card.token);
+      // Hook (2026-10-20): lets the stamp-celebration script react to every painted card.
+      root.dispatchEvent(new CustomEvent("lt:card", { detail: card }));
+    }
+
+    let member: Card | null = null;
+
+    function signOut() {
+      track("loyalty_signed_out", {}, { transport: "sendBeacon" });
+      resetMember();
+      setToken(null);
+      try { localStorage.removeItem(PEEP_KEY); } catch {}
+      location.reload();
+    }
+
+    // --- Sign-up, find by phone, sign-out --------------------------------------
+    function showError(form: HTMLFormElement, msg: string | null) {
+      const el = $("[data-lt-error]", form);
+      if (!el) return;
+      el.textContent = msg ?? "";
+      el.hidden = !msg;
+    }
+
+    const form = $<HTMLFormElement>("[data-lt-form]");
+    // Analytics: first field touched = sign-up started (once per page).
+    form?.addEventListener("focusin", () => track("loyalty_signup_started"), { once: true });
+    const failSignup = (reason: string, msg: string) => { track("loyalty_signup_failed", { reason }); return showError(form!, msg); };
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const name = String(fd.get("name") ?? "").trim();
+      const phone = String(fd.get("phone") ?? "").replace(/\D/g, "");
+      const email = String(fd.get("email") ?? "").trim();
+      if (!name) return failSignup("name_missing", T.nameMissing);
+      if (phone.length !== 10) return failSignup("phone_invalid", T.phoneInvalid);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return failSignup("email_invalid", T.emailInvalid);
+      if (fd.get("consent") !== "1") return failSignup("consent_missing", T.consentMissing);
+      showError(form, null);
+      const btn = $<HTMLButtonElement>(".lt-submit", form)!;
+      btn.disabled = true;
+      const avatar = await currentAvatar(name);
+      const r = await api("registro", {
+        method: "POST",
+        body: { name, phone, email, birthday: String(fd.get("birthday") ?? ""), consent: true, website: String(fd.get("website") ?? ""), avatar },
+      });
+      btn.disabled = false;
+      if (!r.ok || !r.card) return failSignup(r.status ? `api_${r.status}` : "network", r.error ?? T.errorGeneric);
+      setToken(r.card.token);
+      showMember(r.card); // identifies the member (analytics) before the event below
+      track("loyalty_signup_completed", { is_avatar_customized: !!savedPeep(), is_birthday_provided: !!fd.get("birthday") });
+      root.scrollIntoView({ behavior: "smooth" });
+    });
+
+    const findForm = $<HTMLFormElement>("[data-lt-find-form]");
+    findForm?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      // Members are matched by email (2026-10-20); Lomu's /buscar accepts { email }.
+      const email = String(new FormData(findForm).get("email") ?? "").trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { track("loyalty_find_failed", { reason: "email_invalid" }); return showError(findForm, T.emailInvalid); }
+      showError(findForm, null);
+      const r = await api("buscar", { method: "POST", body: { email } });
+      if (!r.ok || !r.card) { track("loyalty_find_failed", { reason: r.status ? `api_${r.status}` : "network" }); return showError(findForm, r.error ?? T.errorGeneric); }
+      setToken(r.card.token);
+      showMember(r.card);
+      track("loyalty_card_found");
+      root.scrollIntoView({ behavior: "smooth" });
+    });
+
+    $("[data-lt-signout]")?.addEventListener("click", signOut);
+
+    // Edit the avatar with a card: the same editor moves into the member panel.
+    $("[data-lt-edit-avatar]")?.addEventListener("click", async () => {
+      const slot = $("[data-lt-avatar-slot]")!;
+      const editor = $("[data-peep-editor]");
+      if (member) {
+        // Start from the member's own choice (never the celebration face); none yet → their name.
+        const P = await import("../scripts/peeps");
+        const start = member.savedAvatar ?? savedPeep() ?? P.stateFromSeed(member.name);
+        try { localStorage.setItem(PEEP_KEY, JSON.stringify(start)); } catch {}
+      }
+      if (editor) {
+        if (member) editor.dataset.seed = member.name; // "Reset" goes back to the member's name
+        if (editor.parentElement !== slot) slot.prepend(editor);
+      }
+      slot.hidden = false;
+      $("[data-lt-edit-avatar]")!.hidden = true;
+    });
+    $("[data-lt-save-avatar]")?.addEventListener("click", async () => {
+      const note = $("[data-lt-avatar-note]")!;
+      const token = getToken();
+      if (!member || !token) return;
+      const avatar = await currentAvatar(member.name);
+      const r = await api("avatar", { method: "POST", body: avatar, token });
+      note.textContent = r.ok ? T.avatarSaved : r.error ?? T.errorGeneric;
+      if (r.ok) track("avatar_saved");
+      note.hidden = false;
+      if (r.ok && r.card) paintAvatar(r.card);
+    });
+    $("[data-lt-show-code]")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      root.scrollIntoView({ behavior: "smooth" });
+      const flip = $(".lt-flip");
+      if (flip && !flip.classList.contains("is-flipped")) $<HTMLButtonElement>(".lt-flip-btn")?.click();
+    });
+
+    // --- Notifications (Web Push through Lomu; service worker on this domain) ---
+    function setupPush(token: string) {
+      // The "Avísame" button was removed from the member panel (2026-10-26): nothing to set up.
+      const btn = $<HTMLButtonElement>("[data-lt-push]");
+      const note = $("[data-lt-push-note]");
+      if (!btn || !note) return;
+      const say = (msg: string | null) => { note.textContent = msg ?? ""; note.hidden = !msg; };
+      const supported = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+      const ios = /iPhone|iPad|iPod/.test(navigator.userAgent);
+      if (!supported) { if (ios) say(T.pushUnsupported); return; }
+
+      const swUrl = `/lealtad/sw.js?api=${encodeURIComponent(API)}&t=${encodeURIComponent(token)}`;
+      const register = async () => {
+        const reg = await navigator.serviceWorker.register(swUrl, { scope: "/lealtad/" });
+        if (reg.active) return reg;
+        await new Promise<void>((ok) => {
+          const w = reg.installing ?? reg.waiting;
+          if (!w) return ok();
+          w.addEventListener("statechange", () => { if (w.state === "activated") ok(); });
+        });
+        return reg;
+      };
+      const keyBytes = (k: string) => {
+        const s = k.replace(/-/g, "+").replace(/_/g, "/");
+        const b = atob(s + "===".slice((s.length + 3) % 4));
+        return Uint8Array.from(b, (ch) => ch.charCodeAt(0));
+      };
+      const on = (sub: PushSubscription) => {
+        btn.textContent = `${T.pushOn} · ${T.pushOff}`;
+        btn.hidden = false;
+        btn.onclick = async () => {
+          const endpoint = sub.endpoint;
+          await sub.unsubscribe().catch(() => {});
+          await api("push/unsubscribe", { method: "POST", body: { endpoint }, token });
+          track("push_disabled");
+          off();
+        };
+      };
+      const off = () => {
+        btn.textContent = T.pushAsk;
+        btn.hidden = false;
+        btn.onclick = async () => {
+          const perm = await Notification.requestPermission();
+          if (perm !== "granted") { if (perm === "denied") say(T.pushDenied); return; }
+          try {
+            const prog = await fetch(`${API}/programa`).then((r) => r.json());
+            if (!prog.pushKey) return say(T.errorGeneric);
+            const reg = await register();
+            const sub = (await reg.pushManager.getSubscription()) ?? (await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(prog.pushKey) }));
+            const r = await api("push/subscribe", { method: "POST", body: sub.toJSON(), token });
+            if (!r.ok) throw new Error("save");
+            say(null);
+            track("push_enabled");
+            on(sub);
+          } catch {
+            say(T.errorGeneric);
+          }
+        };
+      };
+      if (Notification.permission === "denied") { say(T.pushDenied); return; }
+      navigator.serviceWorker.getRegistration("/lealtad/").then(async (reg) => {
+        const sub = reg ? await reg.pushManager.getSubscription() : null;
+        sub ? on(sub) : off();
+      }).catch(off);
+    }
+
+    // --- Start: a saved card is loaded fresh from Lomu ---------------------------
+    const saved = getToken();
+    if (saved) {
+      api("tarjeta", { token: saved }).then((r) => {
+        if (r.ok && r.card) showMember(r.card);
+        else if (r.status === 401) setToken(null);
+      });
+    }
+
+    // Hook (2026-10-20): "lt:refresh" re-reads the card from Lomu (the celebration script
+    // asks while the code is on screen); it repaints only when stamps or reward changed.
+    root.addEventListener("lt:refresh", async () => {
+      const token = getToken();
+      if (!token || !member) return;
+      const r = await api("tarjeta", { token });
+      if (!r.ok || !r.card) return;
+      const changed = r.card.stamps !== member.stamps || r.card.rewardReady !== member.rewardReady || r.card.stampsRequired !== member.stampsRequired
+        || r.card.mood !== member.mood || r.card.level?.card !== member.level?.card || r.card.level?.name !== member.level?.name
+        || albumKey(r.card) !== albumKey(member);
+      if (changed) showMember(r.card);
+    });
+    // The album script (2026-10-26) hands over the card Lomu returns after opening a pack.
+    const albumKey = (c: Card) => (c.album ? `${c.album.ownedCount}/${c.album.packs?.length ?? 0}/${c.album.complete}/${c.album.triedCount ?? 0}` : "");
+    root.addEventListener("lt:set-card", (e) => {
+      const card = (e as CustomEvent<Card>).detail;
+      if (card?.code && getToken()) showMember(card);
+    });
+  }
+</script>
+
+<script>
+  // Stamp celebration (2026-10-20). Stamps are added by the staff in Lomu's portal, on
+  // another device, so this page notices them three ways: comparing with the last count it
+  // saw, asking Lomu every few seconds while the card is on screen, and when a push lands.
+  import { track, identifyMember } from "../scripts/analytics";
+  const app = document.querySelector<HTMLElement>("[data-lt-app]");
+  if (app) {
+    // Analytics: the loyalty page itself (Mixpanel's automatic page view covers the URL).
+    let hasCard = false;
+    try { hasCard = !!localStorage.getItem("lattitude-card"); } catch {}
+    const internal = !!document.referrer && new URL(document.referrer).host === location.host;
+    track("loyalty_page_viewed", { is_member: hasCard, entry: location.hash === "#encontrar" ? "find_link" : internal ? "internal" : document.referrer ? "external" : "direct" });
+
+    const SEEN_KEY = "lattitude-card-seen";
+    type Seen = { code: string; stamps: number; rewardReady: boolean; level?: string | null };
+    type CardLike = Seen & { stampsRequired: number; name: string; avatar: Record<string, string | null> | null; level?: { name: string; card: number } | null };
+    const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const toast = app.querySelector<HTMLElement>("[data-lt-toast]");
+    let active = false;
+    let timer: number | undefined;
+    let confetti: { addConfetti: (o?: object) => Promise<void> } | null = null;
+
+    const readSeen = (): Seen | null => { try { return JSON.parse(localStorage.getItem(SEEN_KEY) ?? "null"); } catch { return null; } };
+    const writeSeen = (c: CardLike) => { try { localStorage.setItem(SEEN_KEY, JSON.stringify({ code: c.code, stamps: c.stamps, rewardReady: c.rewardReady, level: c.level?.name ?? null })); } catch {} };
+
+    // The peep on the front reacts to the stamp: surprise, then a big smile, then back to
+    // the member's own face. It's an overlay on top of the avatar — the saved avatar never
+    // changes (not in this browser, not in Lomu).
+    async function react(card: CardLike) {
+      await new Promise((r) => setTimeout(r, 700)); // let the card's own avatar paint first
+      const tile = app!.querySelector<HTMLElement>(".lt-front .lt-avatar");
+      if (!tile) return;
+      const P = await import("../scripts/peeps");
+      let base: import("../scripts/peeps").PeepState;
+      try {
+        const saved = JSON.parse(localStorage.getItem("lattitude-peep") ?? "null");
+        base = (card.avatar as any) ?? (saved?.head && saved?.face ? saved : P.stateFromSeed(card.name));
+      } catch { base = P.stateFromSeed(card.name); }
+      const happy = card.rewardReady ? "lovingGrin1" : "smileBig";
+
+      tile.querySelector(".lt-avatar-fx")?.remove();
+      const fx = document.createElement("span");
+      fx.className = "lt-avatar-fx";
+      fx.setAttribute("aria-hidden", "true");
+      fx.innerHTML = P.bustSvg({ ...base, face: "awe" });
+      tile.appendChild(fx);
+      if (!reduceMotion) { tile.classList.remove("lt-avatar-bounce"); void tile.offsetWidth; tile.classList.add("lt-avatar-bounce"); }
+      requestAnimationFrame(() => fx.classList.add("on"));
+
+      await new Promise((r) => setTimeout(r, 650));
+      fx.innerHTML = P.bustSvg({ ...base, face: happy });
+      await new Promise((r) => setTimeout(r, card.rewardReady ? 3600 : 2000));
+      fx.classList.remove("on");
+      setTimeout(() => { fx.remove(); tile.classList.remove("lt-avatar-bounce"); }, reduceMotion ? 0 : 350);
+    }
+
+    async function celebrate(card: CardLike, gained: number) {
+      // Show the stamps side so the new one is visible.
+      const flip = app!.querySelector(".lt-flip");
+      if (flip?.classList.contains("is-flipped")) app!.querySelector<HTMLButtonElement>(".lt-flip-btn")?.click();
+      const items = [...app!.querySelectorAll(".lt-stamp")];
+      for (let i = Math.max(0, card.stamps - gained); i < card.stamps; i++) items[i]?.classList.add("lt-stamp-new");
+
+      if (toast) {
+        toast.textContent = card.rewardReady
+          ? toast.dataset.full ?? ""
+          : (toast.dataset.stamp ?? "").replace("{stamps}", String(card.stamps)).replace("{total}", String(card.stampsRequired));
+        toast.hidden = false;
+        setTimeout(() => (toast.hidden = true), 4500);
+      }
+      react(card);
+      if (reduceMotion) return;
+      if (!confetti) {
+        const { default: JSConfetti } = await import("js-confetti");
+        confetti = new JSConfetti();
+      }
+      // Monochrome, like the brand; a full card adds coffee.
+      await confetti.addConfetti({ confettiColors: ["#0a0a0a", "#3a3a3a", "#737373", "#bdbdbd"], confettiNumber: card.rewardReady ? 260 : 150 });
+      if (card.rewardReady) confetti.addConfetti({ emojis: ["☕"], emojiSize: 56, confettiNumber: 28 });
+    }
+
+    // Every card the page paints (load, sign-up, find, refresh) goes through here.
+    // This tab compares with the last count IT saw; the stored count only covers the first
+    // paint (stamps gained while the page was closed). So another open tab — or Lomu's own
+    // page — can't "use up" this tab's celebration.
+    let tabSeen: Seen | null = null;
+    app.addEventListener("lt:card", (e) => {
+      const card = (e as CustomEvent<CardLike>).detail;
+      identifyMember(card);
+      const detectedOn = tabSeen ? "live" : "page_load"; // live = while the page was open
+      const prev = tabSeen ?? readSeen();
+      if (prev && prev.code === card.code) {
+        const gained = card.stamps - prev.stamps;
+        const base = { stamps: card.stamps, stamps_required: card.stampsRequired, level: card.level?.name ?? null, card_number: card.level?.card ?? null, detected_on: detectedOn };
+        if (gained > 0) track("stamp_received", { ...base, stamps_gained: gained });
+        if (card.rewardReady && !prev.rewardReady) track("reward_ready", base);
+        if (prev.level && card.level?.name && prev.level !== card.level.name) track("level_up", { from: prev.level, to: card.level.name, card_number: card.level.card, detected_on: detectedOn });
+        if (gained > 0 || (card.rewardReady && !prev.rewardReady)) celebrate(card, Math.max(gained, 0));
+      }
+      tabSeen = { code: card.code, stamps: card.stamps, rewardReady: card.rewardReady, level: card.level?.name ?? null };
+      writeSeen(card);
+      active = true;
+      schedule();
+    });
+
+    // How often to ask Lomu (the stamp comes from another device, there's no push to the page):
+    // every 2.5 s for the first 3 min the code is on screen (customer at the counter), then 6 s;
+    // every 20 s on the stamps side; never while the tab is hidden.
+    const refresh = () => app.dispatchEvent(new Event("lt:refresh"));
+    const flipEl = app.querySelector(".lt-flip");
+    const showingCode = () => !!flipEl?.classList.contains("is-flipped");
+    let codeSince = 0;
+    function schedule() {
+      clearTimeout(timer);
+      if (!active || document.hidden) return;
+      const wait = showingCode() ? (Date.now() - codeSince < 180000 ? 2500 : 6000) : 20000;
+      timer = window.setTimeout(() => { refresh(); schedule(); }, wait);
+    }
+    // Any flip — button, tap or swipe — changes the pace; showing the code also checks right away.
+    if (flipEl) new MutationObserver(() => {
+      if (showingCode()) { codeSince = Date.now(); if (active) refresh(); }
+      schedule();
+    }).observe(flipEl, { attributes: true, attributeFilter: ["class"] });
+    // Coming back to the page: tab shown again, window focused, page restored by Safari, back online.
+    const wake = () => { if (!document.hidden && active) refresh(); schedule(); };
+    document.addEventListener("visibilitychange", wake);
+    window.addEventListener("focus", wake);
+    window.addEventListener("online", wake);
+    window.addEventListener("pageshow", (e) => { if ((e as PageTransitionEvent).persisted) wake(); });
+    // A push from Lomu while the page is open (see public/lealtad/sw.js) also triggers a check.
+    navigator.serviceWorker?.addEventListener("message", (e) => { if (e.data?.type === "lt:push" && active) refresh(); });
+  }
+</script>
+
+<script>
+  // Card loader (2026-10-20): ends once the member's card AND avatar are painted, when the
+  // saved token turns out to be invalid (Lomu's script removes it), or after 8 s at most.
+  const hero = document.querySelector<HTMLElement>("[data-lt-app].lt-loading");
+  if (hero) {
+    const done = () => {
+      hero.classList.remove("lt-loading");
+      hero.removeAttribute("aria-busy");
+      clearTimeout(fallback);
+      clearInterval(tokenWatch);
+    };
+    const fallback = window.setTimeout(done, 8000);
+    const tokenWatch = window.setInterval(() => {
+      try { if (!localStorage.getItem("lattitude-card")) done(); } catch { done(); }
+    }, 300);
+    hero.addEventListener("lt:card", () => {
+      // The avatar is painted a moment after the card (async); wait for it, briefly.
+      const avatar = hero.querySelector(".lt-avatar");
+      if (!avatar) return done();
+      const mo = new MutationObserver(() => { mo.disconnect(); done(); });
+      mo.observe(avatar, { childList: true, subtree: true });
+      setTimeout(() => { mo.disconnect(); done(); }, 2000);
+    }, { once: true });
+  }
+</script>
+
+<script>
+  // "Compartir mi avatar" (2026-10-20): a 1080×1920 Story image drawn in the browser with the
+  // member's avatar, first name and the brand — never the member code or QR.
+  // Instagram can't be posted to from the web, so it goes through the phone's share sheet
+  // (Web Share with a file); elsewhere the image downloads and the caption is copied.
+  // iOS only opens the share sheet straight from the tap, so the image is prepared ahead
+  // of time (when the card appears and whenever the avatar changes).
+  import { track as trackShareEvent } from "../scripts/analytics";
+  const trackShare = (method: string) => trackShareEvent("peep_shared", { method });
+  const shareBtn = document.querySelector<HTMLButtonElement>("[data-lt-share]");
+  const hostApp = document.querySelector<HTMLElement>("[data-lt-app]");
+  if (shareBtn && hostApp) {
+    const T = JSON.parse(shareBtn.dataset.i18n ?? "{}") as Record<string, string>;
+    const note = document.querySelector<HTMLElement>("[data-lt-share-note]");
+    const W = 1080, H = 1920, INK = "#f7f5f0", BG = "#0a0a0a", MUTED = "#8a8a8a";
+    let file: File | null = null;
+    let building: Promise<File | null> | null = null;
+
+    const svgImage = (markup: string) => new Promise<HTMLImageElement>((ok, fail) => {
+      const img = new Image();
+      img.onload = () => ok(img);
+      img.onerror = fail;
+      img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(markup);
+    });
+    const withNs = (svg: Element) => {
+      const c = svg.cloneNode(true) as Element;
+      c.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+      return c;
+    };
+
+    async function build(): Promise<File | null> {
+      const avatarSvg = hostApp!.querySelector(".lt-avatar > svg");
+      const logoSvg = hostApp!.querySelector(".lt-card-top svg");
+      if (!avatarSvg || !logoSvg) return null;
+      const name = (hostApp!.querySelector("[data-lt-holder]")?.textContent ?? "").trim().split(/\s+/)[0] ?? "";
+      await Promise.all([document.fonts.load("700 120px Inter"), document.fonts.load("400 44px Inter")]).catch(() => {});
+
+      const logo = withNs(logoSvg);
+      logo.setAttribute("fill", INK);
+      const [avatarImg, logoImg] = await Promise.all([svgImage(withNs(avatarSvg).outerHTML), svgImage(logo.outerHTML)]);
+
+      const c = document.createElement("canvas");
+      c.width = W; c.height = H;
+      const x = c.getContext("2d")!;
+      x.fillStyle = BG; x.fillRect(0, 0, W, H);
+      const mono = (size: number) => `500 ${size}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
+
+      // header: logotype + eyebrow pill
+      const lh = 64, lw = lh * (556 / 225);
+      x.drawImage(logoImg, 96, 150, lw, lh);
+      x.font = mono(30); x.textBaseline = "middle"; x.textAlign = "right";
+      const eyebrow = T.eyebrow;
+      (x as CanvasRenderingContext2D & { letterSpacing?: string }).letterSpacing = "4px"; // mono label tracking, where supported
+      const ew = x.measureText(eyebrow).width;
+      x.strokeStyle = INK; x.lineWidth = 3;
+      x.beginPath(); x.roundRect(W - 96 - ew - 56, 145, ew + 56, 74, 37); x.stroke();
+      x.fillStyle = INK; x.fillText(eyebrow, W - 96 - 28, 183);
+      (x as CanvasRenderingContext2D & { letterSpacing?: string }).letterSpacing = "0px";
+      x.fillStyle = "rgba(247,245,240,.2)"; x.fillRect(96, 290, W - 192, 2);
+
+      // avatar tile (same rounded square as the card)
+      const tile = 760, tx = (W - tile) / 2, ty = 400;
+      x.fillStyle = INK;
+      x.beginPath(); x.roundRect(tx, ty, tile, tile, 56); x.fill();
+      x.save(); x.beginPath(); x.roundRect(tx, ty, tile, tile, 56); x.clip();
+      x.drawImage(avatarImg, tx, ty, tile, tile);
+      x.restore();
+
+      // name + tagline
+      x.textAlign = "center"; x.textBaseline = "alphabetic";
+      x.fillStyle = INK; x.font = "700 132px Inter, Arial, sans-serif";
+      x.fillText(name, W / 2, ty + tile + 190, W - 192);
+      x.fillStyle = MUTED; x.font = "400 46px Inter, Arial, sans-serif";
+      x.fillText(T.tagline, W / 2, ty + tile + 270, W - 192);
+
+      // footer: handle, coordinates, ruler
+      x.fillStyle = INK; x.font = mono(38);
+      x.fillText("@LATTITUDECOFFEE", W / 2, H - 290);
+      x.fillStyle = MUTED; x.font = mono(28);
+      x.fillText("21°01′11.6″N / 89°34′16.2″W", W / 2, H - 230);
+      x.fillStyle = "rgba(247,245,240,.35)";
+      for (let i = 0, rx = 96; rx <= W - 96; i++, rx += 12) x.fillRect(rx, H - 160, 2, i % 4 === 0 ? 34 : 20);
+
+      const blob = await new Promise<Blob | null>((ok) => c.toBlob(ok, "image/png"));
+      return blob ? new File([blob], T.file, { type: "image/png" }) : null;
+    }
+
+    const prepare = () => {
+      building = build().then((f) => (file = f)).catch(() => (file = null));
+      return building;
+    };
+
+    // Prepare as soon as the member's card is painted, and again when the avatar changes.
+    hostApp.addEventListener("lt:card", () => setTimeout(prepare, 600));
+    const avatarEl = hostApp.querySelector(".lt-avatar");
+    // Ignore the stamp reaction's temporary overlay (.lt-avatar-fx): the Story uses the real face.
+    const isFx = (n: Node) => n instanceof Element && (n.classList.contains("lt-avatar-fx") || !!n.closest(".lt-avatar-fx"));
+    if (avatarEl) new MutationObserver((ms) => {
+      if (ms.every((m) => isFx(m.target) || [...m.addedNodes, ...m.removedNodes].every(isFx))) return;
+      prepare();
+    }).observe(avatarEl, { childList: true, subtree: true });
+
+    const say = (msg: string) => { if (note) { note.textContent = msg; note.hidden = false; } };
+
+    shareBtn.addEventListener("click", async () => {
+      // Use the ready image so the share sheet opens inside the tap (iOS).
+      const ready = file;
+      if (ready && navigator.canShare?.({ files: [ready] })) {
+        try { await navigator.share({ files: [ready], text: T.caption }); trackShare("share_sheet"); return; }
+        catch (e) { if ((e as Error).name === "AbortError") return; }
+      }
+      // Fallback: download + copy caption.
+      shareBtn.disabled = true;
+      const label = shareBtn.textContent;
+      shareBtn.textContent = T.preparing;
+      const f = ready ?? (await (building ?? prepare()));
+      shareBtn.disabled = false;
+      shareBtn.textContent = label;
+      if (!f) return;
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(f);
+      a.download = f.name;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      try { await navigator.clipboard.writeText(T.caption); } catch {}
+      say(T.saved);
+      trackShare("download");
+    });
+  }
+</script>
+
+<script>
+  // Show the review prompt to members only (people who have been here).
+  const reviewHost = document.querySelector<HTMLElement>("[data-lt-app]");
+  reviewHost?.addEventListener("lt:card", () => {
+    const box = reviewHost.querySelector<HTMLElement>("[data-lt-review]");
+    if (box) box.hidden = false;
+    const share = reviewHost.querySelector<HTMLElement>("[data-lt-hero-share]");
+    if (share) share.hidden = false;
+  });
+  // "Compartir mi avatar" in the hero: runs the member panel's share (synchronously, so the
+  // tap still counts as the user gesture iOS needs to open the share sheet).
+  reviewHost?.querySelector("[data-lt-hero-share]")?.addEventListener("click", () => {
+    document.querySelector<HTMLButtonElement>("[data-lt-share]")?.click();
+  });
+</script>
+
+<script>
+  // No active card: paint a random friendly avatar (new on every load) on the sample card and
+  // the sign-up preview, and start the editor from it. The avatar stays hidden until then.
+  const seed = document.documentElement.dataset.ltSeed;
+  const heroEl = document.querySelector<HTMLElement>("[data-lt-app]");
+  if (seed && heroEl) {
+    const editorEl = document.querySelector<HTMLElement>("[data-peep-editor]");
+    if (editorEl) editorEl.dataset.seed = seed;
+    import("../scripts/peeps").then((P) => {
+      const bust = P.bustSvg(P.sampleState(seed));
+      document.querySelectorAll<HTMLElement>("[data-peep-bust]").forEach((el) => (el.innerHTML = bust));
+    }).finally(() => heroEl.classList.remove("lt-random-avatar"));
+  }
+</script>
+
+<script>
+  // Visitor preview: once a member's card is painted, drop the preview look
+  // (label back to the real one, note hidden, avatar and QR at full strength).
+  const pvHost = document.querySelector<HTMLElement>("[data-lt-app].lt-v2-sample");
+  pvHost?.addEventListener("lt:card", () => {
+    pvHost.classList.remove("lt-v2-sample");
+    pvHost.querySelectorAll<HTMLElement>("[data-lt-card-label]").forEach((el) => (el.textContent = el.dataset.active ?? el.textContent));
+    pvHost.querySelector<HTMLElement>("[data-lt-preview-note]")?.setAttribute("hidden", "");
+  }, { once: true });
+</script>
+
+<script>
+  // Stamp album (Lomu, 2026-10-26). Lomu decides everything (packs, options, which stamps
+  // exist); this script only draws card.album and posts the choice. Stamps are never spent.
+  // On the card there's ONE addition: the last stamp on the front's corner. No badge: its
+  // lifted corner says "touch me", it wiggles on the first visits, and unopened packs peek
+  // out from behind it.
+  import { track } from "../scripts/analytics";
+
+  // Pasaporte del menú (Lomu, 2026-10-27): owned stamps carry triedAt — the member's own
+  // "I tried this drink" mark, set and cleared with album/probada. Shown as a postmark.
+  type AlbumStamp = { id: string; title: string; corner?: string | null; footer?: string | null; tagline?: string | null; owned: boolean; svg: string;
+    category?: string | null; coord?: string | null; triedAt?: string | null };
+  type Album = {
+    collection: { id: string; name: string; kind: "permanent" | "season"; endsOn?: string | null; series?: string | null; reward?: string | null };
+    total: number; ownedCount: number; triedCount?: number; complete: boolean; every: number; nextPackIn: number | null;
+    packs: { id: string; options: string[] }[];
+    stamps: AlbumStamp[];
+    last: { id: string; title: string; svg: string } | null;
+    back: string;
+  };
+  type AlbumCard = { code: string; album?: Album | null };
+
+  const host = document.querySelector<HTMLElement>("[data-lt-app]");
+  const sheet = document.querySelector<HTMLDialogElement>("[data-lt-album]");
+  const front = host?.querySelector<HTMLElement>(".lt-front");
+  if (host && sheet && front) {
+    const T = JSON.parse(sheet.dataset.i18n ?? "{}") as Record<string, string> & { howSteps: string[] };
+    const LANG = sheet.dataset.lang ?? "es";
+    const API = host.dataset.api!;
+    const $ = <E extends Element = HTMLElement>(sel: string) => document.querySelector<E>(sel)!;
+    const fill = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ""));
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const wait = (ms: number) => new Promise((r) => setTimeout(r, reduced ? 0 : ms));
+    const token = () => { try { return localStorage.getItem("lattitude-card"); } catch { return null; } };
+
+    let album: Album | null = null;
+    const byId = (id: string) => album?.stamps.find((s) => s.id === id);
+
+    // Lomu's SVGs carry ids (perforation mask, clip, filter). The same stamp twice on the page
+    // (corner + album) would share them and break, so every insertion gets its own suffix.
+    // They come sanitized from Lomu; scripts, foreign content and on* handlers are dropped anyway.
+    let uid = 0;
+    function safeSvg(markup: string | null | undefined): string {
+      if (!markup) return "";
+      // Parsed like innerHTML would (lenient: a repeated attribute doesn't break it, unlike
+      // strict XML); a <template> never runs scripts or loads anything while we clean it.
+      const tpl = document.createElement("template");
+      tpl.innerHTML = markup;
+      const svg = tpl.content.firstElementChild;
+      if (!svg || svg.nodeName.toLowerCase() !== "svg") return "";
+      svg.querySelectorAll("script,foreignObject,iframe,object,embed").forEach((n) => n.remove());
+      for (const el of [svg, ...svg.querySelectorAll("*")]) {
+        for (const a of [...el.attributes]) {
+          if (/^on/i.test(a.name) || (/href$/i.test(a.name) && !/^(#|data:image\/(png|jpe?g|webp|gif);)/i.test(a.value.trim()))) el.removeAttribute(a.name);
+        }
+      }
+      svg.setAttribute("aria-hidden", "true");
+      const k = `_lt${++uid}`;
+      return svg.outerHTML.replace(/(\bid="|url\(#|href="#)([^")]+)/g, `$1$2${k}`);
+    }
+
+    // The stamps' lettering (Lomu's design): Barlow Condensed 600, loaded only once there's an album.
+    let fontLoaded = false;
+    function loadFont() {
+      if (fontLoaded) return;
+      fontLoaded = true;
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600&display=swap";
+      document.head.append(link);
+    }
+
+    let confetti: { addConfetti: (o?: object) => Promise<unknown> } | null = null;
+    async function burst(n = 140) {
+      if (reduced) return;
+      if (!confetti) { const { default: C } = await import("js-confetti"); confetti = new C(); }
+      confetti.addConfetti({ confettiColors: ["#f7f5f0", "#bdbdbd", "#737373", "#e6dcc8"], confettiNumber: n });
+    }
+
+    // ---- The stamp on the card's corner ------------------------------------------------------
+    const ENVELOPE = '<svg viewBox="0 0 60 40" aria-hidden="true"><rect x="1.5" y="1.5" width="57" height="37" rx="3" fill="#efe7d8" stroke="#0a0a0a" stroke-width="2"/><path d="M1.5 3 30 22 58.5 3" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linejoin="round"/><circle cx="30" cy="22" r="5.5" fill="#0a0a0a"/></svg>';
+    const corner = document.createElement("button");
+    corner.type = "button";
+    corner.className = "lt-album-stamp hoverable";
+    corner.hidden = true;
+    corner.innerHTML = '<span class="lt-album-envs"></span><span class="lt-album-art"><span class="lt-album-paper"></span><span class="lt-album-flap"></span></span>';
+    front.append(corner);
+    // It lives inside the flipping card: the tap/swipe mustn't reach the flip.
+    for (const ev of ["pointerdown", "pointerup", "click"]) corner.addEventListener(ev, (e) => e.stopPropagation());
+    corner.addEventListener("mouseenter", () => document.body.classList.add("cursor-active"));
+    corner.addEventListener("mouseleave", () => document.body.classList.remove("cursor-active"));
+    corner.addEventListener("click", () => { stopHints(true); openAlbum("card_corner"); });
+    corner.addEventListener("animationend", () => corner.classList.remove("hint", "nudge", "is-new"));
+    const wiggle = (cls: string) => { corner.classList.remove("hint", "nudge"); void corner.offsetWidth; corner.classList.add(cls); };
+
+    let envsShown = 0;
+    function paintCorner(stuck?: string) {
+      if (!album) return;
+      const paper = corner.querySelector(".lt-album-paper")!;
+      paper.innerHTML = album.last ? safeSvg(album.last.svg) : `<span class="lt-album-blank">${T.blank}</span>`;
+      // up to 3 unopened packs peek out; a new one slides out from behind the stamp
+      const n = Math.min(album.packs.length, 3);
+      corner.querySelector(".lt-album-envs")!.innerHTML = Array.from({ length: n }, (_, i) =>
+        `<span class="lt-album-env${i >= envsShown ? " in" : ""}">${ENVELOPE}</span>`).join("");
+      envsShown = n;
+      if (stuck && album.last?.id === stuck) wiggle("is-new");
+      const packs = album.packs.length;
+      corner.setAttribute("aria-label", fill(T.corner, { name: album.collection.name, owned: album.ownedCount, total: album.total })
+        + (packs ? ` · ${packs === 1 ? T.cornerPack : fill(T.cornerPacks, { n: packs })}` : ""));
+    }
+
+    // First visits only: until the member taps it once (or after 3 visits) the corner lifts
+    // every few seconds. Never with reduced motion, never while hidden or with the album open.
+    const HINT_KEY = "lattitude-album-hint";
+    let hint = { visits: 0, tapped: false };
+    try { hint = { ...hint, ...JSON.parse(localStorage.getItem(HINT_KEY) ?? "{}") }; } catch {}
+    const saveHint = () => { try { localStorage.setItem(HINT_KEY, JSON.stringify(hint)); } catch {} };
+    let hintTimer: number | undefined;
+    function startHints() {
+      hint.visits++;
+      saveHint();
+      if (hint.tapped || hint.visits > 3 || reduced) return;
+      const tick = () => { if (!document.hidden && !sheet!.open && !corner.matches(":hover") && !host!.querySelector(".lt-flip.is-flipped")) wiggle("hint"); };
+      setTimeout(tick, 2500);
+      hintTimer = window.setInterval(tick, 8000);
+    }
+    function stopHints(tapped = false) {
+      clearInterval(hintTimer);
+      if (tapped && !hint.tapped) { hint.tapped = true; saveHint(); }
+    }
+
+    // ---- The album sheet -------------------------------------------------------------------------
+    const note = $("[data-lt-album-note]");
+    function paintSheet(stuck?: string) {
+      if (!album) return;
+      const { collection: col, total, ownedCount, complete, every, nextPackIn, packs, stamps } = album;
+      $("[data-lt-album-title]").textContent = col.name;
+      let eyebrow = T.eyebrow;
+      if (col.kind === "season" && col.endsOn) {
+        const d = new Date(`${col.endsOn.slice(0, 10)}T12:00:00`);
+        if (!isNaN(+d)) eyebrow = fill(T.season, { date: new Intl.DateTimeFormat(LANG, { day: "numeric", month: "short" }).format(d) });
+      }
+      $("[data-lt-album-eyebrow]").textContent = eyebrow;
+      const left = total - ownedCount;
+      const tried = album.triedCount ?? 0;
+      $("[data-lt-album-progress]").innerHTML = `<strong>${fill(T.progress, { owned: ownedCount, total })}</strong>`
+        + (tried ? ` · ${tried === 1 ? T.triedCountOne : fill(T.triedCount, { n: tried })}` : "")
+        + (complete ? ` · ${T.complete}`
+          // Collections can be just for collecting (2026-10-26): no prize, no prize talk.
+          : col.reward ? ` · ${left === 1 ? T.leftOne : fill(T.left, { n: left })}`
+          : ` · ${left === 1 ? T.toGoOne : fill(T.toGo, { n: left })}`);
+
+      const open = $<HTMLButtonElement>("[data-lt-album-open]");
+      open.hidden = packs.length === 0;
+      $("[data-lt-album-packs]").textContent = packs.length === 1 ? T.packsOne : fill(T.packs, { n: packs.length });
+
+      // No packs: how many stamps to the next one.
+      const next = $("[data-lt-album-next]");
+      next.hidden = packs.length > 0 || complete || nextPackIn == null;
+      if (!next.hidden && nextPackIn != null) {
+        $("[data-lt-album-next-label]").textContent = nextPackIn === 1 ? T.nextOne : fill(T.next, { n: nextPackIn });
+        const have = Math.max(0, every - nextPackIn);
+        $("[data-lt-album-bar]").innerHTML = Array.from({ length: every }, (_, i) => `<i${i < have ? ' class="on"' : ""}></i>`).join("");
+      }
+
+      // Owned: in colour, tap to see it big. Missing: a dashed slot with its name.
+      $("[data-lt-album-grid]").innerHTML = stamps.map((s) => s.owned
+        ? `<li><button type="button" class="lt-album-slot owned${stuck === s.id ? " is-new" : ""}" data-id="${s.id}" aria-label="${escapeAttr(s.triedAt ? `${s.title}, ${T.triedLabel}` : s.title)}">${safeSvg(s.svg)}${s.triedAt ? postmark(s.triedAt) : ""}</button></li>`
+        : `<li class="lt-album-slot missing" aria-label="${escapeAttr(`${T.missing}: ${s.title}`)}">${s.corner ? `<span class="lt-mono">${escapeHtml(s.corner)}</span>` : ""}<strong>${escapeHtml(s.title)}</strong></li>`).join("");
+
+      const reward = $("[data-lt-album-reward]");
+      reward.hidden = !col.reward;
+      reward.classList.toggle("done", complete);
+      $("[data-lt-album-reward-text]").textContent = complete ? T.rewardDone : col.reward ?? "";
+
+      $("[data-lt-album-how]").innerHTML = [...T.howSteps.map((s) => fill(s, { every })), ...(col.reward ? [fill(T.howReward, { reward: col.reward })] : [])]
+        .map((s) => `<li>${escapeHtml(s)}</li>`).join("");
+    }
+    // The "tried it" mark: a black-ink postmark (date in the ring, wavy cancel lines) over the stamp.
+    const shortDate = (iso: string) => {
+      const d = new Date(iso);
+      return isNaN(+d) ? "" : new Intl.DateTimeFormat(LANG, { day: "numeric", month: "short" }).format(d).replace(".", "");
+    };
+    function postmark(iso: string, cls = "") {
+      const d = new Date(iso);
+      const day = shortDate(iso).toUpperCase();
+      const year = isNaN(+d) ? "" : String(d.getFullYear());
+      return `<svg class="lt-postmark${cls ? ` ${cls}` : ""}" viewBox="0 0 130 80" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round">`
+        + `<circle cx="40" cy="40" r="34" stroke-width="2.6"/><circle cx="40" cy="40" r="27" stroke-width="1.2"/>`
+        + `<path d="M80 22q7-6 14 0t14 0t14 0M80 34q7-6 14 0t14 0t14 0M80 46q7-6 14 0t14 0t14 0M80 58q7-6 14 0t14 0t14 0" stroke-width="2.6"/></g>`
+        + `<g fill="currentColor" text-anchor="middle"><text x="40" y="29" font-family="ui-monospace,Menlo,monospace" font-size="7" letter-spacing=".8">LATTITUDE</text>`
+        + `<text x="40" y="46" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="13">${escapeHtml(day)}</text>`
+        + `<text x="40" y="58" font-family="ui-monospace,Menlo,monospace" font-size="7.5" letter-spacing=".8">${year}</text></g></svg>`;
+    }
+    const escapeHtml = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
+    const escapeAttr = escapeHtml;
+
+    function openAlbum(source: string) {
+      if (!album) return;
+      note.textContent = "";
+      paintSheet();
+      sheet!.showModal();
+      sheet!.scrollTop = 0;
+      track("album_opened", { source, owned: album.ownedCount, total: album.total, packs: album.packs.length, collection: album.collection.id });
+    }
+    $("[data-lt-album-close]").addEventListener("click", () => sheet.close());
+    sheet.addEventListener("click", (e) => { if (e.target === sheet) sheet.close(); }); // tap outside
+    $("[data-lt-album-open]").addEventListener("click", () => openPack());
+
+    // A stamp, big, with its tagline.
+    const zoom = $<HTMLDialogElement>("[data-lt-album-zoom]");
+    $("[data-lt-album-grid]").addEventListener("click", (e) => {
+      const id = (e.target as Element).closest<HTMLElement>(".lt-album-slot.owned")?.dataset.id;
+      const s = id ? byId(id) : undefined;
+      if (!s) return;
+      zoomId = s.id;
+      $("[data-lt-album-tried-hint]").textContent = "";
+      paintZoom(s);
+      zoom.showModal();
+    });
+    let zoomId: string | null = null;
+    const triedBtn = $<HTMLButtonElement>("[data-lt-album-tried]");
+    function paintZoom(s: AlbumStamp, thud = false) {
+      $("[data-lt-album-zoom-art]").innerHTML = safeSvg(s.svg) + (s.triedAt ? postmark(s.triedAt, thud && !reduced ? "thud" : "") : "");
+      $("[data-lt-album-zoom-title]").textContent = s.title;
+      const tag = $("[data-lt-album-zoom-tagline]");
+      tag.textContent = s.tagline ?? "";
+      tag.hidden = !s.tagline;
+      const coord = $("[data-lt-album-zoom-coord]");
+      coord.textContent = s.coord ?? "";
+      coord.hidden = !s.coord;
+      // Only stamps the member owns can be marked (Lomu refuses the rest anyway).
+      triedBtn.hidden = !s.owned;
+      triedBtn.setAttribute("aria-pressed", String(!!s.triedAt));
+      $("[data-lt-album-tried-label]").textContent = s.triedAt ? fill(T.triedOn, { date: shortDate(s.triedAt) }) : T.triedAsk;
+      triedBtn.title = s.triedAt ? T.triedUndo : T.tried;
+    }
+    let marking = false;
+    triedBtn.addEventListener("click", async () => {
+      const s = zoomId ? byId(zoomId) : undefined;
+      if (!s || marking) return;
+      marking = true;
+      triedBtn.disabled = true;
+      const want = !s.triedAt;
+      const hint = $("[data-lt-album-tried-hint]");
+      hint.textContent = T.saving;
+      let res: { ok?: boolean; error?: string; message?: string; card?: AlbumCard } = {};
+      try {
+        const r = await fetch(`${API}/album/probada`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
+          body: JSON.stringify({ id: s.id, tried: want, lang: LANG }),
+        });
+        res = await r.json().catch(() => ({}));
+      } catch {}
+      marking = false;
+      triedBtn.disabled = false;
+      if (!res.ok || !res.card?.code) {
+        hint.textContent = res.error ?? res.message ?? T.triedError;
+        return;
+      }
+      // Lomu's card repaints the page (lt:card updates `album` before any await).
+      host.dispatchEvent(new CustomEvent("lt:set-card", { detail: res.card }));
+      const now = byId(s.id);
+      if (now) paintZoom(now, want);
+      hint.textContent = want ? T.triedUndo : "";
+      track(want ? "album_stamp_tried" : "album_stamp_untried", { stamp: s.id, collection: album?.collection.id ?? "", tried: album?.triedCount ?? 0 });
+    });
+    $("[data-lt-album-zoom-close]").addEventListener("click", () => zoom.close());
+    zoom.addEventListener("click", (e) => { if (e.target === zoom) zoom.close(); });
+
+    // ---- Opening a pack ------------------------------------------------------------------------
+    const pack = $<HTMLDialogElement>("[data-lt-pack]");
+    const env = $<HTMLButtonElement>("[data-lt-pack-env]");
+    const picks = $("[data-lt-pack-picks]");
+    const chosenEl = $("[data-lt-pack-chosen]");
+    const title = $("[data-lt-pack-title]"), sub = $("[data-lt-pack-sub]"), eyebrow = $("[data-lt-pack-eyebrow]");
+    const flipAll = $<HTMLButtonElement>("[data-lt-pack-flipall]"), paste = $<HTMLButtonElement>("[data-lt-pack-paste]");
+    let current: { id: string; options: string[] } | null = null;
+    let chosen: string | null = null;
+    let busy = false;
+    let result: AlbumCard | null = null; // the card Lomu returns, applied on "Pegar"
+    let failed = false;                  // 409 / gone: close and reload the card
+
+    function openPack() {
+      if (!album?.packs.length) return;
+      current = album.packs[0];
+      const options = current.options.filter((id) => byId(id));
+      if (!options.length) return;
+      chosen = null; result = null; failed = false; busy = false;
+      env.className = "lt-pack-env"; env.hidden = false; env.disabled = false;
+      picks.innerHTML = ""; picks.style.setProperty("--n", String(options.length));
+      chosenEl.hidden = true; chosenEl.className = "lt-pack-chosen"; chosenEl.innerHTML = "";
+      flipAll.hidden = true; paste.hidden = true;
+      eyebrow.textContent = album.packs.length > 1 ? fill(T.packOf, { i: 1, n: album.packs.length }) : T.pack;
+      title.textContent = T.tapPack;
+      sub.textContent = "";
+      pack.showModal();
+      track("album_pack_opened", { collection: album.collection.id, options: options.length, packs: album.packs.length });
+      if (reduced) tearOpen();
+    }
+
+    async function tearOpen() {
+      if (!current || !album) return;
+      env.disabled = true;
+      if (!reduced) {
+        env.classList.add("shake"); await wait(620);
+        env.classList.add("cracked"); await wait(320);
+        env.classList.add("open"); await wait(520);
+        env.classList.add("gone"); await wait(420);
+      }
+      env.hidden = true;
+      const options = current.options.filter((id) => byId(id));
+      picks.innerHTML = options.map((id, i) => {
+        const s = byId(id)!;
+        return `<button type="button" class="lt-pack-pick${reduced ? " flipped" : ""}" data-id="${id}" style="animation-delay:${i * 120}ms" aria-label="${escapeAttr(reduced ? fill(T.pick, { title: s.title }) : T.faceDown)}">`
+          + `<span class="lt-pack-pick-inner"><span class="lt-pack-face back">${safeSvg(album!.back)}</span><span class="lt-pack-face front">${safeSvg(s.svg)}</span></span></button>`;
+      }).join("");
+      requestAnimationFrame(() => picks.querySelectorAll(".lt-pack-pick").forEach((b) => b.classList.add("in")));
+      if (reduced || options.length === 1) {
+        if (options.length === 1 && !reduced) picks.querySelector(".lt-pack-pick")?.classList.add("flipped");
+        promptChoice(options.length);
+      } else {
+        title.textContent = options.length === 2 ? T.two : T.three;
+        sub.textContent = T.flipHint;
+        flipAll.hidden = false;
+      }
+    }
+
+    function promptChoice(n: number) {
+      flipAll.hidden = true;
+      title.textContent = n === 1 ? T.last : T.choose;
+      sub.textContent = n === 1 ? T.lastSub : T.chooseSub;
+    }
+
+    function flip(btn: HTMLButtonElement) {
+      const s = byId(btn.dataset.id!);
+      btn.classList.add("flipped");
+      if (s) btn.setAttribute("aria-label", fill(T.pick, { title: s.title }));
+      const all = [...picks.querySelectorAll(".lt-pack-pick")];
+      if (all.every((b) => b.classList.contains("flipped"))) promptChoice(all.length);
+    }
+
+    async function choose(btn: HTMLButtonElement) {
+      if (busy || chosen || !current || !album) return;
+      busy = true;
+      const id = btn.dataset.id!;
+      const s = byId(id)!;
+      const all = [...picks.querySelectorAll<HTMLButtonElement>(".lt-pack-pick")];
+      all.forEach((b) => { if (b !== btn) b.classList.add("fade"); b.disabled = true; });
+      sub.textContent = T.saving;
+
+      // Lomu keeps the pack and its options; the choice only counts once it says ok.
+      let res: { ok?: boolean; message?: string; card?: AlbumCard } = {};
+      let status = 0;
+      try {
+        const r = await fetch(`${API}/album/abrir`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
+          body: JSON.stringify({ pack: current.id, choice: id, lang: LANG }),
+        });
+        status = r.status;
+        res = await r.json().catch(() => ({}));
+      } catch {}
+
+      if (!res.ok) {
+        busy = false;
+        if (status === 409 || status === 404) {
+          // Already opened (another phone?) or gone: say so, then reload the card on close.
+          failed = true;
+          title.textContent = "";
+          sub.textContent = res.message ?? T.error;
+          picks.innerHTML = "";
+          track("album_pack_failed", { status });
+          return;
+        }
+        all.forEach((b) => { b.classList.remove("fade"); b.disabled = false; });
+        sub.textContent = T.error;
+        return;
+      }
+
+      chosen = id;
+      result = res.card ?? null;
+      await wait(380);
+      picks.innerHTML = "";
+      chosenEl.innerHTML = safeSvg(s.svg);
+      chosenEl.hidden = false;
+      chosenEl.classList.add("in");
+      eyebrow.textContent = album.collection.name;
+      title.textContent = s.title;
+      sub.textContent = s.tagline ?? "";
+      paste.hidden = false;
+      paste.focus();
+      track("album_stamp_chosen", { stamp: id, collection: album.collection.id, owned: album.ownedCount + 1, total: album.total });
+      burst();
+    }
+
+    env.addEventListener("click", () => tearOpen());
+    flipAll.addEventListener("click", () => picks.querySelectorAll<HTMLButtonElement>(".lt-pack-pick:not(.flipped)").forEach((b, i) => setTimeout(() => flip(b), reduced ? 0 : i * 140)));
+    picks.addEventListener("click", (e) => {
+      const btn = (e.target as Element).closest<HTMLButtonElement>(".lt-pack-pick");
+      if (!btn || btn.disabled) return;
+      btn.classList.contains("flipped") ? choose(btn) : flip(btn);
+    });
+
+    let stuck: string | null = null; // the stamp just pasted: lands with a small animation
+    paste.addEventListener("click", () => {
+      if (!chosen) return;
+      stuck = chosen;
+      pack.close();
+      const s = byId(chosen);
+      note.textContent = s ? fill(T.pasted, { title: s.title }) : "";
+      // Repaint everything with Lomu's card (its lt:card brings us back to applyCard).
+      if (result?.code) host.dispatchEvent(new CustomEvent("lt:set-card", { detail: result }));
+      else host.dispatchEvent(new Event("lt:refresh"));
+    });
+    $("[data-lt-pack-close]").addEventListener("click", () => pack.close());
+    pack.addEventListener("close", () => {
+      if (failed) { failed = false; host.dispatchEvent(new Event("lt:refresh")); }
+    });
+
+    // ---- Every card the page paints --------------------------------------------------------------
+    let seenPacks = -1;
+    let seenComplete = false;
+    host.addEventListener("lt:card", async (e) => {
+      const card = (e as CustomEvent<AlbumCard>).detail;
+      const next = card.album ?? null;
+      if (!next) { album = null; corner.hidden = true; return; } // album off in Lomu: nothing
+      const first = !album;
+      const morePacks = seenPacks >= 0 && next.packs.length > seenPacks;
+      const justCompleted = !first && next.complete && !seenComplete;
+      album = next;
+      seenPacks = next.packs.length;
+      seenComplete = next.complete;
+      loadFont();
+      corner.hidden = false;
+
+      const pasted = stuck;
+      stuck = null;
+      if (morePacks) {
+        // New pack with a stamp: let the stamp celebration finish, then the pack peeks out.
+        await wait(3600);
+        paintCorner();
+        wiggle("nudge");
+      } else {
+        paintCorner(pasted ?? undefined);
+      }
+      if (sheet.open) {
+        paintSheet(pasted ?? undefined);
+        if (pasted) sheet.querySelector(".lt-album-slot.is-new")?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" });
+      }
+      if (justCompleted) {
+        note.textContent = next.collection.reward ? T.done : T.complete;
+        track("album_completed", { collection: next.collection.id, total: next.total });
+        setTimeout(() => burst(260), 500);
+      }
+      if (first) startHints();
+    });
   }
 </script>

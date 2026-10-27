@@ -56,7 +56,7 @@ const walkEmbedSrc = "https://maps.google.com/maps?saddr=21.019335,-89.571222&da
   <h1>{hero.heading}</h1>
   <p>{hero.subhead}</p>
   <div class="hero-actions">
-    <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
+    <a data-track="directions_clicked" data-track-destination="lattitude" data-track-source="letsride_hero" class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
     <a class="btn hoverable" href="#drinks">{hero.ctaFavorites} <ArrowIcon dir="down" /></a>
   </div>
   <div class="coord-strip" aria-hidden="true">
@@ -94,7 +94,7 @@ const walkEmbedSrc = "https://maps.google.com/maps?saddr=21.019335,-89.571222&da
       <div class="people-tags meta">
         <span>{benefit.eyebrow}</span>
         <span>{walk.badge}</span>
-        <a class="hoverable" href={walkHref} target="_blank" rel="noopener">{walk.openLabel} <ArrowIcon dir="up-right" /></a>
+        <a data-track="directions_clicked" data-track-destination="lattitude" data-track-source="letsride_walk_map" class="hoverable" href={walkHref} target="_blank" rel="noopener">{walk.openLabel} <ArrowIcon dir="up-right" /></a>
       </div>
       <div class="people-micro" aria-hidden="true">
         <span class="star"><i></i></span>
@@ -152,7 +152,7 @@ const walkEmbedSrc = "https://maps.google.com/maps?saddr=21.019335,-89.571222&da
   <h2>{closing.heading}</h2>
   <p>{closing.supporting}</p>
   <div class="hero-actions">
-    <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
+    <a data-track="directions_clicked" data-track-destination="lattitude" data-track-source="letsride_closing" class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
     <a class="btn hoverable" href={popularHref}>{closing.ctaPopular} <ArrowIcon dir="right" /></a>
   </div>
   <div class="hero-actions" style="margin-top:14px">

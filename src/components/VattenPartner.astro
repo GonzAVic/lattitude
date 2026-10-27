@@ -65,7 +65,7 @@ const [shapeLattitude, shapeVatten] = mediaShapes;
   <h1>{hero.heading}</h1>
   <p>{hero.subhead}</p>
   <div class="hero-actions">
-    <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
+    <a data-track="directions_clicked" data-track-destination="lattitude" data-track-source="vatten_hero" class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
     <a class="btn hoverable" href="#drinks">{hero.ctaFavorites} <ArrowIcon dir="down" /></a>
   </div>
   <div class="coord-strip" aria-hidden="true">
@@ -106,7 +106,7 @@ const [shapeLattitude, shapeVatten] = mediaShapes;
       </div>
       <div class="people-tags meta" style="margin-top:32px">
         <span>{walk.badge}</span>
-        <a class="hoverable" href={walkHref} target="_blank" rel="noopener">{walk.openLabel} <ArrowIcon dir="up-right" /></a>
+        <a data-track="directions_clicked" data-track-destination="lattitude" data-track-source="vatten_walk_map" class="hoverable" href={walkHref} target="_blank" rel="noopener">{walk.openLabel} <ArrowIcon dir="up-right" /></a>
       </div>
       <div class="people-micro" aria-hidden="true">
         <span class="star"><i></i></span>
@@ -148,7 +148,7 @@ const [shapeLattitude, shapeVatten] = mediaShapes;
       </h2>
       <p>{returnBenefit.body}</p>
       <div class="hero-actions" style="justify-content:flex-start;margin-top:20px">
-        <a class="btn inverse hoverable" href={vattenHref} target="_blank" rel="noopener">Vatten Terapia Física <ArrowIcon dir="up-right" /></a>
+        <a data-track="vatten_booking_clicked" data-track-source="vatten_benefits" class="btn inverse hoverable" href={vattenHref} target="_blank" rel="noopener">Vatten Terapia Física <ArrowIcon dir="up-right" /></a>
       </div>
     </div>
   </div>
@@ -204,9 +204,9 @@ const [shapeLattitude, shapeVatten] = mediaShapes;
         {about.aboutTags.map((tag) => <span class="pill">{tag}</span>)}
       </div>
       <div class="hero-actions" style="justify-content:flex-start;margin-top:36px">
-        <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
+        <a data-track="directions_clicked" data-track-destination="lattitude" data-track-source="vatten_about" class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
         <a class="btn hoverable" href={popularHref}>{closing.ctaPopular} <ArrowIcon dir="right" /></a>
-        <a class="btn hoverable" href={vattenHref} target="_blank" rel="noopener">Vatten Terapia Física <ArrowIcon dir="up-right" /></a>
+        <a data-track="vatten_booking_clicked" data-track-source="vatten_about" class="btn hoverable" href={vattenHref} target="_blank" rel="noopener">Vatten Terapia Física <ArrowIcon dir="up-right" /></a>
       </div>
     </div>
     <img class="vp-symbol" src="/micrographic-symbols/sym-17.svg" alt="" width="160" height="160" loading="lazy" />

@@ -34,6 +34,17 @@ export function stateFromSeed(seed: string): PeepState {
   };
 }
 
+// Friendly expressions for sample avatars (no sad or angry faces).
+const SAMPLE_FACES = ["smile", "smileBig", "cheeky", "calm", "eatingHappy", "lovingGrin1", "smileTeethGap", "awe"];
+
+/** A random-looking but friendly avatar: the seed picks everything, the face from SAMPLE_FACES. */
+export function sampleState(seed: string): PeepState {
+  const s = stateFromSeed(seed);
+  let h = 0;
+  for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) | 0;
+  return { ...s, face: SAMPLE_FACES[Math.abs(h) % SAMPLE_FACES.length] };
+}
+
 function render(s: PeepState): string {
   return createAvatar(openPeeps, {
     ...BASE,

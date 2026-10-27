@@ -52,8 +52,7 @@ const track = [...cards, ...cards];
       resumeTimer = setTimeout(() => (paused = false), 1200);
     }
 
-    scrollEl.addEventListener("mouseenter", pause);
-    scrollEl.addEventListener("mouseleave", () => (paused = false));
+    // Keeps moving on hover; it only pauses while being dragged, touched or wheel-scrolled.
     scrollEl.addEventListener("pointerdown", pause);
     window.addEventListener("pointerup", resumeSoon);
     scrollEl.addEventListener("touchstart", pause, { passive: true });

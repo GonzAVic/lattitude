@@ -21,7 +21,7 @@ const jump = [...sections, extras];
   <p>{hero.subhead}</p>
   <div class="menu-jump">
     {jump.map((s) => (
-      <a class="pill hoverable" href={`#${s.id}`}><span class="dot"></span>{s.index} / {s.title}</a>
+      <a data-track="menu_section_jumped" data-track-section={s.id} class="pill hoverable" href={`#${s.id}`}><span class="dot"></span>{s.index} / {s.title}</a>
     ))}
   </div>
   <div class="coord-strip" aria-hidden="true">
@@ -82,7 +82,7 @@ const jump = [...sections, extras];
   <h2>{closing.heading}</h2>
   <p>{closing.body}</p>
   <div class="hero-actions" style="margin-top:36px">
-    <a class="btn inverse hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
+    <a data-track="directions_clicked" data-track-destination="lattitude" data-track-source="menu_closing" class="btn inverse hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaDirections} <ArrowIcon dir="up-right" /></a>
     <a class="btn inverse hoverable" href={localePath(lang)}>{closing.ctaHome} <ArrowIcon dir="right" /></a>
   </div>
   <div class="protein-symbol" aria-hidden="true">

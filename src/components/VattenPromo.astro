@@ -37,7 +37,7 @@ const routeHref = "https://www.google.com/maps/dir/?api=1&origin=Lattitude+Coffe
   </h1>
   <p>{t.subhead}</p>
   <div class="hero-actions">
-    <a class="btn hoverable" href={vattenHref} target="_blank" rel="noopener">{t.ctaBook} <ArrowIcon dir="up-right" /></a>
+    <a data-track="vatten_booking_clicked" data-track-source="vatten_promo" class="btn hoverable" href={vattenHref} target="_blank" rel="noopener">{t.ctaBook} <ArrowIcon dir="up-right" /></a>
     <a class="btn hoverable" href="#ruta">{t.ctaRoute} <ArrowIcon dir="down" /></a>
   </div>
   <div class="coord-strip" aria-hidden="true">
@@ -78,7 +78,7 @@ const routeHref = "https://www.google.com/maps/dir/?api=1&origin=Lattitude+Coffe
     </div>
     <div class="people-tags meta">
       <span>{t.badge}</span>
-      <a class="hoverable" href={routeHref} target="_blank" rel="noopener">{t.openLabel} <ArrowIcon dir="up-right" /></a>
+      <a data-track="directions_clicked" data-track-destination="vatten" data-track-source="vatten_promo_route" class="hoverable" href={routeHref} target="_blank" rel="noopener">{t.openLabel} <ArrowIcon dir="up-right" /></a>
     </div>
   </div>
 

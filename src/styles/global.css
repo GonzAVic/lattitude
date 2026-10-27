@@ -648,11 +648,11 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
   font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:max(9px,1.8cqw);letter-spacing:.12em;
   border:1px solid currentColor;border-radius:999px;padding:1.1cqw 1.9cqw;white-space:nowrap;
 }
-.lt-card-body{display:grid;grid-template-columns:.85fr 1.15fr;gap:5cqw;align-items:center;margin-top:3.6cqw}
+.lt-card-body{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:5cqw;align-items:center;margin-top:3.6cqw}
 /* Flip: both faces share one grid cell; the inner layer turns 180° in 3D. */
 .lt-card-wrap{perspective:1600px}
-.lt-flip{display:grid;transform-style:preserve-3d;transform:rotateY(var(--lt-rot,0deg));transition:transform .9s var(--ease);cursor:pointer;touch-action:pan-y;user-select:none;-webkit-user-select:none}
-.lt-face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 2cqw 5cqw -2cqw rgba(0,0,0,.35)}
+.lt-flip{display:grid;grid-template-columns:minmax(0,1fr);transform-style:preserve-3d;transform:rotateY(var(--lt-rot,0deg));transition:transform .9s var(--ease);cursor:pointer;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.lt-face{grid-area:1/1;min-width:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 2cqw 5cqw -2cqw rgba(0,0,0,.35)}
 .lt-back{transform:rotateY(180deg)}
 .lt-flip-btn{
   display:inline-flex;align-items:center;gap:10px;margin-top:20px;padding:10px 16px 10px 13px;
@@ -664,12 +664,14 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
 .lt-flip-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:transform .9s var(--ease)}
 .lt-flip-btn[aria-pressed="true"] svg{transform:rotate(180deg)}
 /* back face */
-.lt-back-body{display:grid;grid-template-columns:30cqw minmax(0,1fr);gap:5cqw;align-items:center;margin-top:3.6cqw}
-.lt-avatar.lt-back-avatar{width:30cqw;height:30cqw;margin:0;border-radius:2cqw} /* same tile as the old QR */
+.lt-back-body{display:grid;grid-template-columns:26cqw 26cqw minmax(0,1fr);gap:4cqw;align-items:center;margin-top:3.6cqw}
+.lt-avatar.lt-back-avatar{width:26cqw;height:26cqw;margin:0;border-radius:2cqw} /* same size as the QR beside it */
 .lt-back-info{display:flex;flex-direction:column;align-items:stretch;gap:1cqw;min-width:0}
-.lt-back-name{font-size:max(16px,4.6cqw);font-weight:700;line-height:1.05;letter-spacing:-.04em;margin-bottom:2.4cqw}
+.lt-back-name{font-size:max(15px,4cqw);overflow-wrap:anywhere;font-weight:700;line-height:1.05;letter-spacing:-.04em;margin-bottom:2.4cqw}
 /* hueso strip = quiet zone, so the bars stay scannable on the black card */
-.lt-barcode{display:block;width:100%;height:11cqw;background:#f7f5f0;padding:1.6cqw 3cqw;border-radius:1.4cqw;box-sizing:border-box}
+/* hueso tile = quiet zone around the QR so the counter camera reads it on the black card */
+.lt-qr{flex:none;display:block;width:26cqw;height:26cqw;background:#f7f5f0;padding:1.6cqw;border-radius:2cqw;box-sizing:border-box}
+.lt-qr svg{display:block;width:100%;height:100%}
 .lt-code{letter-spacing:.14em}
 @media(prefers-reduced-motion:reduce){
   .lt-flip,.lt-flip-btn svg{transition:none}
@@ -682,10 +684,11 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
   display:flex;align-items:center;justify-content:center;
   font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:max(7px,1.6cqw);letter-spacing:.06em;color:#8a8a8a;
 }
-.lt-stamp svg{width:62%;height:62%;stroke:currentColor;stroke-width:1.8;fill:none}
+.lt-stamp svg{width:62%;height:62%;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .lt-stamp svg .dot{fill:currentColor;stroke:none}
 .lt-stamp.filled{background:#f7f5f0;border:1px solid #f7f5f0;color:#0a0a0a}
 .lt-stamp.reward{border:1.4px solid #f7f5f0;color:#f7f5f0}
+.lt-stamp.reward.filled{background:#f7f5f0;color:#0a0a0a}
 .lt-legend{display:flex;gap:1.2cqw 3cqw;margin-top:2.4cqw;flex-wrap:wrap}
 .lt-legend span{display:inline-flex;align-items:center;gap:1.2cqw}
 .lt-key{display:inline-block;width:1.9cqw;height:1.9cqw;border-radius:50%}
@@ -769,6 +772,95 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
 @media(max-width:860px){
   .lt-signup-grid{grid-template-columns:minmax(0,1fr)}
 }
+/* live card (2026-10-20): consent, errors, find-by-phone and the member panel */
+.lt-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.lt-consent{display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.5;color:var(--secondary);cursor:pointer}
+.lt-consent input{flex:none;width:20px;height:20px;margin:1px 0 0;accent-color:#000}
+.lt-consent a{text-decoration:underline;text-underline-offset:3px;color:#000}
+.lt-error{margin:0!important;font-size:14px!important;color:#a12a20!important;border-left:2px solid #a12a20;padding-left:12px}
+.lt-note{margin:0!important;font-size:14px!important;color:var(--secondary)}
+/* create / find switch — full-width segmented control, thumb-sized */
+.lt-seg{display:grid;grid-template-columns:1fr 1fr;padding:4px;margin-bottom:32px;border:1px solid #000;border-radius:999px}
+.lt-seg-btn{
+  min-height:48px;padding:0 12px;border:0;border-radius:999px;background:transparent;color:#000;cursor:pointer;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  transition:background .35s var(--ease),color .35s var(--ease);
+}
+.lt-seg-btn[aria-selected="true"]{background:#000;color:#fff}
+.lt-seg-btn:focus-visible{outline:2px solid #000;outline-offset:3px}
+.lt-member{display:flex;flex-direction:column;gap:18px;align-items:flex-start}
+.lt-member-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.lt-member-avatar{display:flex;flex-direction:column;gap:16px;width:100%;min-width:0}
+.lt-link{background:none;border:0;padding:0;cursor:pointer;font:inherit;font-size:14px;color:var(--secondary);text-decoration:underline;text-underline-offset:3px}
+/* Balanced rows for the stamp count Lomu sends (CSS only): 6 → 3+3, 4 or 8 → 4 per row. */
+.lt-stamps:has(> li:nth-child(6):last-child){grid-template-columns:repeat(3,minmax(0,1fr))}
+.lt-stamps:has(> li:nth-child(4):last-child),.lt-stamps:has(> li:nth-child(8):last-child){grid-template-columns:repeat(4,minmax(0,1fr))}
+
+/* card loader: a returning member never sees the sample card's avatar or name */
+.lt-loading .lt-avatar svg,.lt-loading .lt-stamp > *,.lt-loading .lt-legend,
+.lt-loading .lt-qr,.lt-loading .lt-code,.lt-loading [data-lt-join-cta]{visibility:hidden}
+.lt-loading .lt-avatar,.lt-loading .lt-stamp,.lt-loading [data-lt-holder]{animation:lt-skel 1.2s ease-in-out infinite}
+.lt-loading .lt-stamp{background:transparent;border:1px dashed rgba(247,245,240,.3)}
+.lt-loading [data-lt-holder]{color:transparent;background:rgba(247,245,240,.16);border-radius:.8cqw;width:70%;user-select:none}
+@keyframes lt-skel{50%{opacity:.45}}
+@media(prefers-reduced-motion:reduce){.lt-loading .lt-avatar,.lt-loading .lt-stamp,.lt-loading [data-lt-holder]{animation:none}}
+
+/* review prompt (members) */
+.lt-review{max-width:440px;margin:10px auto 0;display:flex;flex-direction:column;align-items:center;gap:14px} /* sits right under the menu button */
+.lt-review p{margin:0;color:var(--secondary);font-size:15px;line-height:1.5}
+
+/* peep reaction to a new stamp: an overlay over the avatar (never saved) */
+.lt-avatar{position:relative}
+.lt-avatar-fx{position:absolute;inset:0;background:#f7f5f0;opacity:0;transition:opacity .18s ease}
+.lt-avatar-fx.on{opacity:1}
+.lt-avatar-fx svg{display:block;width:100%;height:100%}
+.lt-avatar-bounce{animation:lt-avatar-bounce .7s var(--ease)}
+@keyframes lt-avatar-bounce{0%{transform:scale(1)}35%{transform:scale(1.08) rotate(-2deg)}65%{transform:scale(.97) rotate(1deg)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.lt-avatar-fx{transition:none}.lt-avatar-bounce{animation:none}}
+
+/* level (Lomu): name on the front instead of "Titular", details under the card */
+.lt-level-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.lt-level{margin:18px 0 0;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.lt-level-line{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.11em;text-transform:uppercase}
+.lt-loading [data-lt-level-name]{visibility:hidden}
+
+/* full card not yet redeemed (mood "reward"): confetti drifting behind the peep */
+.lt-avatar.lt-avatar-reward{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='7' width='6' height='2.4' rx='1' transform='rotate%2828 9 8%29' fill='%230a0a0a'/%3E%3Crect x='40' y='4' width='5.5' height='2.4' rx='1' transform='rotate%28-32 42 5%29' fill='%23737373'/%3E%3Ccircle cx='24' cy='22' r='1.8' fill='%23bdbdbd'/%3E%3Crect x='52' y='24' width='6' height='2.4' rx='1' transform='rotate%2862 55 25%29' fill='%233a3a3a'/%3E%3Ccircle cx='10' cy='42' r='1.6' fill='%230a0a0a'/%3E%3Crect x='30' y='40' width='5.5' height='2.4' rx='1' transform='rotate%28-14 32 41%29' fill='%23bdbdbd'/%3E%3Ccircle cx='54' cy='54' r='1.8' fill='%23737373'/%3E%3Crect x='16' y='56' width='6' height='2.4' rx='1' transform='rotate%2840 19 57%29' fill='%233a3a3a'/%3E%3C/svg%3E");background-size:64px 64px;animation:lt-confetti-drift 7s linear infinite}
+@keyframes lt-confetti-drift{from{background-position:0 0}to{background-position:0 64px}}
+@media(prefers-reduced-motion:reduce){.lt-avatar.lt-avatar-reward{animation:none}}
+
+/* visitors: the sample avatar waits hidden for its random replacement (no flash) */
+.lt-random-avatar .lt-avatar svg{opacity:0}
+.lt-avatar svg{transition:opacity .25s ease}
+
+/* Visitors: the sample card reads as a preview, never as an active card */
+.lt-preview-note{max-width:440px;margin:28px auto 0;color:var(--secondary);font-size:16px;line-height:1.5}
+.lt-preview-note strong{display:block;color:#000;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.03em;margin-bottom:4px}
+.lt-hero-copy .lt-preview-note + .lt-card-wrap{margin-top:32px}
+.lt-v2-sample .lt-card{outline:1.5px dashed #0a0a0a;outline-offset:6px}
+.lt-v2-sample .lt-card-label{border-style:dashed}
+.lt-v2-sample .lt-front .lt-avatar svg{opacity:.28}
+.lt-v2-sample .lt-front .lt-avatar::after{
+  content:attr(data-cta);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:1.5cqw;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:max(9px,1.8cqw);letter-spacing:.1em;text-transform:uppercase;color:#0a0a0a;
+}
+.lt-v2-sample .lt-holder,.lt-v2-sample .lt-back-name{color:#7a7a7a}
+.lt-v2-sample .lt-back-avatar svg{opacity:.28}
+.lt-v2-sample .lt-qr-placeholder{display:flex;align-items:center;justify-content:center;text-align:center;background:transparent;border:1.5px dashed rgba(247,245,240,.45);color:#9a9a9a;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:max(8px,1.5cqw);letter-spacing:.08em;text-transform:uppercase;line-height:1.3}
+
+/* stamp celebration */
+.lt-stamp-new{animation:lt-stamp-pop .9s var(--ease) both}
+@keyframes lt-stamp-pop{0%{transform:scale(.3);opacity:0}55%{transform:scale(1.18);opacity:1}100%{transform:scale(1)}}
+.lt-toast{
+  position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:900;
+  margin:0;padding:14px 20px;border-radius:999px;background:#0a0a0a;color:#f7f5f0;white-space:nowrap;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  box-shadow:0 10px 30px -10px rgba(0,0,0,.45);animation:lt-toast-in .5s var(--ease) both;
+}
+@keyframes lt-toast-in{from{transform:translate(-50%,16px);opacity:0}}
+@media(prefers-reduced-motion:reduce){.lt-stamp-new,.lt-toast{animation:none}}
+.lt-hero [hidden],.lt-signup [hidden],[data-lt-mode-show][hidden]{display:none!important}
 
 /* COMMUNITIES */
 .communities-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3vw,40px)}
@@ -824,3 +916,150 @@ footer{background:var(--dark);color:#fff;padding:clamp(80px,9vw,130px) var(--pad
   *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
   .char,.gchar{transform:none}
 }
+
+/* LOYALTY · STAMP ALBUM (Lomu, 2026-10-26). Hidden until Lomu sends card.album. */
+/* The last stamp, stuck on the front's bottom-right corner. No badge: the lifted corner says
+   "touch me", it wiggles on the first visits, and unopened packs peek out from behind it.
+   Lomu's stamps are 250×300, so a square flap is --fold wide and --fold × .833 tall. */
+@property --fold{syntax:"<percentage>";inherits:true;initial-value:24%}
+.lt-album-stamp{position:absolute;right:-3cqw;bottom:-9.5cqw;z-index:3;width:max(54px,14cqw);padding:0;border:0;background:none;color:#0a0a0a;
+  --fold:24%;transform:rotate(7deg);transition:transform .35s var(--ease),--fold .35s var(--ease),visibility 0s .45s;cursor:pointer}
+.lt-album-stamp::after{content:"";position:absolute;inset:-10px 0 -10px -10px} /* bigger tap target */
+.lt-flip.is-flipped .lt-album-stamp{visibility:hidden} /* front only: not over the QR side */
+.lt-album-stamp:hover,.lt-album-stamp:focus-visible{--fold:38%;transform:rotate(2deg) translateY(-3px)}
+.lt-album-stamp:focus-visible{outline:2px solid #0a0a0a;outline-offset:6px;border-radius:4px}
+.lt-album-art{position:relative;z-index:2;display:block;filter:drop-shadow(0 .6cqw .9cqw rgba(0,0,0,.45))}
+.lt-album-paper{display:block;aspect-ratio:250/300;clip-path:polygon(0 0,calc(100% - var(--fold)) 0,100% calc(var(--fold) * .833),100% 100%,0 100%)}
+.lt-album-paper svg{display:block;width:100%;height:100%}
+.lt-album-flap{position:absolute;top:0;right:0;width:var(--fold);aspect-ratio:1;border-bottom-left-radius:2px;
+  background:linear-gradient(to bottom left,transparent 50%,#cfc2a6 50%,#efe6d4 92%);filter:drop-shadow(-1px 2px 1.5px rgba(0,0,0,.35))}
+.lt-album-blank{display:flex;align-items:center;justify-content:center;height:100%;padding:12%;background:#f7f5f0;outline:1.5px dashed #0a0a0a;outline-offset:-5px;
+  text-align:center;font:600 max(6px,1.2cqw)/1.25 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase}
+.lt-album-stamp.hint{animation:lt-album-hint 1.5s var(--ease)}
+@keyframes lt-album-hint{0%,100%{--fold:24%;transform:rotate(7deg)}30%{--fold:46%;transform:rotate(1deg) translateY(-4px)}55%{--fold:30%;transform:rotate(10deg)}78%{--fold:36%;transform:rotate(5deg) translateY(-1px)}}
+.lt-album-stamp.nudge{animation:lt-album-nudge .9s var(--ease) 2}
+@keyframes lt-album-nudge{0%,100%{transform:rotate(7deg)}25%{transform:rotate(-4deg) scale(1.12)}50%{transform:rotate(12deg) scale(1.06)}75%{transform:rotate(3deg)}}
+.lt-album-stamp.is-new{animation:lt-album-stick .8s var(--ease) both}
+@keyframes lt-album-stick{0%{transform:rotate(-20deg) scale(1.8);opacity:0}60%{transform:rotate(10deg) scale(.95);opacity:1}100%{transform:rotate(7deg) scale(1)}}
+.lt-album-envs{position:absolute;inset:0;z-index:1;pointer-events:none}
+.lt-album-env{position:absolute;left:-54%;top:16%;width:84%;transform:rotate(-9deg);transition:translate .35s var(--ease);filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+.lt-album-env svg{display:block;width:100%;height:auto}
+.lt-album-env:nth-child(2){left:-70%;top:24%;transform:rotate(-16deg);z-index:-1}
+.lt-album-env:nth-child(3){left:-84%;top:10%;transform:rotate(-3deg);z-index:-2}
+.lt-album-env.in{animation:lt-album-env-in .8s var(--ease) both}
+@keyframes lt-album-env-in{from{translate:60% 0;opacity:0}to{translate:0 0;opacity:1}}
+.lt-album-stamp:hover .lt-album-env{translate:-12% 0}
+
+/* Dialogs live in the top layer, where the site's custom cursor can't reach: native cursor. */
+:is(.lt-album,.lt-album-zoom,.lt-pack),:is(.lt-album,.lt-album-zoom,.lt-pack) *{cursor:auto}
+:is(.lt-album,.lt-album-zoom,.lt-pack) :is(button,summary){cursor:pointer}
+html:has(:is(.lt-album,.lt-pack)[open]){overflow:hidden}
+
+/* Album: bottom sheet on phones, centred panel on wider screens. */
+.lt-album{border:0;padding:0;margin:auto 0 0;width:100%;max-width:100%;max-height:92dvh;border-radius:24px 24px 0 0;background:#fff;color:#000;overflow-y:auto;overscroll-behavior:contain}
+.lt-album::backdrop{background:rgba(0,0,0,.45)}
+.lt-album[open]{animation:lt-sheet-up .45s var(--ease) both}
+@keyframes lt-sheet-up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+@media(min-width:720px){.lt-album{margin:auto;width:min(640px,92vw);max-height:88vh;border-radius:24px}}
+.lt-album-inner{padding:8px 20px calc(32px + env(safe-area-inset-bottom));text-align:center}
+.lt-album-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;background:#fff}
+.lt-album-head .lt-mono{font-size:11px}
+.lt-album-x{flex:none;width:44px;height:44px;border-radius:50%;border:1px solid #0a0a0a;background:#fff;color:#0a0a0a;font-size:24px;line-height:1}
+.lt-album-title{margin:12px 0 0;font-size:clamp(34px,8vw,52px);font-weight:700;letter-spacing:-.05em;line-height:1}
+.lt-album-progress{margin:12px auto 0;max-width:420px;font-size:16px;line-height:1.5;color:var(--secondary)}
+.lt-album-progress strong{color:#000}
+.lt-album-note{margin:6px 0 0;min-height:1.4em;font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase}
+.lt-album-packs{width:100%;margin-top:14px;display:flex;align-items:center;gap:14px;padding:14px 16px;border:0;border-radius:18px;background:#0a0a0a;color:#f7f5f0;text-align:left;font:inherit}
+.lt-album-packs-ico{flex:none;width:34px;height:24px;border:2px solid currentColor;border-radius:3px;
+  background:linear-gradient(150deg,transparent 46%,currentColor 47% 53%,transparent 54%),linear-gradient(30deg,transparent 46%,currentColor 47% 53%,transparent 54%)}
+.lt-album-packs-txt{flex:1;display:flex;flex-direction:column;gap:2px;font-size:14px;color:#bdbdbd}
+.lt-album-packs-txt strong{color:#f7f5f0;font-size:17px;letter-spacing:-.02em}
+.lt-album-packs-go{flex:none;padding:10px 16px;border-radius:999px;background:#f7f5f0;color:#0a0a0a;font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase}
+.lt-album-next{margin-top:14px;text-align:left}
+.lt-album-next .lt-mono{font-size:11px}
+.lt-album-bar{display:flex;gap:6px;margin-top:10px}
+.lt-album-bar i{flex:1;height:8px;border-radius:99px;border:1px solid #0a0a0a}
+.lt-album-bar i.on{background:#0a0a0a}
+.lt-album-grid{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media(min-width:720px){.lt-album-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.lt-album-slot{display:flex;width:100%;aspect-ratio:250/300}
+.lt-album-slot.owned{padding:0;border:0;background:none;transition:transform .3s var(--ease)}
+.lt-album-slot.owned svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 6px rgba(0,0,0,.18))}
+.lt-album-slot.owned:hover{transform:translateY(-3px) rotate(-1deg)}
+.lt-album-slot.owned:focus-visible{outline:2px solid #0a0a0a;outline-offset:4px;border-radius:4px}
+.lt-album-slot.missing{flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px;border:1.5px dashed #bdbdbd;border-radius:6px;color:#6b6b6b}
+.lt-album-slot.missing .lt-mono{font-size:9px;color:#8a8a8a}
+.lt-album-slot.missing strong{font-size:13px;line-height:1.15;letter-spacing:-.02em;overflow-wrap:anywhere}
+.lt-album-slot.is-new{animation:lt-album-stick .9s var(--ease) both}
+.lt-album-reward{margin-top:24px;padding:18px;border:1px solid #0a0a0a;border-radius:18px;display:flex;flex-direction:column;gap:6px}
+.lt-album-reward .lt-mono{font-size:11px}
+.lt-album-reward strong{font-size:18px;letter-spacing:-.02em}
+.lt-album-reward.done{background:#0a0a0a;color:#f7f5f0}
+.lt-album-how{margin-top:20px;padding-top:14px;border-top:1px solid var(--line);text-align:left}
+.lt-album-how summary{font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;min-height:32px}
+.lt-album-how ol{margin:10px 0 0;padding-left:20px;color:var(--secondary);font-size:15px;line-height:1.55}
+
+/* One stamp, big. */
+.lt-album-zoom{border:0;padding:56px 24px 28px;width:min(420px,92vw);border-radius:24px;background:#fff;color:#000;text-align:center}
+.lt-album-zoom::backdrop{background:rgba(0,0,0,.6)}
+.lt-album-zoom .lt-album-x{position:absolute;top:12px;right:12px}
+.lt-album-zoom-art{width:min(70vw,260px);margin:0 auto}
+.lt-album-zoom-art svg{display:block;width:100%;height:auto;filter:drop-shadow(0 10px 20px rgba(0,0,0,.25))}
+.lt-album-zoom h3{margin:20px 0 0;font-size:24px;letter-spacing:-.03em}
+.lt-album-zoom p{margin:8px 0 0;color:var(--secondary);font-size:16px;line-height:1.5}
+/* "Ya la probé" (2026-10-27): a black-ink postmark over the stamp, set by the member. */
+.lt-album-slot.owned{position:relative}
+.lt-album-zoom-art{position:relative}
+.lt-postmark{position:absolute;top:2%;left:16%;width:82%;height:auto;color:#0a0a0a;opacity:.8;transform:rotate(-14deg);pointer-events:none;mix-blend-mode:multiply}
+.lt-album-slot.owned svg.lt-postmark{filter:none;width:82%;height:auto}
+.lt-album-zoom-art svg.lt-postmark{filter:none;width:82%}
+.lt-postmark.thud{animation:lt-postmark-thud .5s var(--ease) both}
+@keyframes lt-postmark-thud{0%{opacity:0;transform:rotate(-14deg) scale(1.7)}60%{opacity:.85;transform:rotate(-14deg) scale(.94)}100%{opacity:.8;transform:rotate(-14deg) scale(1)}}
+.lt-album-zoom p.lt-album-zoom-coord{margin-top:6px;font-size:11px;color:var(--secondary)}
+.lt-album-tried{margin:18px auto 0;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border:1px solid #0a0a0a;border-radius:999px;background:#fff;color:#0a0a0a;
+  font:12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;transition:background .2s,color .2s}
+.lt-album-tried:hover{background:#f2f2f2}
+.lt-album-tried[aria-pressed="true"]{background:#0a0a0a;color:#f7f5f0}
+.lt-album-tried:disabled{opacity:.6}
+.lt-album-tried:focus-visible{outline:2px solid #0a0a0a;outline-offset:3px}
+.lt-album-zoom p.lt-album-tried-hint{min-height:1.5em;margin-top:8px;font-size:13px}
+@media(prefers-reduced-motion:reduce){.lt-postmark.thud{animation:none}}
+
+/* Opening a pack: full screen, dark. */
+.lt-pack{border:0;padding:0;width:100vw;height:100dvh;max-width:none;max-height:none;background:#0a0a0a;color:#f7f5f0}
+.lt-pack::backdrop{background:#0a0a0a}
+.lt-pack-stage{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:64px 20px 40px;text-align:center;position:relative}
+.lt-pack-x{position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(247,245,240,.4);background:transparent;color:#f7f5f0;font-size:24px;line-height:1}
+.lt-pack-eyebrow{margin:0;color:#9a9a9a;font-size:11px}
+.lt-pack-title{margin:0;min-height:1em;font-size:clamp(26px,6vw,40px);font-weight:700;letter-spacing:-.04em;line-height:1.05}
+.lt-pack-sub{margin:0;max-width:420px;min-height:1.5em;color:#bdbdbd;font-size:15px;line-height:1.5}
+.lt-pack-env{position:relative;width:min(78vw,320px);aspect-ratio:300/200;border:0;padding:0;background:none;margin-top:12px;perspective:800px}
+.lt-pack-env-body{display:block;width:100%;height:100%}
+.lt-pack-env-flap{position:absolute;left:0;top:0;width:100%;height:auto;transform-origin:50% 0;transition:transform .55s var(--ease)}
+.lt-pack-seal{position:absolute;left:50%;top:48%;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:#0a0a0a;border:3px solid #f7f5f0;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:#f7f5f0;transition:transform .35s var(--ease),opacity .35s}
+.lt-pack-env.shake{animation:lt-pack-shake .6s ease-in-out}
+@keyframes lt-pack-shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-6deg)}40%{transform:rotate(5deg)}60%{transform:rotate(-4deg)}80%{transform:rotate(3deg)}}
+.lt-pack-env.cracked .lt-pack-seal{transform:scale(1.4) rotate(25deg);opacity:0}
+.lt-pack-env.open .lt-pack-env-flap{transform:rotateX(180deg)}
+.lt-pack-env.gone{transition:transform .5s var(--ease),opacity .5s;transform:translateY(40px) scale(.9);opacity:0}
+.lt-pack-picks{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:12px;width:min(92vw,420px)}
+.lt-pack-picks:empty{display:none}
+.lt-pack-pick{border:0;padding:0;background:none;perspective:700px;aspect-ratio:250/300;opacity:0;transform:translateY(60px)}
+.lt-pack-pick.in{animation:lt-pack-rise .6s var(--ease) both}
+@keyframes lt-pack-rise{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:translateY(0)}}
+.lt-pack-pick-inner{position:relative;display:block;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s var(--ease)}
+.lt-pack-pick.flipped .lt-pack-pick-inner{transform:rotateY(180deg)}
+.lt-pack-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.lt-pack-face svg{width:100%;height:100%;display:block}
+.lt-pack-face.front{transform:rotateY(180deg)}
+.lt-pack-face.back{border-radius:3px;box-shadow:0 0 0 1px rgba(247,245,240,.4),0 10px 24px -8px rgba(247,245,240,.18)}
+.lt-pack-pick.flipped:hover .lt-pack-pick-inner,.lt-pack-pick.flipped:focus-visible .lt-pack-pick-inner{transform:rotateY(180deg) translateY(-6px)}
+.lt-pack-pick:focus-visible{outline:2px solid #f7f5f0;outline-offset:6px;border-radius:6px}
+.lt-pack-pick.fade{transition:opacity .4s,transform .4s;opacity:0;transform:scale(.85)}
+.lt-pack-chosen{width:min(56vw,240px)}
+.lt-pack-chosen svg{width:100%;height:auto;display:block;filter:drop-shadow(0 12px 24px rgba(0,0,0,.5))}
+.lt-pack-chosen.in{animation:lt-pack-pop .7s var(--ease) both}
+@keyframes lt-pack-pop{from{transform:scale(.6) rotate(-6deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.lt-pack-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;min-height:52px}
+@media(prefers-reduced-motion:reduce){.lt-pack-pick{opacity:1;transform:none}}

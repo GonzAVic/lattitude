@@ -13,6 +13,7 @@ const homeHref = localePath(lang);
 const aboutHref = localePath(lang, "/about/");
 const communitiesHref = localePath(lang, "/communities/");
 const menuHref = localePath(lang, "/menu/");
+const loyaltyHref = localePath(lang, "/lealtad/");
 ---
 
 <nav>
@@ -39,7 +40,7 @@ const menuHref = localePath(lang, "/menu/");
       </svg>
     </a>
     <div class="nav-right">
-      <a class="lang-switch hoverable" id="langSwitch" href={switchHref} aria-label={t.switchAria}>{t.switchTo}</a>
+      <a data-track="language_switched" data-track-from={lang} data-track-to={otherLocale(lang)} class="lang-switch hoverable" id="langSwitch" href={switchHref} aria-label={t.switchAria}>{t.switchTo}</a>
       <button class="menu-btn hoverable" aria-label={t.openMenu} data-open-label={t.openMenu} data-close-label={t.closeMenu} aria-expanded="false">
         <span><i></i><i></i><i></i></span>
       </button>
@@ -51,6 +52,7 @@ const menuHref = localePath(lang, "/menu/");
   <div>
     <a class="big overlay-link hoverable" href={`${homeHref}#drinks`}>{t.drinks}</a>
     <a class="big overlay-link hoverable" href={menuHref}>{t.menu}</a>
+    <a class="big overlay-link hoverable" href={loyaltyHref}>{t.loyalty}</a>
     <a class="big overlay-link hoverable" href={communitiesHref}>{t.communities}</a>
     <a class="big overlay-link hoverable" href={`${homeHref}#location`}>{t.visit}</a>
     <a class="big overlay-link hoverable" href={aboutHref}>{t.about}</a>
@@ -60,7 +62,7 @@ const menuHref = localePath(lang, "/menu/");
     <div class="line"></div>
     <div>21°01'11.6"N<br>89°34'16.2"W</div>
     <div style="margin-top:34px" class="meta">{t.hours}</div>
-    <div style="margin-top:34px"><a class="hoverable" href="https://www.instagram.com/lattitudecoffee" target="_blank" rel="noopener">{t.instagram} <ArrowIcon dir="up-right" /></a></div>
+    <div style="margin-top:34px"><a data-track="instagram_clicked" data-track-source="nav" class="hoverable" href="https://www.instagram.com/lattitudecoffee" target="_blank" rel="noopener">{t.instagram} <ArrowIcon dir="up-right" /></a></div>
   </div>
 </div>
 

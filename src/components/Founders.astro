@@ -83,7 +83,7 @@ const mapsHref = "https://maps.app.goo.gl/Z8L3mJFAC32dR3XL7";
   <h2>{closing.heading[0]}<br />{closing.heading[1]}</h2>
   <p>{closing.supporting}</p>
   <div class="hero-actions">
-    <a class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaVisit} <ArrowIcon dir="up-right" /></a>
+    <a data-track="directions_clicked" data-track-destination="lattitude" data-track-source="about_closing" class="btn hoverable" href={mapsHref} target="_blank" rel="noopener">{closing.ctaVisit} <ArrowIcon dir="up-right" /></a>
     <a class="btn hoverable" href={popularHref}>{closing.ctaPopular} <ArrowIcon dir="right" /></a>
   </div>
   <div class="coord-strip" aria-hidden="true">
