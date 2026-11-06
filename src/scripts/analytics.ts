@@ -24,6 +24,11 @@ export function initAnalytics() {
     // Send each event right away: nothing waits in a queue that reset() (sign-out) would drop.
     batch_requests: false,
   });
+  // Internal devices: ?notrack=1 opts this browser out for good (stored in localStorage);
+  // ?notrack=0 opts it back in.
+  const notrack = new URLSearchParams(location.search).get("notrack");
+  if (notrack === "1") mixpanel.opt_out_tracking();
+  else if (notrack === "0") mixpanel.opt_in_tracking();
   mixpanel.register({
     platform: "web",
     environment: isDev ? "development" : "production",

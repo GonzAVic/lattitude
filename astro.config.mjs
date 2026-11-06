@@ -26,7 +26,7 @@ export default defineConfig({
       // Internal design reference, local-only design previews and unlisted promo pages — never in the sitemap.
       filter: (page) =>
         !page.includes('/ui-design') && !page.includes('/design-assets') && !page.includes('/vatten/consulta') &&
-        !page.includes('/lealtad'),
+        !page.includes('/lealtad') && !page.includes('/longitude/tienda'),
     }),
   ],
 });

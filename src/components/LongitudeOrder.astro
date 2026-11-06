@@ -1,0 +1,529 @@
+---
+// Longitude order builder: the Longitude menu with add buttons, the passenger details, and a live
+// boarding pass that doubles as the receipt. Sending opens WhatsApp with the order written out.
+// The cart lives in this browser only (localStorage), as a convenience.
+import { longitudeMenu, longitudeOrder, type Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const sections = longitudeMenu[lang];
+const t = longitudeOrder[lang];
+const phone = "529999556212";
+// Sections that are food, not drinks (they don't count toward the minimum order).
+const FOOD = ["acompanar", "on-the-side"];
+---
+
+<section class="lg-order" id="pedir" data-lg-order data-lang={lang} data-phone={phone} data-copy={JSON.stringify({ pass: t.pass, bar: t.bar, wa: t.wa, form: t.form })}>
+  <div class="lg-order-head">
+    <div>
+      <div class="meta muted" style="margin-bottom:18px">{t.eyebrow}</div>
+      <h2>{t.heading}</h2>
+    </div>
+    <p>{t.body}</p>
+  </div>
+
+  <div class="lg-order-grid">
+    <div class="lg-order-menu">
+      <!-- Shown after a tap on "send" while short of the minimum (2026-11-05) -->
+      <p class="lg-err lg-menu-err" data-err="drinks" role="alert" hidden></p>
+      <!-- Mobile only: the menu sections become tabs -->
+      <div class="lg-tabs" role="tablist" aria-label={t.eyebrow} data-tabs>
+        {sections.map((sec, i) => (
+          <button type="button" role="tab" id={`lg-tab-${sec.id}`} aria-controls={`lg-sec-${sec.id}`} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} data-tab={sec.id}>
+            {sec.title}<span class="lg-tab-n" data-tab-n hidden>0</span>
+          </button>
+        ))}
+      </div>
+      {sections.map((sec, i) => (
+        <div class={`lg-order-sec lg-tabbed${i === 0 ? " is-active" : ""}`} id={`lg-sec-${sec.id}`} role="tabpanel" aria-labelledby={`lg-tab-${sec.id}`} data-sec={sec.id}>
+          <div class="menu-section-head">
+            <img src={sec.symbol} alt="" width="44" height="44" loading="lazy" />
+            <h3>{sec.title}</h3>
+            <span class="meta muted">{sec.index} / {sec.note}</span>
+          </div>
+          <div class="lg-order-items">
+            {sec.items.map((it) => (
+              <article class="menu-item lg-item" data-item={it.id} data-name={it.name} data-price={it.price} data-drink={FOOD.includes(sec.id) ? undefined : ""}>
+                <div class="menu-item-top">
+                  <h4>
+                    {it.name}
+                    {it.signature && <span class="star" role="img" aria-label={t.signature} title={t.signature}><i></i></span>}
+                  </h4>
+                  <span class="menu-price">${it.price}</span>
+                </div>
+                <div class="meta muted">{it.coord}</div>
+                <p>{it.desc}</p>
+                <div class="lg-qty" data-qty>
+                  <button type="button" class="lg-add" data-add aria-label={`${t.add} ${it.name}`}>{t.add} <span aria-hidden="true">+</span></button>
+                  <div class="lg-stepper" hidden>
+                    <button type="button" data-dec aria-label={`${t.remove}: ${it.name}`}>−</button>
+                    <output data-n aria-live="polite">0</output>
+                    <button type="button" data-inc aria-label={`${t.addOne}: ${it.name}`}>+</button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <div class="lg-order-sec">
+        <div class="menu-section-head">
+          <span class="crosshair" aria-hidden="true"><i></i></span>
+          <h3>{t.pass.passenger}</h3>
+          <span class="meta muted">04 / {t.pass.title}</span>
+        </div>
+        <div class="lg-form">
+          <label><span class="meta muted">{t.form.name} <span class="lg-req">· {t.form.required}</span></span><input data-f="name" autocomplete="name" placeholder={t.form.namePh} maxlength="40" required aria-required="true" aria-describedby="lg-err-name" /><span class="lg-err" id="lg-err-name" data-err="name" role="alert" hidden>{t.form.errName}</span></label>
+          <label><span class="meta muted">{t.form.tel} <span class="lg-req">· {t.form.required}</span></span><input data-f="tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder={t.form.telPh} maxlength="20" required aria-required="true" aria-describedby="lg-err-tel" /><span class="lg-err" id="lg-err-tel" data-err="tel" role="alert" hidden>{t.form.errTel}</span></label>
+          <label class="wide"><span class="meta muted">{t.form.dest} <span class="lg-req">· {t.form.required}</span></span><input data-f="dest" autocomplete="address-level3" placeholder={t.form.destPh} maxlength="60" required aria-required="true" aria-describedby="lg-err-dest" /><span class="lg-err" id="lg-err-dest" data-err="dest" role="alert" hidden>{t.form.errDest}</span></label>
+          <fieldset>
+            <legend class="meta muted">{t.form.when}</legend>
+            <!-- Scheduled only (2026-11-05): a day, then a 1-hour arrival window, Mérida time -->
+            <div class="lg-slots" data-slots>
+              <div class="lg-when-pick">
+                <label class="lg-slot-select">
+                  <span class="meta muted">{t.form.day}</span>
+                  <select data-day-select aria-describedby="lg-err-day"></select>
+                </label>
+                <label class="lg-slot-select">
+                  <span class="meta muted">{t.form.window}</span>
+                  <select data-slot-select aria-describedby="lg-err-window"></select>
+                </label>
+              </div>
+              <span class="lg-err" id="lg-err-day" data-err="day" role="alert" hidden>{t.form.errDay}</span>
+              <span class="lg-err" id="lg-err-window" data-err="window" role="alert" hidden>{t.form.errWindow}</span>
+              <p class="meta muted lg-slot-note">{t.form.windowNote}</p>
+            </div>
+          </fieldset>
+          <label class="wide"><span class="meta muted">{t.form.notes}</span><textarea data-f="notes" rows="2" placeholder={t.form.notesPh} maxlength="200"></textarea></label>
+        </div>
+      </div>
+    </div>
+
+    <aside class="lg-order-pass" id="pase">
+      <div class="lg-pass">
+        <div class="lg-pass-top">
+          <span class="lg-pass-brand">LONGITUDE</span>
+          <span class="meta">{t.pass.title}</span>
+        </div>
+
+        <div class="lg-pass-route">
+          <div>
+            <span class="meta muted">{t.pass.from}</span>
+            <strong>LAT</strong>
+            <small>Lattitude · Paraíso Maya</small>
+          </div>
+          <svg class="lg-pass-plane" viewBox="0 0 64 24" aria-hidden="true"><path d="M2 12h52" stroke-dasharray="3 4" /><path d="M48 5l10 7-10 7" /></svg>
+          <div class="to">
+            <span class="meta muted">{t.pass.to}</span>
+            <strong data-p="code" class="is-empty">···</strong>
+            <small data-p="dest">{t.pass.destUnknown}</small>
+          </div>
+        </div>
+
+        <dl class="lg-pass-fields">
+          <div><dt class="meta muted">{t.pass.passenger}</dt><dd data-p="name">{t.pass.passengerUnknown}</dd></div>
+          <div><dt class="meta muted">{t.pass.flight}</dt><dd data-p="flight">LNG ———</dd></div>
+          <div><dt class="meta muted">{t.pass.boarding}</dt><dd data-p="when">{t.form.pickWhen}</dd></div>
+          <div><dt class="meta muted">{t.pass.gate}</dt><dd>{t.pass.gateValue}</dd></div>
+        </dl>
+
+        <div class="lg-pass-items">
+          <p class="lg-pass-empty" data-p="empty">{t.pass.empty}</p>
+          <ol data-p="items"></ol>
+          <p class="lg-pass-notes" data-p="notes" hidden></p>
+          <p class="lg-pass-min" data-p="min" role="status" hidden></p>
+        </div>
+
+        <div class="lg-pass-perf" aria-hidden="true"></div>
+
+        <div class="lg-pass-stub">
+          <div>
+            <span class="meta muted">{t.pass.seat}</span>
+            <strong data-p="count">0</strong>
+          </div>
+          <div class="total">
+            <span class="meta muted">{t.pass.total}</span>
+            <strong data-p="total">$0</strong>
+            <small class="meta muted">{t.pass.priceNote}</small>
+          </div>
+        </div>
+      </div>
+
+      <a class="btn lg-send hoverable" data-send href="#" target="_blank" rel="noopener"><span data-send-label>{t.pass.send}</span> <span aria-hidden="true">↗</span></a>
+      <p class="lg-err lg-send-err" data-send-err role="alert" hidden></p>
+      <p class="lg-send-hint">{t.pass.sendHint}</p>
+      <button type="button" class="lg-clear meta" data-clear hidden>{t.pass.clear}</button>
+    </aside>
+  </div>
+
+  <a class="lg-order-bar" href="#pase" data-bar hidden>
+    <span><strong data-bar-count>0</strong> <span data-bar-label></span> · <strong data-bar-total>$0</strong></span>
+    <span class="meta">{t.bar.view} ↓</span>
+  </a>
+</section>
+
+<script>
+  import { DAYS_AHEAD, MIN_DRINKS, addDays, hasRoom, hm, nowMerida, openStarts, toMin } from "../lib/longitude-rules";
+  import { track } from "../scripts/analytics";
+
+  type Copy = {
+    pass: Record<string, string>;
+    bar: Record<string, string>;
+    wa: Record<string, string>;
+    form: Record<string, string>;
+  };
+  // token: this order's id for the reservations API; code: its reservation, once taken (2026-11-05)
+  type State = { qty: Record<string, number>; name: string; tel: string; dest: string; whenMode: string; day: string; slot: string; notes: string; flight: string; token: string; code: string };
+
+  const root = document.querySelector<HTMLElement>("[data-lg-order]");
+  if (root) {
+    const C: Copy = JSON.parse(root.dataset.copy!);
+    const phone = root.dataset.phone!;
+    const KEY = "longitude-order";
+    const $ = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const P = (k: string) => $<HTMLElement>(`[data-p="${k}"]`);
+
+    const items = [...root.querySelectorAll<HTMLElement>("[data-item]")].map((el) => ({
+      el, id: el.dataset.item!, name: el.dataset.name!, price: Number(el.dataset.price), drink: el.dataset.drink !== undefined,
+    }));
+
+    const newToken = () => [...crypto.getRandomValues(new Uint8Array(16))].map((b) => b.toString(16).padStart(2, "0")).join("");
+    const fresh = (): State => ({ qty: {}, name: "", tel: "", dest: "", whenMode: "schedule", day: "", slot: "", notes: "", flight: String(100 + Math.floor(Math.random() * 900)), token: newToken(), code: "" });
+    let s: State = fresh();
+    let tried = false;    // the customer tapped "send" before the order was complete
+    let slotGone = false; // their time was taken by someone else a moment before
+    let busy = false;     // reserving
+    try { s = { ...s, ...JSON.parse(localStorage.getItem(KEY) || "{}") }; } catch {}
+    if (!/^[a-f0-9]{32}$/.test(s.token)) s.token = newToken();
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} };
+
+    const fill = (t: string, v: Record<string, string | number>) => t.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ""));
+    const money = (n: number) => `$${n.toLocaleString("es-MX")}`;
+    const code = (dest: string) => {
+      const w = dest.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-zA-Z ]/g, "").trim().split(/\s+/).filter((x) => x.length > 2);
+      if (!w.length) return "···";
+      return w[0].slice(0, 3).toUpperCase();
+    };
+    // --- Service rules: src/lib/longitude-rules.ts (shared with the reservations API) --------------
+    const LANG = root.dataset.lang === "en" ? "en" : "es";
+    // Shown as the start time only ("11:00", "12:30"); each delivery still takes an hour.
+    const windowText = (start: string) => start;
+    // Times other orders already took, per day (from /api/longitude/slots). A delivery lasts an
+    // hour, so a booking also hides every start less than an hour away on either side.
+    let taken: Record<string, string[]> = {};
+    const devTaken = import.meta.env.DEV ? (window as unknown as { __LG_TAKEN__?: typeof taken }).__LG_TAKEN__ : undefined; // local testing only
+    if (devTaken) taken = devTaken;
+    const dateText = (iso: string, opts: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(LANG === "en" ? "en-US" : "es-MX", { ...opts, timeZone: "UTC" }).format(new Date(`${iso}T12:00:00Z`));
+    function windowsFor(iso: string) {
+      const booked = (taken[iso] ?? []).map(toMin);
+      return openStarts(iso, nowMerida()).filter((m) => hasRoom(m, booked)).map(hm);
+    }
+    async function loadTaken() {
+      if (devTaken) return;
+      try {
+        const r = await fetch(`/api/longitude/slots?token=${s.token}`, { cache: "no-store" });
+        if (!r.ok) return; // no API (local dev) or a hiccup: the reservation itself still checks
+        taken = ((await r.json()) as { taken?: typeof taken }).taken ?? {};
+        paintWhen(); paint();
+      } catch {}
+    }
+    function schedule() {
+      const n = nowMerida();
+      const today = n.date, tomorrow = addDays(today, 1);
+      const days = Array.from({ length: DAYS_AHEAD + 1 }, (_, i) => addDays(today, i)).filter((d) => windowsFor(d).length);
+      return { today, tomorrow, days };
+    }
+    // Every order is scheduled, and nothing is preselected: the customer picks the day, then the
+    // time. Saved choices go stale (yesterday, a time that is now too close): drop them.
+    function settleWhen() {
+      const { days } = schedule();
+      s.whenMode = "schedule";
+      if (s.day && !days.includes(s.day)) { s.day = ""; s.slot = ""; }
+      if (s.slot && (!s.day || !windowsFor(s.day).includes(s.slot))) s.slot = "";
+    }
+    const short = (iso: string) => dateText(iso, { weekday: "short", day: "numeric" });
+    const long = (iso: string) => dateText(iso, { weekday: "long", day: "numeric", month: "short" });
+    const relative = (iso: string) => {
+      const { today, tomorrow } = schedule();
+      return iso === today ? C.form.today : iso === tomorrow ? C.form.tomorrow : null;
+    };
+    const dayLabel = (iso: string) => { const r = relative(iso); return r ? `${r} · ${long(iso)}` : long(iso); };
+    const whenText = () => {
+      if (!s.day) return C.form.pickWhen;
+      if (!s.slot) return `${relative(s.day) ?? short(s.day)} · ${C.form.pickWindow}`;
+      return `${relative(s.day) ?? short(s.day)} · ${windowText(s.slot)}`;
+    };
+    // WhatsApp gets the full date, so "tomorrow" is never ambiguous.
+    const whenMessage = () => (s.slot ? `${dateText(s.day, { weekday: "long", day: "numeric", month: "long" })} · ${windowText(s.slot)}` : "—");
+    const whenReady = () => !!s.day && !!s.slot;
+
+    function paintWhen() {
+      settleWhen();
+      const { days } = schedule();
+      $<HTMLSelectElement>("[data-day-select]").innerHTML = `<option value="" disabled${s.day ? "" : " selected"}>${C.form.pickDay}</option>`
+        + days.map((d) => `<option value="${d}"${d === s.day ? " selected" : ""}>${dayLabel(d)}</option>`).join("");
+      // The time waits for a day.
+      const sel = $<HTMLSelectElement>("[data-slot-select]");
+      sel.disabled = !s.day;
+      sel.innerHTML = `<option value="" disabled${s.slot ? "" : " selected"}>${s.day ? C.form.pickWindow : C.form.dayFirst}</option>`
+        + (s.day ? windowsFor(s.day) : []).map((w) => `<option value="${w}"${w === s.slot ? " selected" : ""}>${windowText(w)}</option>`).join("");
+    }
+    const lines = () => items.filter((i) => (s.qty[i.id] || 0) > 0).map((i) => ({ ...i, n: s.qty[i.id] }));
+
+    function paint() {
+      const L = lines();
+      const count = L.reduce((a, l) => a + l.n, 0);
+      const total = L.reduce((a, l) => a + l.n * l.price, 0);
+      const drinks = L.filter((l) => l.drink).reduce((a, l) => a + l.n, 0); // food is not a drink
+
+      for (const i of items) {
+        const n = s.qty[i.id] || 0;
+        i.el.classList.toggle("in-cart", n > 0);
+        i.el.querySelector<HTMLElement>("[data-add]")!.hidden = n > 0;
+        i.el.querySelector<HTMLElement>(".lg-stepper")!.hidden = n === 0;
+        i.el.querySelector<HTMLElement>("[data-n]")!.textContent = String(n);
+      }
+
+      P("code").textContent = code(s.dest);
+      P("code").classList.toggle("is-empty", !s.dest.trim());
+      P("dest").textContent = s.dest.trim() || C.pass.destUnknown;
+      P("name").textContent = s.name.trim() || C.pass.passengerUnknown;
+      P("flight").textContent = `LNG ${s.code || s.flight}`;
+      P("when").textContent = whenText();
+      P("empty").hidden = L.length > 0;
+      P("items").innerHTML = L.map((l) => `<li><span class="n">${l.n}×</span><span class="nm"></span><span class="pr">${money(l.n * l.price)}</span></li>`).join("");
+      P("items").querySelectorAll(".nm").forEach((el, k) => (el.textContent = L[k].name));
+      P("notes").hidden = !s.notes.trim();
+      P("notes").textContent = s.notes.trim();
+      P("count").textContent = String(drinks);
+      P("total").textContent = money(total);
+
+      const send = $<HTMLAnchorElement>("[data-send]");
+      // The button looks ready as soon as there's something in the order (as before); the details
+      // are checked on tap, with the error next to each missing field.
+      const bad = { name: !s.name.trim(), tel: !telOk(), dest: !s.dest.trim(), day: !s.day, window: !!s.day && !s.slot, drinks: drinks < MIN_DRINKS };
+      const complete = count > 0 && !bad.name && !bad.dest && whenReady() && !bad.drinks;
+      // Minimum order: always visible on the pass while short; red after a tap on "send".
+      const min = P("min");
+      min.hidden = count === 0 || !bad.drinks;
+      const toGo = Math.max(0, MIN_DRINKS - drinks); // never negative
+      min.textContent = fill(toGo === 1 ? C.form.minOne : C.form.min, { min: MIN_DRINKS, n: toGo });
+      min.classList.toggle("is-error", tried && bad.drinks);
+      send.dataset.complete = String(complete);
+      $<HTMLElement>('[data-err="window"]').textContent = slotGone ? C.form.errTaken : C.form.errWindow;
+      for (const [k, el] of [["name", '[data-f="name"]'], ["tel", '[data-f="tel"]'], ["dest", '[data-f="dest"]'], ["day", "[data-day-select]"], ["window", "[data-slot-select]"]] as const) {
+        const show = (tried && bad[k]) || (k === "window" && slotGone);
+        $<HTMLElement>(el).setAttribute("aria-invalid", String(show));
+        $<HTMLElement>(`[data-err="${k}"]`).hidden = !show;
+      }
+      // The button is always on; a tap checks the order (see the click handler).
+      const menuErr = $<HTMLElement>('[data-err="drinks"]');
+      menuErr.hidden = !(tried && bad.drinks);
+      menuErr.textContent = min.textContent;
+      const msg = [
+        C.wa.hi, "",
+        `${C.wa.flight}: LNG ${s.code || s.flight}`,
+        `${C.wa.passenger}: ${s.name.trim() || "—"}`,
+        `${C.wa.dest}: ${s.dest.trim() || "—"}`,
+        `${C.wa.when}: ${whenMessage()}`, "",
+        `${C.wa.order}:`, ...L.map((l) => `• ${l.n}× ${l.name} — ${money(l.n * l.price)}`),
+        `${C.wa.total}: ${money(total)}`,
+        ...(s.notes.trim() ? ["", `${C.wa.notes}: ${s.notes.trim()}`] : []),
+        "", C.wa.location,
+      ].join("\n");
+      send.href = complete ? `https://wa.me/${phone}?text=${encodeURIComponent(msg)}` : "#";
+
+      $<HTMLElement>("[data-clear]").hidden = count === 0;
+      const bar = $<HTMLElement>("[data-bar]");
+      bar.hidden = count === 0;
+      $<HTMLElement>("[data-bar-count]").textContent = String(drinks);
+      $<HTMLElement>("[data-bar-label]").textContent = drinks === 1 ? C.bar.one : C.bar.items;
+      $<HTMLElement>("[data-bar-total]").textContent = money(total);
+    }
+
+    function bump(id: string, d: number) {
+      s.qty[id] = Math.max(0, Math.min(20, (s.qty[id] || 0) + d));
+      if (!s.qty[id]) delete s.qty[id];
+      save(); paint();
+      const pass = $<HTMLElement>(".lg-pass");
+      pass.classList.remove("stamp"); void pass.offsetWidth; pass.classList.add("stamp");
+    }
+
+    root.addEventListener("click", (e) => {
+      const b = (e.target as Element).closest<HTMLElement>("[data-add],[data-inc],[data-dec],[data-clear],[data-send]");
+      if (!b) return;
+      if (b.matches("[data-send]")) {
+        e.preventDefault();
+        if (busy) return;
+        if (b.dataset.complete === "true") { send(b as HTMLAnchorElement); return; }
+        // Something's missing: show every error and take them to the first one, in page order —
+        // the menu (minimum drinks), then name, phone, destination, day and time.
+        tried = true;
+        paint();
+        goTo(firstMissing());
+        return;
+      }
+      if (b.matches("[data-clear]")) {
+        // Emptying the order frees its time, and the next order gets a new token.
+        if (s.code) fetch("/api/longitude/reserve", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: s.token }), keepalive: true }).catch(() => {});
+        s = { ...fresh(), name: s.name, tel: s.tel, dest: s.dest }; save(); paint(); loadTaken(); return;
+      }
+      const id = b.closest<HTMLElement>("[data-item]")!.dataset.item!;
+      bump(id, b.matches("[data-dec]") ? -1 : 1);
+    });
+
+    const telDigits = () => { const d = s.tel.replace(/\D/g, ""); return d.length === 12 && d.startsWith("52") ? d.slice(2) : d; };
+    const telOk = () => /^\d{10}$/.test(telDigits());
+    function firstMissing() {
+      const drinks = lines().filter((l) => l.drink).reduce((a, l) => a + l.n, 0);
+      return drinks < MIN_DRINKS ? $<HTMLElement>('[data-err="drinks"]')
+        : !s.name.trim() ? $<HTMLElement>('[data-f="name"]')
+        : !telOk() ? $<HTMLElement>('[data-f="tel"]')
+        : !s.dest.trim() ? $<HTMLElement>('[data-f="dest"]')
+        : !s.day ? $<HTMLElement>("[data-day-select]")
+        : $<HTMLElement>("[data-slot-select]");
+    }
+    function goTo(el: HTMLElement) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (el.matches("input,select")) setTimeout(() => el.focus({ preventScroll: true }), 350);
+    }
+
+    // Reserve the time first (so no one else can take it), then open WhatsApp with the code.
+    async function send(a: HTMLAnchorElement) {
+      const sendErr = $<HTMLElement>("[data-send-err]");
+      const label = $<HTMLElement>("[data-send-label]");
+      sendErr.hidden = true;
+      busy = true;
+      label.textContent = C.form.reserving;
+      // Opened now, while the tap still counts, or the browser blocks it after the wait.
+      const win = window.open("about:blank", "_blank");
+      const L = lines();
+      let status = 0, data: { ok?: boolean; code?: string; error?: string; field?: string } = {};
+      try {
+        const r = await fetch("/api/longitude/reserve", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: s.token, day: s.day, slot: s.slot, name: s.name, phone: s.tel, dest: s.dest, notes: s.notes,
+            items: L.map((l) => ({ id: l.id, name: l.name, n: l.n, price: l.price, drink: l.drink })) }),
+        });
+        status = r.status;
+        data = await r.json().catch(() => ({}));
+      } catch {}
+      busy = false;
+      label.textContent = C.pass.send;
+      const meta = { day: s.day, time: s.slot, drinks: L.filter((l) => l.drink).reduce((x, l) => x + l.n, 0) };
+
+      if (status === 200 && data.code) {
+        s.code = data.code; save(); paint();
+        track("longitude_order_sent", { ...meta, reserved: true });
+        open(win, a.href);
+        return;
+      }
+      if (status === 409) {
+        // Someone else got that time first: pick another.
+        win?.close();
+        s.slot = ""; slotGone = true; save();
+        track("longitude_slot_taken", meta);
+        await loadTaken();
+        paintWhen(); paint();
+        goTo($<HTMLElement>("[data-slot-select]"));
+        return;
+      }
+      if (status === 429 || status === 400) {
+        win?.close();
+        sendErr.textContent = data.error === "phone_limit" ? C.form.phoneLimit : data.error === "rate" ? C.form.rate : C.form.reserveError;
+        sendErr.hidden = false;
+        track("longitude_reserve_failed", { ...meta, status, error: data.error ?? null, field: data.field ?? null });
+        return;
+      }
+      // The reservations service didn't answer: don't lose the order, send it as before.
+      track("longitude_order_sent", { ...meta, reserved: false, status });
+      open(win, a.href);
+    }
+    function open(win: Window | null, url: string) {
+      if (win && !win.closed) win.location.href = url;
+      else location.href = url;
+    }
+
+    // Passenger details: fill from saved state, then keep the pass in sync while typing.
+    root.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("[data-f]").forEach((el) => {
+      const k = el.dataset.f as keyof State;
+      if (el instanceof HTMLInputElement && el.type === "radio") el.checked = el.value === s.whenMode;
+      else (el as HTMLInputElement).value = String(s[k] ?? "");
+      el.addEventListener("input", () => {
+        (s as any)[k] = el.value;
+        save(); paint();
+      });
+    });
+    // Day and window pickers (drawn by paintWhen).
+    $<HTMLElement>("[data-slots]").addEventListener("change", (e) => {
+      const r = e.target as HTMLInputElement;
+      if (r.matches("[data-day-select]")) { s.day = r.value; s.slot = ""; tried && requestAnimationFrame(() => $<HTMLSelectElement>("[data-slot-select]").focus()); }
+      if (r.matches("[data-slot-select]")) { s.slot = r.value; slotGone = false; }
+      paintWhen(); save(); paint();
+    });
+    // Windows close as time passes: re-check every minute.
+    setInterval(() => { paintWhen(); paint(); loadTaken(); }, 60_000);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) loadTaken(); });
+
+    // Mobile bar: hide it while the pass itself is on screen.
+    new IntersectionObserver(([e]) => root.classList.toggle("pass-in-view", e.isIntersecting), { threshold: 0.25 })
+      .observe($<HTMLElement>(".lg-order-pass"));
+
+    // Mobile tabs (desktop shows every section and ignores them).
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>("[data-tab]")];
+    const tabBar = $<HTMLElement>("[data-tabs]");
+    function selectTab(id: string, focus = false) {
+      // Read this before the panels swap: the swap changes the page height and moves the bar.
+      const stuck = tabBar.getBoundingClientRect().top <= 90;
+      for (const b of tabs) {
+        const on = b.dataset.tab === id;
+        b.setAttribute("aria-selected", String(on));
+        b.tabIndex = on ? 0 : -1;
+        if (on) {
+          if (focus) b.focus();
+          b.scrollIntoView({ block: "nearest", inline: "nearest" });
+        }
+      }
+      root!.querySelectorAll<HTMLElement>("[data-sec]").forEach((p) => p.classList.toggle("is-active", p.dataset.sec === id));
+      // If the bar is stuck to the top, bring the new section's start into view.
+      if (stuck) {
+        const y = tabBar.parentElement!.getBoundingClientRect().top + scrollY - 76;
+        scrollTo({ top: y, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      }
+    }
+    // While stuck, the bar's background also covers the strip under the site nav.
+    addEventListener("scroll", () => tabBar.classList.toggle("is-stuck", tabBar.getBoundingClientRect().top <= 78), { passive: true });
+    tabBar.addEventListener("click", (e) => {
+      const b = (e.target as Element).closest<HTMLButtonElement>("[data-tab]");
+      if (b) selectTab(b.dataset.tab!);
+    });
+    tabBar.addEventListener("keydown", (e) => {
+      const i = tabs.findIndex((b) => b === document.activeElement);
+      if (i < 0) return;
+      const j = e.key === "ArrowRight" ? (i + 1) % tabs.length : e.key === "ArrowLeft" ? (i - 1 + tabs.length) % tabs.length
+        : e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : -1;
+      if (j < 0) return;
+      e.preventDefault();
+      selectTab(tabs[j].dataset.tab!, true);
+    });
+    function paintTabs() {
+      for (const b of tabs) {
+        const n = [...root!.querySelectorAll<HTMLElement>(`[data-sec="${b.dataset.tab}"] [data-item]`)]
+          .reduce((a, el) => a + (s.qty[el.dataset.item!] || 0), 0);
+        const badge = b.querySelector<HTMLElement>("[data-tab-n]")!;
+        badge.hidden = n === 0;
+        badge.textContent = String(n);
+      }
+    }
+    root.addEventListener("click", () => requestAnimationFrame(paintTabs));
+
+    paintWhen();
+    paint();
+    paintTabs();
+    loadTaken();
+  }
+</script>

@@ -14,6 +14,7 @@ const aboutHref = localePath(lang, "/about/");
 const communitiesHref = localePath(lang, "/communities/");
 const menuHref = localePath(lang, "/menu/");
 const loyaltyHref = localePath(lang, "/lealtad/");
+const longitudeHref = localePath(lang, "/longitude/");
 ---
 
 <nav>
@@ -50,12 +51,12 @@ const loyaltyHref = localePath(lang, "/lealtad/");
 
 <div class="overlay" aria-hidden="true">
   <div>
-    <a class="big overlay-link hoverable" href={`${homeHref}#drinks`}>{t.drinks}</a>
     <a class="big overlay-link hoverable" href={menuHref}>{t.menu}</a>
     <a class="big overlay-link hoverable" href={loyaltyHref}>{t.loyalty}</a>
     <a class="big overlay-link hoverable" href={communitiesHref}>{t.communities}</a>
     <a class="big overlay-link hoverable" href={`${homeHref}#location`}>{t.visit}</a>
     <a class="big overlay-link hoverable" href={aboutHref}>{t.about}</a>
+    <a class="big overlay-link hoverable" href={longitudeHref}>{t.longitude}</a>
   </div>
   <div class="overlay-meta">
     <div class="meta">{t.currentPosition}</div>

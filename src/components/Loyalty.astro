@@ -34,6 +34,9 @@ const bust = bustSvg(peep);
 // the Lomu portal). This page only talks to its API. PUBLIC_LOMU_API overrides
 // the base URL and PUBLIC_LOMU_SLUG the business, for local testing.
 const app = t.app;
+const hs = t.homescreen;
+// Steps per browser; "{share}" is drawn as the iOS share glyph.
+const hsSteps = { ios: hs.iosSteps, "ios-chrome": hs.iosChromeSteps, android: hs.androidSteps };
 const LOMU_API = (import.meta.env.PUBLIC_LOMU_API ?? "https://lomustudio.com").replace(/\/$/, "");
 const LOMU_SLUG = import.meta.env.PUBLIC_LOMU_SLUG ?? "lattitude-coffee";
 const apiBase = `${LOMU_API}/api/lealtad/${LOMU_SLUG}`;
@@ -49,6 +52,12 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
     (function () {
       try {
         var h = document.currentScript.parentElement;
+        // iOS Safari may have wiped localStorage; the server-set cookie (functions/api/card-session.ts)
+        // is the durable copy, so put it back before anything reads the token.
+        if (!localStorage.getItem("lattitude-card")) {
+          var m = document.cookie.match(/(?:^|;\s*)lt_card=([^;]+)/);
+          if (m) localStorage.setItem("lattitude-card", decodeURIComponent(m[1]));
+        }
         if (localStorage.getItem("lattitude-card")) {
           h.classList.add("lt-loading");
           h.setAttribute("aria-busy", "true");
@@ -289,6 +298,37 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
         <button class="lt-chip hoverable" type="button" data-lt-edit-avatar>{app.editAvatar}</button>
       </div>
       <p class="lt-note" data-lt-share-note role="status" hidden></p>
+      <!-- Add to Home Screen (2026-11-05): painted by the script below for members on a phone who
+           haven't added it yet; "Don't show again" hides it for good. Preview: ?a2hs=ios|ios-chrome|android -->
+      <aside class="lt-a2hs" data-lt-a2hs hidden>
+        <div class="lt-a2hs-head">
+          <span class="lt-a2hs-icon" aria-hidden="true"><img src="/lealtad/icon-192.png" alt="" width="52" height="52" /><small>{hs.appName}</small></span>
+          <div>
+            <div class="meta muted">{hs.eyebrow}</div>
+            <strong>{hs.title}</strong>
+            <p>{hs.body}</p>
+          </div>
+        </div>
+        {Object.entries(hsSteps).map(([k, steps]) => (
+          <ol class="lt-a2hs-steps" data-a2hs-steps={k} hidden>
+            {steps.map((step) => {
+              const [before, after] = step.split("{share}");
+              return (
+                <li><span>
+                  {before}
+                  {after !== undefined && (
+                    <svg class="lt-a2hs-share" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M6 11H5v10h14V11h-1" /></svg>
+                  )}
+                  {after}
+                </span></li>
+              );
+            })}
+          </ol>
+        ))}
+        <button class="btn hoverable" type="button" data-a2hs-install hidden>{hs.install} <ArrowIcon dir="right" /></button>
+        <p class="lt-note" data-a2hs-done hidden>{hs.done}</p>
+        <button class="lt-link hoverable" type="button" data-a2hs-dismiss>{hs.dismiss}</button>
+      </aside>
       <div class="lt-member-avatar" data-lt-avatar-slot hidden>
         <button class="btn hoverable" type="button" data-lt-save-avatar>{app.saveAvatar} <ArrowIcon dir="right" /></button>
         <p class="lt-note" data-lt-avatar-note hidden></p>
@@ -624,7 +664,19 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
     type ApiResult = { ok: boolean; error?: string; card?: Card };
 
     const getToken = () => { try { return localStorage.getItem(TOKEN_KEY); } catch { return null; } };
-    const setToken = (t: string | null) => { try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); } catch {} };
+    // The cookie copy is written by the server (see functions/api/card-session.ts): a cookie set
+    // from script would be wiped by Safari after 7 days, just like localStorage.
+    const syncCookie = (t: string | null) =>
+      fetch("/api/card-session", {
+        method: t ? "POST" : "DELETE",
+        headers: t ? { "Content-Type": "application/json" } : {},
+        body: t ? JSON.stringify({ token: t }) : undefined,
+        keepalive: true,
+      }).catch(() => {});
+    const setToken = (t: string | null) => {
+      try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); } catch {}
+      return syncCookie(t);
+    };
 
     async function api(path: string, opts: { method?: string; body?: unknown; token?: string | null } = {}): Promise<ApiResult & { status: number }> {
       try {
@@ -725,11 +777,12 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
 
     let member: Card | null = null;
 
-    function signOut() {
+    async function signOut() {
       track("loyalty_signed_out", {}, { transport: "sendBeacon" });
       resetMember();
-      setToken(null);
       try { localStorage.removeItem(PEEP_KEY); } catch {}
+      // Wait for the cookie to be cleared, or the reload would restore the card from it.
+      await setToken(null);
       location.reload();
     }
 
@@ -893,7 +946,9 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
     const saved = getToken();
     if (saved) {
       api("tarjeta", { token: saved }).then((r) => {
-        if (r.ok && r.card) showMember(r.card);
+        // Re-saving renews the cookie's 400 days on every visit, and gives members who signed
+        // up before the cookie existed their durable copy.
+        if (r.ok && r.card) { showMember(r.card); syncCookie(r.card.token || saved); }
         else if (r.status === 401) setToken(null);
       });
     }
@@ -1781,6 +1836,74 @@ const reviewHref = "https://g.page/r/CXMPF8yzmwHbEBM/review";
       if (newStamp && !morePacks) { await wait(3600); showAsk("visit_stamp"); }
       else if (first && !asked && new URLSearchParams(location.search).has("probar")) { asked = true; await wait(900); showAsk("url"); }
       if (first) startHints();
+    });
+  }
+</script>
+
+<script>
+  // Add to Home Screen (2026-11-05). Shown to members on a phone, in their own browser (in-app
+  // browsers like Instagram's can't add it), until they add it or tap "Don't show again".
+  // Opened from the icon the card stays signed in, and iOS doesn't wipe a home-screen app's data.
+  // Both answers are kept in a server-set cookie (functions/api/homescreen.ts) so Safari keeps them.
+  // Preview on any device: ?a2hs=ios | ios-chrome | android
+  import { track } from "../scripts/analytics";
+  const app = document.querySelector<HTMLElement>("[data-lt-app]");
+  const box = document.querySelector<HTMLElement>("[data-lt-a2hs]");
+  if (app && box) {
+    const ua = navigator.userAgent;
+    const preview = new URLSearchParams(location.search).get("a2hs");
+    const standalone = matchMedia("(display-mode: standalone)").matches || (navigator as { standalone?: boolean }).standalone === true;
+    const ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+    const inApp = /FBAN|FBAV|FB_IAB|Instagram|Line\/|TikTok|musical_ly/.test(ua);
+    const phone = matchMedia("(pointer: coarse)").matches;
+    const kind = preview ?? (ios ? (/CriOS|FxiOS|EdgiOS/.test(ua) ? "ios-chrome" : "ios") : "android");
+    const answered = () => /(?:^|;\s*)lt_a2hs=/.test(document.cookie);
+    const remember = (state: "dismissed" | "added") =>
+      fetch("/api/homescreen", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ state }), keepalive: true }).catch(() => {});
+
+    // Android/Chrome offers its own install dialog; keep the event to open it from our button.
+    let installEvent: (Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> }) | null = null;
+    const installBtn = box.querySelector<HTMLButtonElement>("[data-a2hs-install]")!;
+    const steps = box.querySelector<HTMLElement>(`[data-a2hs-steps="${kind}"]`);
+    const paint = () => {
+      const oneTap = !!installEvent && kind === "android";
+      installBtn.hidden = !oneTap;
+      if (steps) steps.hidden = oneTap;
+    };
+    addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      installEvent = e as typeof installEvent;
+      paint();
+    });
+
+    if (standalone) remember("added");
+    const eligible = !!preview || (phone && !standalone && !inApp && !answered());
+    let shown = false;
+    app.addEventListener("lt:card", () => {
+      if (!eligible || shown) return;
+      shown = true;
+      paint();
+      box.hidden = false;
+      track("loyalty_homescreen_shown", { platform: kind, is_one_tap: !!installEvent });
+    });
+
+    installBtn.addEventListener("click", async () => {
+      if (!installEvent) return;
+      installEvent.prompt();
+      const { outcome } = await installEvent.userChoice;
+      track("loyalty_homescreen_prompt", { outcome });
+      if (outcome === "accepted") installEvent = null;
+    });
+    addEventListener("appinstalled", () => {
+      remember("added");
+      track("loyalty_homescreen_added", { platform: kind });
+      box.querySelectorAll<HTMLElement>("ol, [data-a2hs-install], [data-a2hs-dismiss]").forEach((el) => (el.hidden = true));
+      box.querySelector<HTMLElement>("[data-a2hs-done]")!.hidden = false;
+    });
+    box.querySelector("[data-a2hs-dismiss]")!.addEventListener("click", () => {
+      remember("dismissed");
+      track("loyalty_homescreen_dismissed", { platform: kind });
+      box.hidden = true;
     });
   }
 </script>

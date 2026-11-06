@@ -25,3 +25,7 @@ pnpm-debug.log*
 
 # local-only design previews — never ships to production
 src/pages/design-assets/
+.wrangler/
+
+# Cloudflare local secrets (ADMIN_KEY for the store page)
+.dev.vars

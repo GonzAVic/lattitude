@@ -1,0 +1,176 @@
+---
+// Interactive map for the Longitude page. A fixed (non-pannable) map of north Mérida centered on
+// the shop; the pointer (or a tap) reads the real latitude/longitude under it.
+// `tour`: until someone touches it, the dot visits a few spots on its own, so the idea reads at a glance.
+// `zoom`: crops in around the shop (1 = the whole pre-rendered map).
+// Streets: OpenStreetMap (ODbL), pre-rendered to /merida-map.svg in Web Mercator.
+import type { Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+  variant?: "section" | "hero";
+  tour?: boolean;
+  zoom?: number;
+}
+const { lang, variant = "section", tour = false, zoom = 1 } = Astro.props;
+const es = lang === "es";
+
+// Must match how /merida-map.svg was generated.
+const MAP = { w: 1600, h: 1019, west: -89.663667, east: -89.478667, north: 21.074888, south: 20.964888 };
+const STORE = { lat: 21.019888, lng: -89.571167, x: 800, y: 509.68 };
+const PX_PER_KM = MAP.w / (MAP.east - MAP.west) / (111.32 * Math.cos((STORE.lat * Math.PI) / 180));
+const rings = [2, 4, 6];
+
+const vbW = MAP.w / zoom, vbH = MAP.h / zoom;
+const vb = { x: STORE.x - vbW / 2, y: STORE.y - vbH / 2, w: vbW, h: vbH };
+// Tour stops, as (km from the shop, bearing in degrees clockwise from north).
+const stops = [[1.7, 220], [3.2, 40], [2.4, 300], [3.6, 140], [1.3, 70]].map(([d, deg]) => {
+  const a = (deg * Math.PI) / 180;
+  return { x: STORE.x + Math.sin(a) * d * PX_PER_KM, y: STORE.y - Math.cos(a) * d * PX_PER_KM };
+});
+---
+
+<div class={`lg-map-frame is-${variant}`} data-lg-map data-map={JSON.stringify(MAP)} data-store={JSON.stringify(STORE)}
+  data-lang={lang} data-tour={tour ? JSON.stringify(stops) : undefined}>
+  <svg class="lg-map-svg" viewBox={`${vb.x} ${vb.y} ${vb.w} ${vb.h}`} preserveAspectRatio="xMidYMid slice" role="img"
+    aria-label={es ? "Mapa del norte de Mérida con Lattitude Coffee al centro" : "Map of north Mérida with Lattitude Coffee at the center"}>
+    <image href="/merida-map.svg" width={MAP.w} height={MAP.h} />
+    <g class="lg-rings">
+      {rings.map((km) => (
+        <g>
+          <circle cx={STORE.x} cy={STORE.y} r={km * PX_PER_KM} />
+          <text x={STORE.x + km * PX_PER_KM * 0.7071 + 8} y={STORE.y - km * PX_PER_KM * 0.7071 - 8}>{km} KM</text>
+        </g>
+      ))}
+    </g>
+    <g class="lg-cross">
+      <line class="lg-meridian" data-lg-vline x1={STORE.x} x2={STORE.x} y1="-2000" y2="3000" />
+      <line class="lg-parallel" data-lg-hline y1={STORE.y} y2={STORE.y} x1="-2000" x2="4000" />
+      <line class="lg-tether" data-lg-tether x1={STORE.x} y1={STORE.y} x2={STORE.x} y2={STORE.y} />
+      <g data-lg-dot transform={`translate(${STORE.x} ${STORE.y})`}>
+        <circle r="22" class="lg-dot-ring" />
+        <circle r="6" class="lg-dot" />
+        <text class="lg-dot-label" x="30" y="-16" data-lg-dot-label></text>
+      </g>
+    </g>
+    <g class="lg-store" transform={`translate(${STORE.x} ${STORE.y})`}>
+      <circle r="40" class="lg-pulse" />
+      <circle r="40" class="lg-pulse b" />
+      <circle r="26" class="lg-store-disc" />
+      <path class="lg-store-star" d="M0-13V13M-13 0H13M-9-9L9 9M9-9L-9 9" />
+      <text class="lg-store-label" x="38" y="44">LATTITUDE</text>
+    </g>
+  </svg>
+
+  <div class="lg-map-hint meta" aria-hidden="true">
+    <i></i><span class="lg-on-mouse">{es ? "Mueve el cursor sobre el mapa" : "Move your cursor over the map"}</span><span class="lg-on-touch">{es ? "Toca cualquier punto del mapa" : "Tap anywhere on the map"}</span>
+  </div>
+  <div class="lg-map-corner tr meta">N ↑</div>
+  <div class="lg-map-corner bl meta">© OpenStreetMap</div>
+
+  <div class="lg-readout" aria-live="off">
+    <div><span class="meta muted">LAT</span><strong data-lg-lat>21.0199° N</strong></div>
+    <div class="is-long"><span class="meta muted">LONG</span><strong data-lg-lng>89.5712° {es ? "O" : "W"}</strong></div>
+    <div><span class="meta muted">{es ? "Desde Lattitude" : "From Lattitude"}</span><strong data-lg-dist>{es ? "Origen" : "Origin"}</strong></div>
+  </div>
+</div>
+
+<script>
+  type Box = { w: number; h: number; west: number; east: number; north: number; south: number };
+  type Pt = { lat: number; lng: number; x: number; y: number };
+  type XY = { x: number; y: number };
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.querySelectorAll<HTMLElement>("[data-lg-map]").forEach((root) => {
+    const MAP: Box = JSON.parse(root.dataset.map!);
+    const STORE: Pt = JSON.parse(root.dataset.store!);
+    const stops: XY[] = root.dataset.tour ? JSON.parse(root.dataset.tour) : [];
+    const es = root.dataset.lang === "es";
+    const W = es ? "O" : "W";
+    const svg = root.querySelector<SVGSVGElement>(".lg-map-svg")!;
+    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const vline = q<SVGLineElement>("[data-lg-vline]"), hline = q<SVGLineElement>("[data-lg-hline]");
+    const tether = q<SVGLineElement>("[data-lg-tether]"), dot = q<SVGGElement>("[data-lg-dot]");
+    const dotLabel = q<SVGTextElement>("[data-lg-dot-label]");
+    const latEl = q<HTMLElement>("[data-lg-lat]"), lngEl = q<HTMLElement>("[data-lg-lng]"), distEl = q<HTMLElement>("[data-lg-dist]");
+
+    // Web Mercator, same as the pre-rendered map.
+    const merc = (lat: number) => Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360));
+    const yTop = merc(MAP.north), yBot = merc(MAP.south);
+    const toLatLng = (x: number, y: number) => ({
+      lng: MAP.west + (x / MAP.w) * (MAP.east - MAP.west),
+      lat: ((2 * Math.atan(Math.exp(yTop - (y / MAP.h) * (yTop - yBot))) - Math.PI / 2) * 180) / Math.PI,
+    });
+    const km = (a: { lat: number; lng: number }, b: { lat: number; lng: number }) => {
+      const r = Math.PI / 180, dLat = (b.lat - a.lat) * r, dLng = (b.lng - a.lng) * r;
+      const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLng / 2) ** 2;
+      return 12742 * Math.asin(Math.sqrt(h));
+    };
+
+    let target: XY = { x: STORE.x, y: STORE.y }, cur: XY = { ...target }, raf = 0, labelled = false;
+
+    function paint() {
+      const { x, y } = cur;
+      vline.setAttribute("x1", String(x)); vline.setAttribute("x2", String(x));
+      hline.setAttribute("y1", String(y)); hline.setAttribute("y2", String(y));
+      tether.setAttribute("x2", String(x)); tether.setAttribute("y2", String(y));
+      dot.setAttribute("transform", `translate(${x} ${y})`);
+      const p = toLatLng(x, y), d = km(STORE, p);
+      const lng = `${Math.abs(p.lng).toFixed(4)}° ${W}`;
+      latEl.textContent = `${p.lat.toFixed(4)}° N`;
+      lngEl.textContent = lng;
+      dotLabel.textContent = labelled ? lng : "";
+      distEl.textContent = d < 0.05 ? (es ? "Origen" : "Origin") : `${d.toFixed(1)} km`;
+      root.classList.toggle("is-away", d >= 0.05);
+    }
+    function frame(speed: number) {
+      const k = reduce ? 1 : speed;
+      cur.x += (target.x - cur.x) * k; cur.y += (target.y - cur.y) * k;
+      paint();
+      raf = Math.hypot(target.x - cur.x, target.y - cur.y) > 0.3 ? requestAnimationFrame(() => frame(speed)) : 0;
+      if (!raf) { cur = { ...target }; paint(); }
+    }
+    const moveTo = (p: XY, speed = 0.22) => { target = p; labelled = true; cancelAnimationFrame(raf); raf = requestAnimationFrame(() => frame(speed)); };
+    const home = () => { labelled = false; target = { x: STORE.x, y: STORE.y }; cancelAnimationFrame(raf); raf = requestAnimationFrame(() => frame(0.12)); };
+
+    // Tour: visit each stop, rest a moment, go on. Any touch takes over; it resumes after a pause.
+    let tourTimer = 0, i = 0, inView = false;
+    const touring = () => stops.length > 0 && !reduce;
+    function nextStop() {
+      if (!inView) return;
+      moveTo(stops[i++ % stops.length], 0.06);
+      tourTimer = window.setTimeout(nextStop, 2600);
+    }
+    function stopTour() { clearTimeout(tourTimer); tourTimer = 0; }
+    function resumeTour(after: number) {
+      stopTour();
+      if (touring()) tourTimer = window.setTimeout(nextStop, after);
+    }
+    if (touring()) {
+      new IntersectionObserver(([e]) => {
+        inView = e.isIntersecting;
+        if (inView && !tourTimer && !root.classList.contains("is-user")) resumeTour(900);
+        if (!inView) stopTour();
+      }).observe(root);
+    }
+
+    function point(e: PointerEvent) {
+      const m = svg.getScreenCTM();
+      if (!m) return;
+      const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(m.inverse());
+      const vb = svg.viewBox.baseVal;
+      stopTour();
+      root.classList.add("is-user", "touched");
+      moveTo({ x: Math.max(vb.x, Math.min(vb.x + vb.width, p.x)), y: Math.max(vb.y, Math.min(vb.y + vb.height, p.y)) });
+    }
+    svg.addEventListener("pointermove", point);
+    svg.addEventListener("pointerdown", point);
+    svg.addEventListener("pointerleave", (e) => {
+      root.classList.remove("is-user");
+      if (e.pointerType === "mouse") home();
+      resumeTour(e.pointerType === "mouse" ? 2200 : 6000); // on touch, the tapped spot stays a while
+    });
+    paint();
+  });
+</script>

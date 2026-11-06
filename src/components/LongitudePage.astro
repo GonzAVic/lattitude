@@ -1,0 +1,176 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ArrowIcon from "./ArrowIcon.astro";
+import DrinkFeature from "./DrinkFeature.astro";
+import LongitudeMap from "./LongitudeMap.astro";
+import LongitudeOrder from "./LongitudeOrder.astro";
+import { longitude, longitudeDrinks, localePath, type Locale } from "../i18n/content";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = longitude[lang];
+const drinks = longitudeDrinks[lang];
+
+const menuHref = localePath(lang, "/menu/");
+const cardHref = localePath(lang, "/lealtad/");
+---
+
+<BaseLayout lang={lang} path="/longitude" title={t.seo.title} description={t.seo.description} noindex>
+  <section class="lg-split">
+    <div class="lg-split-copy">
+      <div class="lg-lockup">
+        <span class="lg-word">{t.hero.eyebrow}<span></span></span>
+      </div>
+      <h1>{t.hero.heading}</h1>
+      <p>{t.hero.subhead}</p>
+      <div class="hero-actions">
+        <a data-track="longitude_order_started" data-track-source="longitude_hero" class="btn hoverable" href="#pedir">{t.hero.ctaOrder} <ArrowIcon dir="down" /></a>
+        <a class="btn hoverable" href="#como">{t.hero.ctaHow} <ArrowIcon dir="down" /></a>
+      </div>
+      <div class="coord-strip lg-vs">
+        {t.hero.micro.map((m) => <span>{m}</span>)}
+      </div>
+    </div>
+    <div class="lg-split-map">
+      <LongitudeMap lang={lang} variant="hero" tour zoom={1.45} />
+    </div>
+  </section>
+
+  <section class="statement">
+    <div class="statement-inner">
+      <div class="meta muted" style="margin-bottom:24px">{t.concept.eyebrow}</div>
+      <h2 class="lg-concept">{t.concept.heading}</h2>
+      <p>{t.concept.body}</p>
+      <div class="statement-micro" aria-hidden="true">
+        <strong class="micrographic-label">{t.concept.micrographic}</strong>
+        <div class="ruler" style="width:clamp(220px,26vw,380px);margin-top:10px"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="intent" id="como">
+    <div class="section-head">
+      <h3>{t.how.heading}</h3>
+    </div>
+    <ol class="lg-steps">
+      {t.how.steps.map((s) => (
+        <li>
+          <span class="meta muted">{s.n}</span>
+          <strong>{s.title}</strong>
+          <p>{s.body}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <LongitudeOrder lang={lang} />
+
+  <section class="founder-section dark lg-compare">
+    <div class="meta muted eyebrow">{t.compare.eyebrow}</div>
+    <h2>{t.compare.heading}</h2>
+    <p>{t.compare.body}</p>
+    <div class="lg-table" role="table">
+      <div class="lg-tr lg-th" role="row">
+        <span role="columnheader"></span>
+        <span role="columnheader" class="meta">{t.compare.appLabel}</span>
+        <span role="columnheader" class="meta">{t.compare.ownLabel}</span>
+      </div>
+      {t.compare.rows.map((r) => (
+        <div class="lg-tr" role="row">
+          <span role="rowheader" class="meta">{r.k}</span>
+          <span role="cell" class="lg-app">{r.app}</span>
+          <span role="cell" class="lg-own">{r.own}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="drinks" id="drinks">
+    <div class="drinks-top">
+      <div>
+        <div class="meta muted" style="margin-bottom:18px">{t.fresh.eyebrow}</div>
+        <h2>{t.fresh.heading}</h2>
+      </div>
+      <p>{t.fresh.body}</p>
+    </div>
+    <DrinkFeature drinks={drinks} />
+  </section>
+
+  <section class="people">
+    <div class="people-grid">
+      <div class="people-image">
+        <img src="/images/marquee-overhead-duo.webp" alt="" loading="lazy" decoding="async" />
+        <div class="inside meta"><span>LONG / {lang === "es" ? "TU PUNTO" : "YOUR SPOT"}</span><span>LATTITUDE</span></div>
+      </div>
+      <div class="people-copy">
+        <h2>{t.who.heading}</h2>
+        <div class="lg-who">
+          {t.who.items.map((w) => (
+            <div>
+              <strong>{w.title}</strong>
+              <p>{w.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="founder-section center">
+    <div class="meta muted eyebrow">{t.passport.eyebrow}</div>
+    <h2>{t.passport.heading}</h2>
+    <p>{t.passport.body}</p>
+    <div class="hero-actions" style="margin-top:32px">
+      <a class="btn hoverable" href={cardHref}>{t.passport.cta} <ArrowIcon dir="right" /></a>
+    </div>
+  </section>
+
+  <section class="faq">
+    <div class="faq-top">
+      <div class="meta muted" style="margin-bottom:18px">{t.faq.eyebrow}</div>
+      <h2>{t.faq.heading}</h2>
+    </div>
+    <div class="faq-list">
+      {t.faq.items.map((item) => (
+        <div class="faq-row">
+          <strong>{item.q}</strong>
+          <p>{item.a}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="founders-closing">
+    <h2>{t.closing.heading}</h2>
+    <p>{t.closing.supporting}</p>
+    <div class="hero-actions">
+      <a data-track="longitude_order_started" data-track-source="longitude_closing" class="btn hoverable" href="#pedir">{t.closing.ctaOrder} <ArrowIcon dir="right" /></a>
+      <a class="btn hoverable" href={menuHref}>{t.closing.ctaMenu} <ArrowIcon dir="right" /></a>
+    </div>
+    <div class="coord-strip" aria-hidden="true">
+      <span>LAT / 21.0198° N</span><span>LONG / ———</span><span>LONGITUDE BY LATTITUDE COFFEE</span>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // The longitude is "wherever you are": it drifts across Mérida's range, digit by digit.
+  const el = document.querySelector<HTMLElement>("[data-lg-long]");
+  if (el && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const next = () => (89.56 + Math.random() * 0.14).toFixed(4);
+    setInterval(() => {
+      const target = next();
+      let step = 0;
+      const roll = setInterval(() => {
+        step++;
+        el.textContent = target
+          .split("")
+          .map((c, i) => (c === "." || i < step ? c : String(Math.floor(Math.random() * 10))))
+          .join("");
+        if (step >= target.length) clearInterval(roll);
+      }, 45);
+    }, 2600);
+  }
+</script>

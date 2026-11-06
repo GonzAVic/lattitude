@@ -37,6 +37,7 @@ export const nav = {
     communities: "Communities",
     visit: "Visit",
     about: "About",
+    longitude: "Longitude",
     currentPosition: "Current position",
     hours: "Mon–Fri / 09:00–21:00 · Sat / 10:00–18:00",
     instagram: "@lattitudecoffee",
@@ -52,6 +53,7 @@ export const nav = {
     communities: "Comunidades",
     visit: "Visítanos",
     about: "Nosotros",
+    longitude: "Longitude",
     currentPosition: "Posición actual",
     hours: "Lun–Vie / 09:00–21:00 · Sáb / 10:00–18:00",
     instagram: "@lattitudecoffee",
@@ -1130,6 +1132,19 @@ export const loyalty = {
     celebrate: { stamp: "+1 stamp · {stamps} of {total}", full: "Card complete. Your next drink is on us." },
     preview: { label: "PREVIEW", title: "You don't have a card yet.", body: "This is how it will look. Create it in a minute and start collecting stamps.", holder: "Your name", level: "Not active yet", avatarCta: "Make your avatar", qr: "Your code will appear here", code: "— — —" },
     review: { text: "A Google review helps us more than you'd think.", button: "Rate us on Google" },
+    // Add-to-home-screen invitation (2026-11-05): members only, until added or dismissed.
+    homescreen: {
+      eyebrow: "YOUR CARD, ONE TAP AWAY",
+      title: "Add it to your Home Screen.",
+      body: "Open it like an app, no QR or browser needed.",
+      iosSteps: ["Tap Share {share}", "Choose “Add to Home Screen”", "Tap Add"],
+      iosChromeSteps: ["Tap Share {share} in the address bar", "Choose “Add to Home Screen”", "Tap Add"],
+      androidSteps: ["Open the browser menu ⋮", "Choose “Add to Home screen” or “Install app”", "Tap Add"],
+      install: "Add to my Home Screen",
+      dismiss: "Don't show again",
+      done: "Done. Open your card from the Lattitude icon.",
+      appName: "Lattitude",
+    },
     share: { button: "Share my avatar", preparing: "Getting it ready…", eyebrow: "MY AVATAR", tagline: "Coffee for people in motion.", caption: "My avatar at @lattitudecoffee ☕ Coffee for people in motion.", saved: "Image saved and caption copied. Post it to your Story and tag @lattitudecoffee.", file: "my-lattitude-avatar.png" },
     // Stamp album (Lomu, 2026-10-26): shown only when Lomu sends card.album.
     album: {
@@ -1289,6 +1304,19 @@ export const loyalty = {
     celebrate: { stamp: "+1 sello · {stamps} de {total}", full: "Tarjeta completa. Tu siguiente bebida va por nuestra cuenta." },
     preview: { label: "VISTA PREVIA", title: "Aún no tienes tarjeta.", body: "Así se verá la tuya. Créala en un minuto y empieza a sumar sellos.", holder: "Tu nombre", level: "Sin activar", avatarCta: "Crea tu avatar", qr: "Tu código aparecerá aquí", code: "— — —" },
     review: { text: "Una reseña en Google nos ayuda más de lo que crees.", button: "Calificar en Google" },
+    // Invitación a pantalla de inicio (2026-11-05): solo miembros, hasta que la agreguen o la descarten.
+    homescreen: {
+      eyebrow: "TU TARJETA, A UN TOQUE",
+      title: "Agrégala a tu pantalla de inicio.",
+      body: "Ábrela como una app, sin buscar el QR ni la página.",
+      iosSteps: ["Toca Compartir {share}", "Elige “Agregar a inicio”", "Toca Agregar"],
+      iosChromeSteps: ["Toca Compartir {share} en la barra de direcciones", "Elige “Agregar a inicio”", "Toca Agregar"],
+      androidSteps: ["Abre el menú ⋮ del navegador", "Elige “Agregar a pantalla de inicio” o “Instalar app”", "Toca Agregar"],
+      install: "Agregar a mi pantalla de inicio",
+      dismiss: "No volver a mostrar",
+      done: "Listo. Abre tu tarjeta desde el ícono de Lattitude.",
+      appName: "Lattitude",
+    },
     share: { button: "Compartir mi avatar", preparing: "Preparando…", eyebrow: "MI AVATAR", tagline: "Café para gente en movimiento.", caption: "Mi avatar de @lattitudecoffee ☕ Café para gente en movimiento.", saved: "Imagen guardada y texto copiado. Súbela a tu Story y etiqueta a @lattitudecoffee.", file: "mi-avatar-lattitude.png" },
     // Álbum de timbres (Lomu, 2026-10-26): solo aparece cuando Lomu manda card.album.
     album: {
@@ -1440,5 +1468,291 @@ export const loyalty = {
       saveAvatar: "Guardar avatar",
       avatarSaved: "Listo, tu avatar quedó guardado en tu tarjeta.",
     },
+  },
+} as const;
+
+/* Longitude — Lattitude's direct delivery: order direct, we make it when we arrive. Unlisted proposal page. */
+export const longitude = {
+  es: {
+    seo: {
+      title: "Longitude by Lattitude Coffee — Lo preparamos al llegar",
+      description: "Pide directo a Lattitude Coffee: llegamos a tu ubicación en Mérida y preparamos tus bebidas ahí mismo. Precio de barra, sin comisión de app.",
+    },
+    hero: {
+      eyebrow: "Longitude by Lattitude",
+      heading: "Recién hecho, donde estés.",
+      subhead: "Mándanos tu ubicación por WhatsApp. Llegamos y preparamos tus bebidas al momento, al precio de la barra.",
+      ctaOrder: "Armar mi pedido",
+      ctaHow: "Cómo funciona",
+      latLabel: "LAT / LATTITUDE",
+      longLabel: "LONG / TU UBICACIÓN",
+      micro: ["APPS / HIELO DERRETIDO, ESPUMA CAÍDA", "LONGITUDE / RECIÉN HECHA, PRECIO DE BARRA"],
+    },
+    concept: {
+      eyebrow: "Una coordenada necesita dos números",
+      heading: "La latitud te dice dónde está la tienda. La longitud, hasta dónde va el café.",
+      body: "Lattitude siempre ha sido un punto fijo en Paraíso Maya. Longitude es la otra mitad de la coordenada: la misma barra, las mismas recetas, en movimiento hacia ti.",
+      micrographic: "21.0198° N · tu longitud",
+    },
+    how: {
+      heading: "Cómo funciona",
+      steps: [
+        { n: "01", title: "Mándanos tu pedido y tu ubicación", body: "Por WhatsApp, como le escribirías a un amigo. Te confirmamos a qué hora llegamos." },
+        { n: "02", title: "Salimos con todo para prepararlo", body: "Café recién molido, leche, hielo y la máquina. Nada sale hecho de la tienda." },
+        { n: "03", title: "Llegamos y lo preparamos frente a ti", body: "Tu bebida se hace en tu punto del mapa. La espuma, el hielo y la temperatura llegan como deben." },
+      ],
+    },
+    compare: {
+      eyebrow: "Delivery de app vs. Longitude",
+      heading: "Precio de barra. Sin comisión de app.",
+      body: "Las apps cobran una comisión al negocio, y casi siempre termina en tu precio. Pedir directo nos deja cobrarte lo mismo que en la barra y gastar ese margen en lo que importa: que llegue perfecto.",
+      appLabel: "App de delivery",
+      ownLabel: "Longitude",
+      rows: [
+        { k: "Precio", app: "Más alto para cubrir la comisión", own: "El mismo que en la barra" },
+        { k: "Cuándo se prepara", app: "Antes de salir de la tienda", own: "Al llegar, frente a ti" },
+        { k: "Cómo llega", app: "Hielo derretido, espuma baja", own: "Recién hecha" },
+        { k: "Quién la entrega", app: "Un repartidor", own: "Un barista de Lattitude" },
+      ],
+    },
+    fresh: {
+      eyebrow: "LO QUE MEJOR LLEGA",
+      heading: "Las que nunca pedirías por app.",
+      body: "Las bebidas con espuma, capas o hielo son las que peor viajan. Con Longitude son las que mejor llegan.",
+    },
+    who: {
+      heading: "Para cuándo",
+      items: [
+        { title: "La junta de las 10", body: "Café para toda la oficina, hecho en la sala, sin que nadie salga." },
+        { title: "Domingo con visitas", body: "Brunch en casa con bebidas de barra, sin cargar diez vasos en el carro." },
+        { title: "Un evento pequeño", body: "Cumpleaños, lanzamientos, sesiones de fotos: una barra que llega y se va." },
+      ],
+    },
+    passport: {
+      eyebrow: "PASAPORTE DEL MENÚ",
+      heading: "Tu longitud también sella.",
+      body: "Cada pedido de Longitude cuenta en tu tarjeta de lealtad. El barista lleva tu sello con el café.",
+      cta: "Ver mi tarjeta",
+    },
+    faq: {
+      eyebrow: "Preguntas / Respondidas",
+      heading: "Antes de pedir",
+      items: [
+        { q: "¿Hasta dónde llegan?", a: "Empezamos por la zona norte de Mérida, alrededor de Paraíso Maya. Mándanos tu ubicación y te confirmamos si llegamos y a qué hora." },
+        { q: "¿Cuesta más que en la tienda?", a: "No. Las bebidas cuestan lo mismo que en la barra. Si hay costo de traslado, te lo decimos antes de confirmar." },
+        { q: "¿Con cuánto tiempo pido?", a: "Para pedidos grandes, con un día de anticipación. Para algo cercano y pequeño, escríbenos y vemos si podemos salir hoy." },
+        { q: "¿Qué bebidas puedo pedir?", a: "Las del menú que se preparan en barra: espresso, lattes, cold brew, matcha y refrescos. Te decimos cuáles están disponibles al confirmar." },
+      ],
+    },
+    closing: {
+      heading: "Mándanos tu ubicación. Nosotros ponemos el café.",
+      supporting: "Longitude by Lattitude Coffee. Mismo café, más lejos.",
+      ctaOrder: "Armar mi pedido",
+      ctaMenu: "Ver el menú",
+      whatsappText: "Hola, quiero pedir Longitude. Mi ubicación es:",
+    },
+  },
+  en: {
+    seo: {
+      title: "Longitude by Lattitude Coffee — Made when we arrive",
+      description: "Order direct from Lattitude Coffee: we come to your location in Mérida and make your drinks right there. Bar prices, no app fees.",
+    },
+    hero: {
+      eyebrow: "Longitude by Lattitude",
+      heading: "Fresh-made, wherever you are.",
+      subhead: "Send us your location on WhatsApp. We arrive and make your drinks on the spot, at bar prices.",
+      ctaOrder: "Build my order",
+      ctaHow: "How it works",
+      latLabel: "LAT / LATTITUDE",
+      longLabel: "LONG / YOUR LOCATION",
+      micro: ["APPS / MELTED ICE, FLAT FOAM", "LONGITUDE / FRESHLY MADE, BAR PRICE"],
+    },
+    concept: {
+      eyebrow: "A coordinate needs two numbers",
+      heading: "Latitude tells you where the shop is. Longitude, how far the coffee goes.",
+      body: "Lattitude has always been a fixed point in Paraíso Maya. Longitude is the other half of the coordinate: the same bar, the same recipes, moving toward you.",
+      micrographic: "21.0198° N · your longitude",
+    },
+    how: {
+      heading: "How it works",
+      steps: [
+        { n: "01", title: "Send us your order and location", body: "On WhatsApp, like you'd text a friend. We confirm when we'll arrive." },
+        { n: "02", title: "We head out with everything to make it", body: "Freshly ground coffee, milk, ice and the machine. Nothing leaves the shop pre-made." },
+        { n: "03", title: "We arrive and make it in front of you", body: "Your drink is made at your point on the map. Foam, ice and temperature arrive the way they should." },
+      ],
+    },
+    compare: {
+      eyebrow: "App delivery vs. Longitude",
+      heading: "Bar prices. No app fees.",
+      body: "Apps charge the business a commission, and it almost always ends up in your price. Ordering direct lets us charge you what the bar does and spend that margin on what matters: arriving perfect.",
+      appLabel: "Delivery app",
+      ownLabel: "Longitude",
+      rows: [
+        { k: "Price", app: "Higher to cover the commission", own: "Same as the bar" },
+        { k: "When it's made", app: "Before it leaves the shop", own: "On arrival, in front of you" },
+        { k: "How it arrives", app: "Melted ice, flat foam", own: "Freshly made" },
+        { k: "Who brings it", app: "A courier", own: "A Lattitude barista" },
+      ],
+    },
+    fresh: {
+      eyebrow: "WHAT ARRIVES BEST",
+      heading: "The ones you'd never order on an app.",
+      body: "Drinks with foam, layers or ice travel worst. With Longitude, they arrive best.",
+    },
+    who: {
+      heading: "For when",
+      items: [
+        { title: "The 10 a.m. meeting", body: "Coffee for the whole office, made in the room, nobody has to leave." },
+        { title: "Sunday with guests", body: "Brunch at home with bar drinks, without carrying ten cups in the car." },
+        { title: "A small event", body: "Birthdays, launches, photo shoots: a bar that shows up and leaves." },
+      ],
+    },
+    passport: {
+      eyebrow: "MENU PASSPORT",
+      heading: "Your longitude stamps too.",
+      body: "Every Longitude order counts on your loyalty card. The barista brings your stamp with the coffee.",
+      cta: "See my card",
+    },
+    faq: {
+      eyebrow: "Questions / Answered",
+      heading: "Before you order",
+      items: [
+        { q: "How far do you go?", a: "We're starting in north Mérida, around Paraíso Maya. Send us your location and we'll confirm whether we can make it and when." },
+        { q: "Does it cost more than the shop?", a: "No. Drinks cost the same as at the bar. If there's a travel fee, we tell you before confirming." },
+        { q: "How far ahead should I order?", a: "For large orders, a day ahead. For something small and nearby, text us and we'll see if we can head out today." },
+        { q: "Which drinks can I order?", a: "The bar drinks on the menu: espresso, lattes, cold brew, matcha and refreshers. We'll tell you what's available when we confirm." },
+      ],
+    },
+    closing: {
+      heading: "Send us your location. We'll bring the coffee.",
+      supporting: "Longitude by Lattitude Coffee. Same coffee, further out.",
+      ctaOrder: "Build my order",
+      ctaMenu: "See the menu",
+      whatsappText: "Hi, I'd like to order Longitude. My location is:",
+    },
+  },
+} as const;
+
+export const longitudeDrinks = {
+  es: [
+    { img: "/images/flat-white.webp", alt: "Flat white con arte latte", name: "Flat White", coord: "ESPRESSO / LECHE / MICROESPUMA", tag: "Espuma / Al llegar", icon: "star" },
+    { img: "/images/matcha-horchata.webp", alt: "Bebida Matcha Horchata", name: "Matcha Horchata", coord: "MATCHA / HORCHATA / LECHE", tag: "Capas / Firma", icon: "crosshair" },
+    { img: "/images/orange-tonic.webp", alt: "Bebida Orange Tonic", name: "Orange Tonic", coord: "NARANJA / TÓNICA / SODA", tag: "Burbuja / Hielo", icon: "star" },
+    { img: "/images/dirty-horchata.webp", alt: "Bebida Dirty Horchata", name: "Dirty Horchata", coord: "ESPRESSO / HORCHATA / HIELO", tag: "Capas / Hielo", icon: "plus" },
+    { img: "/images/mango-lychee-refresher.webp", alt: "Bebida Mango Lychee Refresher", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "Burbuja / Fresco", icon: "star" },
+  ],
+  en: [
+    { img: "/images/flat-white.webp", alt: "Flat white with latte art", name: "Flat White", coord: "ESPRESSO / MILK / MICROFOAM", tag: "Foam / On arrival", icon: "star" },
+    { img: "/images/matcha-horchata.webp", alt: "Matcha Horchata drink", name: "Matcha Horchata", coord: "MATCHA / HORCHATA / MILK", tag: "Layers / Signature", icon: "crosshair" },
+    { img: "/images/orange-tonic.webp", alt: "Orange Tonic drink", name: "Orange Tonic", coord: "ORANGE / TONIC / SODA", tag: "Fizz / Ice", icon: "star" },
+    { img: "/images/dirty-horchata.webp", alt: "Dirty Horchata drink", name: "Dirty Horchata", coord: "ESPRESSO / HORCHATA / ICE", tag: "Layers / Ice", icon: "plus" },
+    { img: "/images/mango-lychee-refresher.webp", alt: "Mango Lychee Refresher drink", name: "Mango Lychee Refresher", coord: "MANGO / LYCHEE / SODA", tag: "Fizz / Fresh", icon: "star" },
+  ],
+} as const;
+
+/* Longitude menu: cold brew based, cold drinks only, almost no food. Prices match the bar menu where
+   the drink exists there; items marked `draft` are new and their price still needs confirming. */
+type LongitudeItem = { id: string; name: string; price: number; coord: string; desc: string; signature?: boolean; draft?: boolean };
+type LongitudeSection = { id: string; index: string; title: string; note: string; symbol: string; items: LongitudeItem[] };
+
+export const longitudeMenu: Record<Locale, LongitudeSection[]> = {
+  es: [
+    {
+      id: "cold-brew", index: "01", title: "Cold brew", note: "La base de todo", symbol: "/micrographic-symbols/sym-03.svg",
+      items: [
+        { id: "cold-brew", name: "Cold brew", price: 70, coord: "CAFÉ / AGUA FRÍA / TIEMPO", desc: "Extraído en frío, sin prisa. Suave, redondo y con poca acidez." },
+        { id: "cold-brew-latte", name: "Cold brew latte", price: 75, coord: "COLD BREW / LECHE", desc: "Nuestro cold brew con leche fría. Ligero, pero con carácter." },
+        { id: "vanilla-cold-brew-latte", name: "Vanilla cold brew latte", price: 85, coord: "COLD BREW / VAINILLA / LECHE", desc: "Cold brew latte con vainilla sin azúcar. El favorito para la oficina.", draft: true },
+        { id: "cold-brew-horchata", name: "Cold brew horchata", price: 75, coord: "COLD BREW / HORCHATA", desc: "Horchata de la casa con cold brew encima. Nuestra firma, en versión viajera.", signature: true, draft: true },
+        { id: "orange-cold-brew-tonic", name: "Orange cold brew tonic", price: 80, coord: "COLD BREW / NARANJA / TÓNICA", desc: "Cold brew sobre tónica y naranja. Cítrico, amargo y con burbuja.", signature: true, draft: true },
+      ],
+    },
+    {
+      id: "frias-sin-cafe", index: "02", title: "Sin café", note: "Frías también", symbol: "/micrographic-symbols/sym-06.svg",
+      items: [
+        { id: "matcha-horchata", name: "Matcha horchata", price: 80, coord: "MATCHA / HORCHATA / LECHE", desc: "Matcha sobre horchata de la casa. Nuestra firma sin café.", signature: true },
+        { id: "mango-lychee-refresher", name: "Mango lychee refresher", price: 75, coord: "TÉ MANGO LYCHEE / TÓNICA", desc: "Té de mango y lychee con agua tónica. Frutal y brillante." },
+        { id: "orange-refresher", name: "Orange refresher", price: 75, coord: "NARANJA / AGUA TÓNICA", desc: "Naranja y agua tónica, bien frío. Ligero y cítrico." },
+      ],
+    },
+    {
+      id: "acompanar", index: "03", title: "Para acompañar", note: "Poquito, y bueno", symbol: "/micrographic-symbols/sym-14.svg",
+      items: [
+        { id: "galleta", name: "Galleta de la casa", price: 45, coord: "MANTEQUILLA / CHOCOLATE", desc: "Una galleta grande para el café de la tarde.", draft: true },
+      ],
+    },
+  ],
+  en: [
+    {
+      id: "cold-brew", index: "01", title: "Cold brew", note: "The base of it all", symbol: "/micrographic-symbols/sym-03.svg",
+      items: [
+        { id: "cold-brew", name: "Cold brew", price: 70, coord: "COFFEE / COLD WATER / TIME", desc: "Extracted cold, without rushing. Smooth, round and low in acidity." },
+        { id: "cold-brew-latte", name: "Cold brew latte", price: 75, coord: "COLD BREW / MILK", desc: "Our cold brew with cold milk. Light, but with character." },
+        { id: "vanilla-cold-brew-latte", name: "Vanilla cold brew latte", price: 85, coord: "COLD BREW / VANILLA / MILK", desc: "Cold brew latte with sugar-free vanilla. The office favorite.", draft: true },
+        { id: "cold-brew-horchata", name: "Cold brew horchata", price: 75, coord: "COLD BREW / HORCHATA", desc: "House-made horchata topped with cold brew. Our signature, travel edition.", signature: true, draft: true },
+        { id: "orange-cold-brew-tonic", name: "Orange cold brew tonic", price: 80, coord: "COLD BREW / ORANGE / TONIC", desc: "Cold brew over tonic and orange. Citrus, bitter and bubbly.", signature: true, draft: true },
+      ],
+    },
+    {
+      id: "cold-no-coffee", index: "02", title: "No coffee", note: "Cold as well", symbol: "/micrographic-symbols/sym-06.svg",
+      items: [
+        { id: "matcha-horchata", name: "Matcha horchata", price: 80, coord: "MATCHA / HORCHATA / MILK", desc: "Matcha over house-made horchata. Our coffee-free signature.", signature: true },
+        { id: "mango-lychee-refresher", name: "Mango lychee refresher", price: 75, coord: "MANGO LYCHEE TEA / TONIC", desc: "Mango lychee tea with tonic water. Fruity and bright." },
+        { id: "orange-refresher", name: "Orange refresher", price: 75, coord: "ORANGE / TONIC WATER", desc: "Orange and tonic water, ice cold. Light and citrusy." },
+      ],
+    },
+    {
+      id: "on-the-side", index: "03", title: "On the side", note: "A little, and good", symbol: "/micrographic-symbols/sym-14.svg",
+      items: [
+        { id: "galleta", name: "House cookie", price: 45, coord: "BUTTER / CHOCOLATE", desc: "A big cookie for the afternoon coffee.", draft: true },
+      ],
+    },
+  ],
+};
+
+export const longitudeOrder = {
+  es: {
+    eyebrow: "Menú Longitude / Solo frías",
+    heading: "Arma tu pedido.",
+    body: "Todo se prepara con cold brew o en frío, al llegar. Agrega lo que quieras y tu pase de abordar se arma solo.",
+    add: "Agregar",
+    remove: "Quitar uno",
+    addOne: "Agregar uno",
+    signature: "Firma de la casa",
+    form: { name: "Nombre del pasajero", namePh: "¿A nombre de quién?", dest: "Destino", destPh: "Colonia, oficina o referencia", when: "Hora de abordar", asap: "Lo antes posible", schedule: "Programar",
+      day: "Día", today: "Hoy", tomorrow: "Mañana", window: "Hora de llegada", windowNote: "Entregamos de lunes a sábado. Programa con al menos 1 hora de anticipación.",
+      pickWindow: "Elige hora", pickDay: "Elige día", dayFirst: "Primero elige el día", pickWhen: "Por elegir", errDay: "Elige el día de entrega.", tel: "Teléfono (WhatsApp)", telPh: "999 123 4567", errTel: "Escribe un teléfono de 10 dígitos.",
+      errTaken: "Esa hora se acaba de ocupar. Elige otra.", reserving: "Apartando tu horario…",
+      phoneLimit: "Este teléfono ya tiene 2 pedidos programados. Escríbenos por WhatsApp para cambiarlos.", rate: "Demasiados intentos seguidos. Espera unos minutos.",
+      reserveError: "No pudimos apartar tu horario. Revisa los datos e intenta de nuevo.", required: "Obligatorio", errName: "Escribe a nombre de quién va el pedido.", errDest: "Escribe el destino: colonia, oficina o referencia.", errWindow: "Elige una hora de llegada.", min: "Pedido mínimo: {min} bebidas · te faltan {n}", minOne: "Pedido mínimo: {min} bebidas · te falta 1", closed: "Ahora estamos fuera de horario (10:00–18:00). Programa tu entrega.", notes: "Notas para el barista", notesPh: "Leche de avena, menos hielo, sin azúcar…" },
+    pass: {
+      title: "Pase de abordar", from: "Origen", to: "Destino", passenger: "Pasajero", flight: "Vuelo", boarding: "Abordaje", gate: "Puerta", gateValue: "Tu puerta",
+      seat: "Bebidas", empty: "Tu pedido aparece aquí. Agrega algo del menú.", total: "Total", priceNote: "Precio de barra · MXN", destUnknown: "Por definir", passengerUnknown: "Pasajero",
+      send: "Enviar pedido por WhatsApp", sendHint: "Te confirmamos hora y, si aplica, el costo de traslado. En el chat comparte tu ubicación.", clear: "Vaciar",
+    },
+    bar: { items: "bebidas", one: "bebida", view: "Ver pase" },
+    wa: { hi: "Hola, quiero pedir Longitude ✈️", flight: "Vuelo", passenger: "Pasajero", dest: "Destino", when: "Hora", order: "Pedido", total: "Total", notes: "Notas", location: "Te comparto mi ubicación en este chat." },
+  },
+  en: {
+    eyebrow: "Longitude menu / Cold only",
+    heading: "Build your order.",
+    body: "Everything is made with cold brew or served cold, on arrival. Add what you want and your boarding pass builds itself.",
+    add: "Add",
+    remove: "Remove one",
+    addOne: "Add one",
+    signature: "House signature",
+    form: { name: "Passenger name", namePh: "Who's it for?", dest: "Destination", destPh: "Neighborhood, office or landmark", when: "Boarding time", asap: "As soon as possible", schedule: "Schedule",
+      day: "Day", today: "Today", tomorrow: "Tomorrow", window: "Arrival time", windowNote: "We deliver Monday to Saturday. Book at least 1 hour ahead.",
+      pickWindow: "Pick a time", pickDay: "Pick a day", dayFirst: "Pick the day first", pickWhen: "To be chosen", errDay: "Pick the delivery day.", tel: "Phone (WhatsApp)", telPh: "999 123 4567", errTel: "Enter a 10-digit phone number.",
+      errTaken: "That time was just taken. Pick another one.", reserving: "Holding your time…",
+      phoneLimit: "This phone already has 2 scheduled orders. Message us on WhatsApp to change them.", rate: "Too many tries in a row. Wait a few minutes.",
+      reserveError: "We couldn't hold your time. Check your details and try again.", required: "Required", errName: "Tell us who the order is for.", errDest: "Add the destination: neighborhood, office or landmark.", errWindow: "Pick an arrival time.", min: "Minimum order: {min} drinks · {n} to go", minOne: "Minimum order: {min} drinks · 1 to go", closed: "We're outside delivery hours right now (10:00–18:00). Schedule your order.", notes: "Notes for the barista", notesPh: "Oat milk, less ice, no sugar…" },
+    pass: {
+      title: "Boarding pass", from: "From", to: "To", passenger: "Passenger", flight: "Flight", boarding: "Boarding", gate: "Gate", gateValue: "Your door",
+      seat: "Drinks", empty: "Your order shows up here. Add something from the menu.", total: "Total", priceNote: "Bar price · MXN", destUnknown: "TBD", passengerUnknown: "Passenger",
+      send: "Send order on WhatsApp", sendHint: "We'll confirm the time and any travel fee. Share your location in the chat.", clear: "Clear",
+    },
+    bar: { items: "drinks", one: "drink", view: "View pass" },
+    wa: { hi: "Hi, I'd like to order Longitude ✈️", flight: "Flight", passenger: "Passenger", dest: "Destination", when: "Time", order: "Order", total: "Total", notes: "Notes", location: "I'll share my location in this chat." },
   },
 } as const;

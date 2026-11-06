@@ -1,0 +1,12 @@
+# Cloudflare Pages project (deployed with `npm run deploy`). This file is the source of truth
+# for its settings: the static site in dist/ plus the functions in functions/.
+name = "lattitude-astro"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-09-09"
+
+# Longitude reservations (2026-11-05): no two orders can take the same delivery time.
+[[d1_databases]]
+binding = "DB"
+database_name = "longitude-reservas"
+database_id = "af0c13e7-65cd-4a78-8086-162430dce569"
+migrations_dir = "migrations/longitude"

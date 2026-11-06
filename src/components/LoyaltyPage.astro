@@ -12,5 +12,12 @@ const seo = loyaltySeo[lang];
 
 <!-- UI mockup only: direct link, noindex, excluded from the sitemap (astro.config.mjs). -->
 <BaseLayout lang={lang} path="/lealtad/" title={seo.title} description={seo.description} noindex>
+  <!-- Members can add the card to their home screen (invitation in Loyalty.astro). -->
+  <Fragment slot="head">
+    <link rel="manifest" href={lang === "en" ? "/lealtad/manifest-en.webmanifest" : "/lealtad/manifest.webmanifest"} />
+    <meta name="apple-mobile-web-app-title" content="Lattitude" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  </Fragment>
   <Loyalty lang={lang} />
 </BaseLayout>

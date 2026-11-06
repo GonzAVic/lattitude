@@ -1,0 +1,183 @@
+---
+// Longitude · store page (2026-11-05): the reservations of the coming days, cancel one, close a
+// time or a whole day. Not linked anywhere, noindex, out of the sitemap. Data comes from
+// /api/longitude/admin, which only answers with the store key (ADMIN_KEY secret in Cloudflare).
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Longitude · Reservas</title>
+<link rel="icon" href="/favicon.svg" />
+</head>
+<body class="lgt">
+<main class="lgt-main">
+  <header class="lgt-head">
+    <div>
+      <div class="meta muted">Longitude · Tienda</div>
+      <h1>Reservas</h1>
+    </div>
+    <button type="button" class="lgt-btn ghost" data-refresh hidden>Actualizar</button>
+  </header>
+
+  <form class="lgt-login" data-login hidden>
+    <label><span class="meta muted">Clave de la tienda</span><input type="password" data-key autocomplete="current-password" required /></label>
+    <button class="lgt-btn" type="submit">Entrar</button>
+    <p class="lgt-err" data-login-err hidden>Clave incorrecta.</p>
+  </form>
+
+  <section data-app hidden>
+    <form class="lgt-close" data-close>
+      <span class="meta muted">Cerrar horario</span>
+      <select data-close-day required></select>
+      <select data-close-time><option value="">Todo el día</option></select>
+      <button class="lgt-btn" type="submit">Cerrar</button>
+    </form>
+    <p class="lgt-err" data-app-err hidden></p>
+    <div data-days></div>
+  </section>
+</main>
+
+<style is:global>
+  .lgt{cursor:auto;background:#fff}
+  .lgt *{cursor:auto}
+  .lgt :is(button,select,summary,a){cursor:pointer}
+  .lgt [hidden]{display:none!important}
+  .lgt-main{max-width:860px;margin:0 auto;padding:28px 18px 80px}
+  .lgt-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+  .lgt-head h1{margin:6px 0 0;font-size:clamp(36px,7vw,56px);letter-spacing:-.05em;line-height:1}
+  .lgt-btn{min-height:42px;padding:0 16px;border-radius:999px;border:1px solid #000;background:#000;color:#fff;font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase}
+  .lgt-btn.ghost{background:#fff;color:#000}
+  .lgt-btn.danger{background:#fff;color:#c0392b;border-color:#c0392b;min-height:34px;padding:0 12px;font-size:11px}
+  .lgt-login{margin-top:32px;display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px}
+  .lgt-login label{display:flex;flex-direction:column;gap:6px;flex:1;min-width:220px}
+  .lgt input,.lgt select{font:inherit;font-size:16px;padding:10px 0;border:0;border-bottom:1px solid #000;background:transparent;border-radius:0}
+  .lgt-err{color:#c0392b;font-size:14px;margin:12px 0 0}
+  .lgt-close{margin-top:28px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--line);border-radius:16px}
+  .lgt-close select{min-width:150px}
+  .lgt-day{margin-top:32px}
+  .lgt-day h2{margin:0 0 10px;font-size:22px;letter-spacing:-.03em;display:flex;align-items:baseline;gap:10px}
+  .lgt-day h2 small{font:12px ui-monospace,Menlo,monospace;color:var(--secondary);letter-spacing:.06em;text-transform:uppercase}
+  .lgt-row{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:start;padding:14px 0;border-top:1px solid var(--line)}
+  .lgt-row time{font:700 18px/1.2 Inter,Arial,sans-serif;font-variant-numeric:tabular-nums}
+  .lgt-row strong{font-size:16px}
+  .lgt-row p{margin:4px 0 0;font-size:14px;line-height:1.45;color:var(--secondary)}
+  .lgt-row .code{font:12px ui-monospace,Menlo,monospace;letter-spacing:.06em;color:#000}
+  .lgt-row a{color:#000}
+  .lgt-row.block{color:var(--secondary)}
+  .lgt-row.cancelled{opacity:.45}
+  .lgt-row.cancelled strong{text-decoration:line-through}
+  .lgt-empty{color:var(--secondary);font-size:14px;padding:12px 0;border-top:1px solid var(--line);margin:0}
+</style>
+
+<script>
+  import { DAYS_AHEAD, LAST_START, OPEN, STEP, addDays, hm, openStarts } from "../../lib/longitude-rules";
+
+  type Row = { id: number; code: string; day: string; time: string; kind: "order" | "block"; status: "active" | "cancelled"; name: string | null; phone: string | null; dest: string | null; items: { name: string; n: number; drink: boolean }[]; total: number | null; notes: string | null };
+  const $ = <E extends Element = HTMLElement>(s: string) => document.querySelector<E>(s)!;
+  const KEY = "longitude-admin-key";
+  let key = "";
+  try { key = localStorage.getItem(KEY) ?? ""; } catch {}
+
+  const esc = (v: unknown) => String(v ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
+  const dayName = (iso: string) => new Intl.DateTimeFormat("es-MX", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" }).format(new Date(`${iso}T12:00:00Z`));
+  const money = (n: number) => `$${n.toLocaleString("es-MX")}`;
+
+  async function api(method: "GET" | "POST", body?: unknown) {
+    const r = await fetch("/api/longitude/admin", {
+      method, headers: { "X-Admin-Key": key, ...(body ? { "Content-Type": "application/json" } : {}) },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    if (r.status === 401) { logout(true); throw new Error("unauthorized"); }
+    if (!r.ok) throw new Error(String(r.status));
+    return r.json();
+  }
+
+  function logout(bad = false) {
+    try { localStorage.removeItem(KEY); } catch {}
+    key = "";
+    $("[data-app]").hidden = true;
+    $("[data-refresh]").hidden = true;
+    $("[data-login]").hidden = false;
+    $("[data-login-err]").hidden = !bad;
+  }
+
+  async function load() {
+    const err = $("[data-app-err]");
+    err.hidden = true;
+    let data: { today: string; reservations: Row[] };
+    try { data = await api("GET"); } catch (e) { if ((e as Error).message !== "unauthorized") { err.textContent = "No se pudo cargar. Intenta de nuevo."; err.hidden = false; } return; }
+    $("[data-login]").hidden = true;
+    $("[data-app]").hidden = false;
+    $("[data-refresh]").hidden = false;
+
+    const days = Array.from({ length: DAYS_AHEAD + 1 }, (_, i) => addDays(data.today, i)).filter((d) => openStarts(d, { date: data.today, min: 0 }).length);
+    $("[data-days]").innerHTML = days.map((d) => {
+      const rows = data.reservations.filter((r) => r.day === d);
+      const active = rows.filter((r) => r.status === "active" && r.kind === "order").length;
+      return `<section class="lgt-day"><h2>${esc(dayName(d))} <small>${active} ${active === 1 ? "pedido" : "pedidos"}</small></h2>${
+        rows.length ? rows.map(row).join("") : `<p class="lgt-empty">Sin reservas.</p>`}</section>`;
+    }).join("");
+
+    // "close" form: days and times
+    const sel = $<HTMLSelectElement>("[data-close-day]");
+    const keep = sel.value;
+    sel.innerHTML = days.map((d) => `<option value="${d}">${esc(dayName(d))}</option>`).join("");
+    if (keep) sel.value = keep;
+    const times: string[] = [];
+    for (let m = OPEN; m <= LAST_START; m += STEP) times.push(hm(m));
+    $<HTMLSelectElement>("[data-close-time]").innerHTML = `<option value="">Todo el día</option>` + times.map((t) => `<option>${t}</option>`).join("");
+  }
+
+  function row(r: Row) {
+    if (r.kind === "block") {
+      return `<div class="lgt-row block ${r.status}"><time>${r.time}</time><div><strong>Cerrado</strong><p>Cubre de ${esc(hm(toMin(r.time) - 30))} a ${esc(hm(toMin(r.time) + 30))}</p></div>${
+        r.status === "active" ? `<button type="button" class="lgt-btn danger" data-cancel="${r.id}">Reabrir</button>` : ""}</div>`;
+    }
+    const drinks = r.items.filter((i) => i.drink).reduce((a, i) => a + i.n, 0);
+    const list = r.items.map((i) => `${i.n}× ${esc(i.name)}`).join(", ");
+    const tel = r.phone ? `<a href="https://wa.me/52${esc(r.phone)}" target="_blank" rel="noopener">${esc(r.phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3"))}</a>` : "";
+    return `<div class="lgt-row ${r.status}"><time>${r.time}</time><div>
+      <strong>${esc(r.name)}</strong> <span class="code">LNG ${esc(r.code)}</span>
+      <p>${tel} · ${esc(r.dest)}</p>
+      <p>${drinks} bebidas · ${money(r.total ?? 0)} — ${list}</p>
+      ${r.notes ? `<p>Notas: ${esc(r.notes)}</p>` : ""}
+      ${r.status === "cancelled" ? `<p>Cancelada</p>` : ""}
+    </div>${r.status === "active" ? `<button type="button" class="lgt-btn danger" data-cancel="${r.id}">Cancelar</button>` : ""}</div>`;
+  }
+  const toMin = (t: string) => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
+
+  $("[data-login]").addEventListener("submit", (e) => {
+    e.preventDefault();
+    key = $<HTMLInputElement>("[data-key]").value.trim();
+    try { localStorage.setItem(KEY, key); } catch {}
+    load();
+  });
+  $("[data-refresh]").addEventListener("click", load);
+  $("[data-days]").addEventListener("click", async (e) => {
+    const b = (e.target as Element).closest<HTMLButtonElement>("[data-cancel]");
+    if (!b) return;
+    const isBlock = b.textContent === "Reabrir";
+    if (!confirm(isBlock ? "¿Reabrir este horario?" : "¿Cancelar esta reserva? La hora vuelve a quedar libre.")) return;
+    b.disabled = true;
+    try { await api("POST", { action: "cancel", id: Number(b.dataset.cancel) }); } catch {}
+    load();
+  });
+  $("[data-close]").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const day = $<HTMLSelectElement>("[data-close-day]").value;
+    const slot = $<HTMLSelectElement>("[data-close-time]").value;
+    if (!confirm(slot ? `¿Cerrar las ${slot} de ${dayName(day)}?` : `¿Cerrar todo ${dayName(day)}?`)) return;
+    try { await api("POST", slot ? { action: "block", day, slot } : { action: "closeDay", day }); } catch {}
+    load();
+  });
+
+  if (key) load(); else logout();
+  setInterval(() => { if (key && !document.hidden) load(); }, 60_000);
+</script>
+</body>
+</html>

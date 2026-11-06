@@ -21,7 +21,7 @@ const { lang, title, description, path = "/", noindex = false, pageType: pageTyp
 // Analytics: one stable page type per page (Mixpanel `page_type` super property).
 const PAGE_TYPES: Record<string, string> = {
   "/": "home", "/menu/": "menu", "/lealtad/": "loyalty", "/about/": "about", "/communities/": "communities",
-  "/letsride": "partner_letsride", "/vatten": "partner_vatten", "/vatten/consulta/": "vatten_promo", "/ui-design": "internal",
+  "/letsride": "partner_letsride", "/longitude": "longitude", "/vatten": "partner_vatten", "/vatten/consulta/": "vatten_promo", "/ui-design": "internal",
 };
 const pageType = pageTypeProp ?? PAGE_TYPES[path] ?? "other";
 const t = site[lang];
@@ -96,6 +96,21 @@ const jsonLd = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Home-screen icon (2026-11-05): it's the loyalty card's app, so every launch opens the card,
+         whatever page the icon was saved from (iOS saves the current page, not the manifest's start_url).
+         Only on launch: links inside the app still go wherever they point. -->
+    <script is:inline>
+      (function () {
+        try {
+          var app = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+          if (!app || sessionStorage.getItem("lt-launched")) return;
+          sessionStorage.setItem("lt-launched", "1");
+          var p = location.pathname;
+          if (!/^\/(en\/)?lealtad\//.test(p)) location.replace((/^\/en(\/|$)/.test(p) ? "/en" : "") + "/lealtad/?source=homescreen");
+        } catch (e) {}
+      })();
+    </script>
+
     <script define:vars={{ lang, enPath: localePath("en", path) }}>
       (function () {
         try {
@@ -142,6 +157,8 @@ const jsonLd = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <!-- Page-specific head tags (e.g. the loyalty card's web app manifest). -->
+    <slot name="head" />
 
     <link rel="canonical" href={canonicalURL} />
     <link rel="alternate" hreflang="es" href={esURL} />
